@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import moment from 'moment';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from '../styles/detail-item.scss';
@@ -35,7 +36,7 @@ class DetailQuestionItem extends React.Component {
     
     renderTag() {
         let tags = this.props.detail.tags && this.props.detail.tags.map((tag, index) => {
-            return <a key={index} href={Helper.removeSigh(tag)} title="">{tag}</a>;
+            return <Link key={index} to={"/tagged/" + Helper.removeSigh(tag)} title="">{tag}</Link>;
         })
         return (
             <Tags>

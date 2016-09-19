@@ -20,5 +20,6 @@
 	"react-form",
 	"react-helmet",
 	"striptags",
+	"react-ga",
 	"markdown-it"
 ]

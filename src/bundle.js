@@ -9,6 +9,14 @@ import jQuery from 'jquery';
 import config from './config';
 import helper from './global/helper';
 import { syncHistoryWithStore } from 'react-router-redux';
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('UA-71598875-1');
+let logPageView = () => {
+  ReactGA.set({ page: window.location.pathname + window.location.search });
+  ReactGA.pageview(window.location.pathname + window.location.search);
+}
+
 
 window.config = config;
 window.Helper = helper;
@@ -16,10 +24,11 @@ window.$ = jQuery;
 
 const history = syncHistoryWithStore(browserHistory, store);
 
+
 render(
     <WithStylesContex onInsertCss={styles => Array.isArray(styles) ? styles.map((style)=>{style._insertCss()}): styles._insertCss()}>
         <Provider store={store}>
-            <Router history={history}>
+            <Router history={history} onUpdate={logPageView}>
             {Routes}
             </Router>
         </Provider>
