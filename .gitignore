@@ -1,0 +1,25 @@
+node_modules
+/dist
+/dist/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# IDE
+nbproject
+.idea
+.iml
+.project
+.settings
+.buildpath
+.metadata
+.vagrant
+*.komodoproject
+*.sublime-project
+*.sublime-workspace
+*.iml
+
