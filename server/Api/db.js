@@ -1,0 +1,20 @@
+require('es6-promise').polyfill();
+var fa = require("firebase-admin");
+var serviceAccount = {
+    "type": "service_account",
+    "project_id": "qnadb-8ec9e",
+    "private_key_id": "d0229a43895d791e96babd0cd70113f0614ff190",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDsGCjQB+zTtSS3\nqSsEkMae/oabXnCSn0Axt2qjgUqIJcYwbWPegUMckc+oFn7UbPlV+msg0m7kbL47\neKRHA17gQ60ny38KqCP+4QtQ0RjJgIXKm4kyGMBSRkP//YdzqdY5hw7og5ALycvr\nMu6dtWTgzRiCD6lebrE8gomLqrTkkfQ9lUAyjJleHTp624mGGCwmCNk3cizvQXGK\nL1JZPcuU7U5BW0TaoMdUtOb2chPjhkkvUynxnzczkJKM/R7oEwnYaqxDIdTh/Fay\nxSnByvEzJyk1KUxrlcdZXcQDMYl8iLewmqk/WqYhvb1YbrqoSc4XYKfsu51vrshW\nNDz0m9LRAgMBAAECggEATBHMtJqZF+15kyOSlLoBBSGFRXI8W0GscVhjp6L03MEv\nBlN4piyH7yCcA9CbtN4XyDgTZFPpHvhaotbQN4FChIfJttS+bjSWxHzGJJf6oJIk\niY9ruRR4gwnYxxZtGjtSpt55UzlwpBu09GdIss/LXRM4Hk/lhmOr/48fujyaZDp0\nRZawYhLHKp+ILRpivi2ot5VY7urrEbcIuBZEZ3YKCJaftR8vMoxgSpOlSagrqzYQ\n5iNZB4GGbkxiDWFGfC0kmwt13zUdGOAyePK4QeC+Y75Tz/EhVETTsiJKolrHZPd/\nFwoE8caaiPeCtjGMC2JDdloJTDji0UTL+xzbS8BwAQKBgQD3rE/j3xkL1Oy9YCDI\nmI0uzmhWE6FrLhPIvQqsOfdBraM39DrlPTE/uWA2nqhwen0tSN5HKUzU6FdAJWqJ\ndDb6htHjKzJBRnSUlJZsCWsF33tghhVC2sqx8G48alDHXNKFFoD73irqBieD/7JQ\nNVn8Ee/lJc7YRHbuLv9xLlImkQKBgQD0CDDfTJNNKtX3Ar4NlxK84O/kBxvZmyIv\nbnJUlS7z1MG34vAeOVlhy0rMNhEN0E6NFTOr5rJUhg/CHQugZQZiuegcU04KDel7\nTX+Q54wYFLeSx45rv8IEA1100njEERR4KP+vRfyeSgTwlb0E5CRzThD9SC7553oI\nB5P16JOIQQKBgAY6Xwfr5EVX5VwdvrVMoMA8kIMZm0WGsxipKEuMaZtNMn2FtrVt\nBIAFuVWmR7YMXnl1C6HeeAAil48VYchzE67ZFQ4RWAIsM2JJGj89PWO4avHSbVZx\nCgfPc/Yw9jcNLn4KQtQSkiGwZe370BAUR17/VHj+qmTl09fJdsLx1z8BAoGAQbLi\n1XtcPO5HZJUMbcQ6ezdj3lQ7nz4w2ew2Q6dWWLby4HrsgnaWJcoBfTEhLkLiowEO\nRD17zV26aFxBgRExwuqiHt4eqH5OWa/npC9yfBk3wwCOy1t49HOjeYwgj0i55g/D\npoCFHmh3I/5sQSDa32ApGseQPh+frwG7R/0xmwECgYA0O4TRDNeyN5wr1BKme89E\n11ijU6Nl7lmxr/mjWC/atbaZsnfu6AXPmcS36PxzxsF1robUbIxJCBhudwepSbaY\nVrkoh9fYyXxFEDRqKdnRWZl6s3iajhbDHOgfEgfXYDJEhV7pFWIQAB/dFU7Jt0C2\nr2lFdwyg15JCxc3b8PPkpw==\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-ynldp@qnadb-8ec9e.iam.gserviceaccount.com",
+    "client_id": "117492863298014327310",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://accounts.google.com/o/oauth2/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ynldp%40qnadb-8ec9e.iam.gserviceaccount.com"
+};
+fa.initializeApp({
+  credential: fa.credential.cert(serviceAccount),
+  databaseURL: "https://qnadb-8ec9e.firebaseio.com"
+});
+
+module.exports = fa.database();
