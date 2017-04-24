@@ -9,6 +9,57 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+
+
+
+
+app.route('/api/oauth/getRedirecturl').get(function (req, res) {
+    var oauth = require('./Api/oauth');
+    res.send(oauth.getRedirectUrl());
+});
+
+app.route('/api/qna/create').get(function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var qna = require('./Api/qna');
+    var count = 0;
+    while(count < 20) {
+        var data = {
+            "content": "Lorem ipsum dolor sit amet, __consectetur__ adipiscing elit. Cras imperdiet nec erat ac condimentum",
+            "create_at": new Date().getTime(),
+            "title": "Question " + count++,
+            "uid": 1
+        };
+        qna.add(data).then(function(key){
+            res.send({key});
+        }).catch(function(error){
+            res.status(400);
+            res.send(error);
+        });
+    }  
+});
+
+app.route('/api/qna/update/title').get(function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var qna = require('./Api/qna');
+    qna.updateTitle(req.query.key, req.query.uid, req.query.title).then(function(data){
+        res.send(data);
+    }).catch(function(error){
+        res.sendStatus(400);
+        res.send(error);
+    });
+});
+
+app.route('/api/qna/update/content').get(function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var qna = require('./Api/qna');
+    qna.updateContent(req.query.key, req.query.uid, req.query.content).then(function(data){
+        res.send(data);
+    }).catch(function(error){
+        res.sendStatus(400);
+        res.send(error);
+    });
+});
+
 app.route('/api/qna').get(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var qna = require('./Api/qna');
@@ -22,39 +73,24 @@ app.route('/api/qna').get(function (req, res) {
     qna.filter(dataFilter).then(function(data){
         res.send(data);
     }).catch(function(error){
-        res.setStatus(400);
+        res.status(400);
         res.send(error);
     });
-
-    // qna.delete('-KiNFlHUlGYGkPZ2oeZF', 1).then(function(){
-    //     res.send('ok');
-    // }).catch(function(){
-    //     res.send('faild');
-    // });
-
-    // qna.update('-KiNFq5dZeHVUp2k3JWE', 1, {title: 'updated 2', content: 'content updateed', thank: 1}).then(function(){
-    //     res.send('ok');
-    // }).catch(function(){
-    //     res.send('faild');
-    // });
-
-    // var count = 0;
-    // while(count < 30) {
-    //     var data = {
-    //         "content": "Lorem ipsum dolor sit amet, __consectetur__ adipiscing elit. Cras imperdiet nec erat ac condimentum. Nulla vel rutrum ligula. Sed hendrerit interdum orci a posuere. Vivamus ut velit aliquet, mollis purus eget, iaculis nisl. Proin posuere malesuada ante. Proin auctor orci eros, ac molestie lorem dictum nec. Vestibulum sit amet erat est. Morbi luctus sed elit ac luctus. Proin blandit, enim vitae egestas posuere, neque elit ultricies dui, vel mattis nibh enim ac lorem. Maecenas molestie nisl sit amet velit dictum lobortis. Aliquam erat volutpat.",
-    //         "create_at": new Date().getTime(),
-    //         "title": "Question " + count++,
-    //         "uid": 1
-    //     };
-    //     qna.add(data).then(function(){
-    //         res.send(data);
-    //     }).catch(function(error){
-    //         res.status(400);
-    //         res.send(error);
-    //     });
-    // }  
-
 });
+
+
+
+// qna.delete('-KiNFlHUlGYGkPZ2oeZF', 1).then(function(){
+//     res.send('ok');
+// }).catch(function(){
+//     res.send('faild');
+// });
+
+// qna.update('-KiNFq5dZeHVUp2k3JWE', 1, {title: 'updated 2', content: 'content updateed', thank: 1}).then(function(){
+//     res.send('ok');
+// }).catch(function(){
+//     res.send('faild');
+// });
 
 
 
