@@ -4,25 +4,38 @@ var request = require("request")
 var path = require('path');
 var bodyParser = require('body-parser');
 var md5 = require('md5');
+var qna = require('./Api/qna');
+qna.listeningToIndexAlgolia();
 
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
 
-
-
-
-app.route('/api/oauth/getRedirecturl').get(function (req, res) {
-    var oauth = require('./Api/oauth');
-    res.send(oauth.getRedirectUrl());
+app.route('/api/qna/search').get(function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var sortAble = ['vote', 'down_vote', 'create_at'];
+    var sorts = {};
+    if(req.query.sort) {
+        var sortLists = req.query.sort.trim().split(',');
+        sortLists.forEach(function(sortOption){
+            var sortArray = sortOption.split('|');
+            if(sortArray.length === 2 && sortAble.indexOf(sortArray[0].trim()) !== -1 && (sortArray[1] === 'desc' || sortArray[1] === 'asc')) {
+                sorts[sortArray[0].trim()] = sortArray[1].trim();
+            }
+        })
+    }
+    qna.search(req.query.q || '', sorts).then(function(data){
+        res.send(data);
+    }).catch(function(error){
+        res.send(error);
+    });
 });
 
 app.route('/api/qna/create').get(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var qna = require('./Api/qna');
     var count = 0;
-    while(count < 20) {
+    while(count < 1000) {
         var data = {
             "content": "Lorem ipsum dolor sit amet, __consectetur__ adipiscing elit. Cras imperdiet nec erat ac condimentum",
             "create_at": new Date().getTime(),
@@ -40,7 +53,6 @@ app.route('/api/qna/create').get(function (req, res) {
 
 app.route('/api/qna/update/title').get(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var qna = require('./Api/qna');
     qna.updateTitle(req.query.key, req.query.uid, req.query.title).then(function(data){
         res.send(data);
     }).catch(function(error){
@@ -51,7 +63,6 @@ app.route('/api/qna/update/title').get(function (req, res) {
 
 app.route('/api/qna/update/content').get(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var qna = require('./Api/qna');
     qna.updateContent(req.query.key, req.query.uid, req.query.content).then(function(data){
         res.send(data);
     }).catch(function(error){
@@ -62,7 +73,6 @@ app.route('/api/qna/update/content').get(function (req, res) {
 
 app.route('/api/qna').get(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var qna = require('./Api/qna');
     var dataFilter = {
         q: req.query.q || '',
         sort: req.query.sort || 'newest'

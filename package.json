@@ -14,11 +14,13 @@
   "author": "Vu Le",
   "license": "MIT",
   "dependencies": {
+    "algoliasearch": "^3.22.1",
     "axios": "^0.15.0",
     "babel-polyfill": "^6.16.0",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.1",
+    "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "isomorphic-style-loader": "^1.1.0",
     "jquery": "^3.1.1",
@@ -35,10 +37,10 @@
     "redux": "^3.6.0",
     "redux-logger": "^2.7.0",
     "redux-thunk": "^2.1.0",
+    "request": "*",
     "source-map-support": "^0.4.3",
-    "webpack": "^1.13.2",
     "spdy": "^3.4.3",
-    "request": "*"
+    "webpack": "^1.13.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",
@@ -56,6 +58,8 @@
     "babel-register": "^6.16.3",
     "body-parser": "^1.17.1",
     "css-loader": "^0.25.0",
+    "elasticsearch": "^13.0.0",
+    "elasticsearchclient": "^0.5.3",
     "es6-promise": "^4.1.0",
     "eslint": "^3.7.1",
     "eslint-config-airbnb": "^12.0.0",
@@ -67,6 +71,7 @@
     "file-loader": "^0.9.0",
     "firebase": "^3.8.0",
     "firebase-admin": "^4.2.1",
+    "get-json": "0.0.3",
     "md5": "^2.2.1",
     "modernizr-webpack-plugin": "^1.0.5",
     "moment": "^2.15.2",

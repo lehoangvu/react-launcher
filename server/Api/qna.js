@@ -1,7 +1,78 @@
+var Helper = require('./../Helper');
 var db = require('./db');
-var Pagination = require('./pagination');
-var limit = 5;
+var algolia = require('./algolia');
+
+var limit = 10;
 var qna = {
+    listeningToIndexAlgolia: function() {
+        var index = algolia.initIndex('qna');
+        var qnaRef = db.ref("/qna");
+
+        qnaRef.on('child_added', addOrUpdateIndexRecord);
+        qnaRef.on('child_changed', addOrUpdateIndexRecord);
+        qnaRef.on('child_removed', deleteIndexRecord);
+
+        function addOrUpdateIndexRecord(snapshot) {
+          // Get Firebase object
+          var firebaseObject = {
+            objectID: snapshot.key,
+            title: snapshot.val().title,
+            create_at: snapshot.val().create_at,
+            vote: snapshot.val().vote,
+            down_vote: snapshot.val().down_vote,
+            uid: snapshot.val().uid
+          };
+          // Add or update object
+          index.saveObject(firebaseObject, function(err, content) {
+            if (err) {
+              throw err;
+            }
+            console.log('Firebase object indexed in Algolia', firebaseObject.objectID);
+          });
+        }
+        function deleteIndexRecord(snapshot) {
+          // Get Algolia's objectID from the Firebase object key
+          var objectID = snapshot.key;
+          // Remove the object from Algolia
+          index.deleteObject(objectID, function(err, content) {
+            if (err) {
+              throw err;
+            }
+            console.log('Firebase object deleted from Algolia', objectID);
+          });
+        }
+
+    },
+    search: function(q, sorts) {
+        var index = algolia.initIndex('qna');
+
+        var searchSetting = {
+            'customRanking': []
+        };
+
+        Object.keys(sorts).forEach(function(field){
+            var orderBy = sorts[field];
+            if(orderBy === 'desc')
+                searchSetting.customRanking.push('desc('+field+')');
+            else
+                searchSetting.customRanking.push('asc('+field+')');
+                
+        })
+        console.log(searchSetting);
+        index.setSettings(searchSetting);
+        
+        return new Promise(function(resolve, reject) {
+                // .setSettings({"attributesForFaceting":["searchable(brand)", "price_range", "categories", "type", "price", "free_shipping", "rating", "popularity", "hierachicalCategories"]});
+            index.search(q, function(err, content) {
+                if (err) {
+                    return reject({
+                        error: 'Algolia search error'
+                    });
+                }
+                return resolve(content.hits);
+            });
+        });
+    },
     filter: function(options) {
         return new Promise(function(resolve, reject) {
             var sort_table = 'qna_field_create_at_desc';
@@ -48,17 +119,11 @@ var qna = {
         var postData = {
             'title': data.title,
             'create_at': data.create_at,
-            '-create_at': - data.create_at,
             'update_at': data.create_at,
-            '-update_at': - data.create_at,
-            'view': 0,
-            '-view': 0,
-            'vote': 0,
-            '-vote': 0,
-            'down_vote': 0,
-            '-down_vote': 0,
-            'reply_count': 0,
-            '-reply_count': 0,
+            'view': Helper.random(0, 300),
+            'vote': Helper.random(1, 125),
+            'down_vote': Helper.random(1, 125),
+            'reply_count': Helper.random(0, 20),
             'uid': data.uid
         };
         return new Promise(function(resolve, reject) {
@@ -73,17 +138,7 @@ var qna = {
                     var contentData = {};
                     contentData['qna_content/' + key] = data.content;
                     db.ref().update(contentData).then(function(){
-                        qna.indexByField(key, 'create_at', data.create_at, 'desc').then(function(){
-                            qna.indexByField(key, 'create_at', data.create_at, 'asc').then(function(){
-                                return resolve({key: key});
-                            }).catch(function(error){
-                                return reject(error);
-                            });
-                            
-                        }).catch(function(error){
-                            return resolve(error);
-                        });
-
+                        return resolve({key: key});
                     }, function(){
                         return reject({
                             error: 'Cannot update content back'
@@ -207,7 +262,10 @@ var qna = {
                 })
             });
     },
-    addVote: function() {
+    updateVote: function(action) {
+
+    },
+    updateDownVote: function(action) {
 
     },
     delete: function(key, uid) {
@@ -271,7 +329,6 @@ var qna = {
                 }
                 updates[oldPath] = null;
             }
-            console.log(sort, updates);
             db.ref(brand).update(updates).then(function(){
                 return resolve({});
             }, function(){
