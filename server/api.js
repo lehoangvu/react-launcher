@@ -73,17 +73,20 @@ app.route('/api/qna/update/content').get(function (req, res) {
 
 app.route('/api/qna').get(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var dataFilter = {
-        q: req.query.q || '',
-        sort: req.query.sort || 'newest'
-    };
-    if(req.query.from){
-        dataFilter.from = req.query.from;
+    var sortAble = ['vote', 'down_vote', 'create_at'];
+    var sorts = {};
+    if(req.query.sort) {
+        var sortLists = req.query.sort.trim().split(',');
+        sortLists.forEach(function(sortOption){
+            var sortArray = sortOption.split('|');
+            if(sortArray.length === 2 && sortAble.indexOf(sortArray[0].trim()) !== -1 && (sortArray[1] === 'desc' || sortArray[1] === 'asc')) {
+                sorts[sortArray[0].trim()] = sortArray[1].trim();
+            }
+        })
     }
-    qna.filter(dataFilter).then(function(data){
+    qna.browser(sorts, req.query.cursor).then(function(data){
         res.send(data);
     }).catch(function(error){
-        res.status(400);
         res.send(error);
     });
 });
