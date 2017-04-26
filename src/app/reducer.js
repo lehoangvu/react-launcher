@@ -1,8 +1,17 @@
-import { combineReducers } from 'redux';
-import list from './../list/reducer';
+const intinalState = {
+    
+}
 
-const reducer = combineReducers({
-	list
-});
+export default (state = intinalState, action) => {
+    switch(action.type){
+        case 'LOAD_SUCCESS':
+            return {
+                ...state,
+                ...action.data
+            }
+            break;
 
-export default reducer;
+        default:
+            return state;
+    }
+}

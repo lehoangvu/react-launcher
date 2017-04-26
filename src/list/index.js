@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import _List from './components/List';
 
 const mapStateToProps = (state) => {

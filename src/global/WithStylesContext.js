@@ -1,7 +1,6 @@
 import React, { PropTypes, Children } from 'react';
 
 class WithStylesContext extends React.Component {
-
     getChildContext() {
         return { insertCss: this.props.onInsertCss };
     }

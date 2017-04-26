@@ -1,20 +1,19 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import WithStylesContex from './../global/WithStylesContext';
-import store from './store';
+import Header from './components/Header';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './styles/app.scss';
 
-import List from './../list';
-
-export default class App {
-	constructor() {
-		render(
-		    <WithStylesContex onInsertCss={styles => Array.isArray(styles) ? styles.map((style)=>{style._insertCss()}): styles._insertCss()}>
-		        <Provider store={store}>
-		            <List />
-		        </Provider>
-		    </WithStylesContex>,
-			document.getElementById('root')
-		);
+class App extends React.Component{
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return <div className={s.rootApp}>
+        	<Header/>
+        	{this.props.children}
+        	
+		</div>;
 	}
 }
+
+export default withStyles(s)(App);
