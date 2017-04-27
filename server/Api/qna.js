@@ -2,8 +2,52 @@ var Helper = require('./../Helper');
 var db = require('./db');
 var algolia = require('./algolia');
 
-var limit = 10;
+var indexInstance; 
+var searchIndex = require('./search-index');
+// searchIndex.flush({
+//     indexPath: 'qna'
+// });
+// ({
+//     indexPath: 'qna',
+//     logLevel: 'error'
+// }).then(function(instance) {
+//     console.log('Create search instance success!');
+//     indexInstance = instance;
+// }, function(err) {
+//     console.log('Cannot create search instance!');
+//     console.log(err);
+// });
+
+var EventEmitter = require('events');
+var indexEmiter = new EventEmitter();
+
 var qna = {
+    listeningToIndexLocal: function() {
+
+        
+        
+
+        // Create instance
+        searchIndex.getInstance({
+            indexPath: 'qna'
+        }).then(function(instance) {
+            indexInstance = instance;
+            indexEmiter.on('triggerIndex', function (data) {
+                instance.concurrentAdd({}, [data], function(err) {
+                    if (err) {
+                        console.log('Cannot index', error);
+                    } else {
+                        console.log('Index success', data.key);
+                        instance.countDocs(function (err, count) {
+                          console.log('this index contains ' + count + ' documents')
+                        })
+                    }
+                });
+            });
+        }).catch(function(error) {
+            console.log('Cannot create instance', error);
+        })
+    },
     listeningToIndexAlgolia: function() {
         var index = algolia.initIndex('qna');
         var qnaRef = db.ref("/qna");
@@ -58,23 +102,20 @@ var qna = {
         // console.log('Firebase object deleted from Algolia', objectID);
       });
     },
-    index: function(snapshot) {
-        /// Get Firebase object
-        var firebaseObject = {
-            objectID: snapshot.key,
-            title: snapshot.val().title,
-            create_at: snapshot.val().create_at,
-            vote: snapshot.val().vote,
-            down_vote: snapshot.val().down_vote,
-            uid: snapshot.val().uid
-        };
-        // Add or update object
-        index.saveObject(firebaseObject, function(err, content) {
-            if (err) {
-                throw err;
-            }
-            // console.log('Firebase object indexed in Algolia', firebaseObject.objectID);
-        });
+    index: function(object) {
+        // Create instance
+        searchIndex.getInstance({
+            indexPath: 'qna'
+        }).then(function(instance) {
+            instance.concurrentAdd({}, [object], function(err) {
+                if (err) {
+                    console.log('Cannot index', error);
+                } else 
+                    console.log('Index success', object.key);
+            });
+        }).catch(function(error) {
+            console.log('Cannot create instance', error);
+        })
     },
     browser: function(sorts, cursor) {
         var index = algolia.initIndex('qna');
@@ -129,7 +170,23 @@ var qna = {
             }
         });
     },
-    search: function(q, sorts) {
+    search: function(q, sorts, page) {
+        return new Promise(function(resolve, reject) {
+            console.log(1);
+            indexInstance.search({
+              query: [{
+                AND: {
+                  'title': [q]   // search for "search" and "words" in all ("*") fields
+                }
+              }],
+              // offset: ((page - 1) * limit ),
+              // pageSize: limit
+            }).on('data', function(data) {
+                return resolve(data);
+            })
+        });
+
+        return;
         var index = algolia.initIndex('qna');
 
         var searchSetting = {
@@ -192,13 +249,14 @@ var qna = {
                     var contentData = {};
                     contentData['qna_content/' + key] = data.content;
                     db.ref().update(contentData).then(function(){
+                        postData.key = snapshot.key;
+                        indexEmiter.emit('triggerIndex', postData);
                         return resolve({key: key});
                     }, function(){
                         return reject({
                             error: 'Cannot update content back'
                         });
-                    })
-                    return resolve();
+                    });
                 }, function(){
                     return reject({
                         error: 'Something whent wrong'
@@ -393,4 +451,5 @@ var qna = {
         });
     }
 }
+qna.listeningToIndexLocal();
 module.exports = qna;

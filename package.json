@@ -23,6 +23,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.1",
     "dotenv": "^4.0.0",
+    "events": "^1.1.1",
     "express": "^4.14.0",
     "isomorphic-style-loader": "^1.1.0",
     "jquery": "^3.1.1",
