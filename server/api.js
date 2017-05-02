@@ -3,7 +3,6 @@ var app = express();
 var request = require("request")
 var path = require('path');
 var bodyParser = require('body-parser');
-var md5 = require('md5');
 var qna = require('./Api/qna');
 qna.listeningToIndexAlgolia();
 
@@ -102,6 +101,11 @@ app.route('/api/qna').get(function (req, res) {
 //     res.send('faild');
 // });
 
-
+// Asynchronous
+const crypto = require('crypto');
+crypto.randomBytes(256, function (err, buf) {
+  if (err) throw err;
+  console.log(buf.toString('hex'));
+});
 
 app.listen(process.env.PORT || 5000); //the port you want to use

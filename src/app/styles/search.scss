@@ -1,0 +1,49 @@
+.root {
+    width: 335px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 8px;
+    position: relative;   
+}
+.form {
+    position: relative;
+    width: 100%;
+    border: 1px solid #ddd;
+    height: 28px;
+}
+.searchInput {
+    border: 0;
+    line-height: 26px;
+    padding: 0 10px;
+    outline: none;
+    width: 100%;
+    padding-right: 28px;
+    &:focus {
+        + span {
+            background: #0095ff;
+            color: #fff;
+            i {
+                color: #fff;
+            }
+        }
+    }
+}
+.submitBtn {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    line-height: 28px;
+    i {
+        font-size: 20px;
+    }
+    &:hover {
+        background: #0095ff;
+        color: #fff;
+        i {
+            color: #fff;
+        }
+    }
+}

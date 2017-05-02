@@ -16,5 +16,6 @@
 	"axios",
 	"react-router-redux",
 	"numeral",
-	"moment"
+	"moment",
+	"react-google-login-component"
 ]
