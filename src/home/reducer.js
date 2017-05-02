@@ -1,5 +1,15 @@
 const intinalState = {
-    list: []
+    list: [],
+    tabs: [{
+        title: 'Mới nhất',
+        query: 'newest'
+    }, {
+        title: 'Hữu ích',
+        query: 'vote|desc'
+    }, {
+        title: 'Phản hồi',
+        query: 'reply|desc'
+    }],
 }
 
 export default (state = intinalState, action) => {

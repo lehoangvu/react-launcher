@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import list from './../list/reducer';
+import home from './../home/reducer';
 import app from './../app/reducer';
 
 const reducer = combineReducers({
-	list,
+	home,
     app
 });
 

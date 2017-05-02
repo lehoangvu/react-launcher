@@ -4,7 +4,7 @@ var request = require("request")
 var path = require('path');
 var bodyParser = require('body-parser');
 var qna = require('./Api/qna');
-// qna.index();
+qna.listeningToIndexAlgolia();
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -13,43 +13,44 @@ app.use(bodyParser.json());
 
 app.route('/api/qna/search').get(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var sortAble = ['vote', 'down_vote', 'create_at'];
-    var sorts = {};
-    var page = req.query.page || 1;
-    if(req.query.sort) {
-        var sortLists = req.query.sort.trim().split(',');
-        sortLists.forEach(function(sortOption){
-            var sortArray = sortOption.split('|');
-            if(sortArray.length === 2 && sortAble.indexOf(sortArray[0].trim()) !== -1 && (sortArray[1] === 'desc' || sortArray[1] === 'asc')) {
-                sorts[sortArray[0].trim()] = sortArray[1].trim();
-            }
-        })
+    var sortAble = ['vote', 'reply', 'newest'];
+
+    var query = {};
+
+    if(req.query.q){
+        query.q = req.query.q;
     }
-    qna.search(req.query.q || '', sorts, page).then(function(data){
+
+    if(req.query.sort) {
+        var sort = req.query.sort;
+        if(sortAble.indexOf(sort) !== -1) {
+            query.sort = sort;
+        }
+    }
+    qna.search(query).then(function(data){
         res.send(data);
     }).catch(function(error){
         res.send(error);
     });
 });
 
-// res.setHeader('Content-Type', 'application/json');
-// var count = 0;
-// while(count < 3000) {
-//     var data = {
-//         "content": "Lorem ipsum dolor sit amet, __consectetur__ adipiscing elit. Cras imperdiet nec erat ac condimentum",
-//         "create_at": new Date().getTime(),
-//         "title": "Question " + count++,
-//         "uid": 1
-//     };
-//     qna.add(data).then(function(key){
-//         // res.send({key:key});
-//     }).catch(function(error){
-//         // res.status(400);
-//         // res.send(error);
-//     });
-// } 
-
 app.route('/api/qna/create').get(function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    var count = 0;
+    while(count < 1000) {
+        var data = {
+            "content": "Lorem ipsum dolor sit amet, __consectetur__ adipiscing elit. Cras imperdiet nec erat ac condimentum",
+            "create_at": new Date().getTime(),
+            "title": "Question " + count++,
+            "uid": 1
+        };
+        qna.add(data).then(function(key){
+            res.send({key:key});
+        }).catch(function(error){
+            res.status(400);
+            res.send(error);
+        });
+    }  
 });
 
 app.route('/api/qna/update/title').get(function (req, res) {
@@ -74,20 +75,17 @@ app.route('/api/qna/update/content').get(function (req, res) {
 
 app.route('/api/qna').get(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var sortAble = ['vote', 'down_vote', 'create_at'];
-    var sorts = {};
-    if(req.query.sort) {
-        var sortLists = req.query.sort.trim().split(',');
-        sortLists.forEach(function(sortOption){
-            var sortArray = sortOption.split('|');
-            if(sortArray.length === 2 && sortAble.indexOf(sortArray[0].trim()) !== -1 && (sortArray[1] === 'desc' || sortArray[1] === 'asc')) {
-                sorts[sortArray[0].trim()] = sortArray[1].trim();
-            }
-        })
+    var dataFilter = {
+        q: req.query.q || '',
+        sort: req.query.sort || 'newest'
+    };
+    if(req.query.from){
+        dataFilter.from = req.query.from;
     }
-    qna.browser(sorts, req.query.cursor).then(function(data){
+    qna.filter(dataFilter).then(function(data){
         res.send(data);
     }).catch(function(error){
+        res.status(400);
         res.send(error);
     });
 });
@@ -106,11 +104,11 @@ app.route('/api/qna').get(function (req, res) {
 //     res.send('faild');
 // });
 
-// Asynchronous
-const crypto = require('crypto');
-crypto.randomBytes(256, function (err, buf) {
-  if (err) throw err;
-  console.log(buf.toString('hex'));
-});
+// const crypto = require('crypto');
+// crypto.randomBytes(32, function(err, buf) {
+//   if (err) throw err;
+//   console.log(buf.toString('hex'));
+// });
 
-app.listen(process.env.PORT || 5100); //the port you want to use
+
+app.listen(process.env.PORT || 5000); //the port you want to use

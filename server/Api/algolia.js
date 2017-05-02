@@ -1,4 +1,4 @@
-var dotenv = require('dotenv');
+// var dotenv = require('dotenv');
 var db = require("./db");
 var algoliasearch = require('algoliasearch');
 // configure algolia

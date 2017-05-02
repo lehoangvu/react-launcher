@@ -23,10 +23,6 @@ var indexEmiter = new EventEmitter();
 
 var qna = {
     listeningToIndexLocal: function() {
-
-        
-        
-
         // Create instance
         searchIndex.getInstance({
             indexPath: 'qna'
@@ -91,7 +87,7 @@ var qna = {
         }
 
     },
-    deleteIndex(snapshot) {
+    deleteIndex: function(snapshot) {
       // Get Algolia's objectID from the Firebase object key
       var objectID = snapshot.key;
       // Remove the object from Algolia
@@ -170,9 +166,12 @@ var qna = {
             }
         });
     },
-    search: function(q, sorts, page) {
+    search: function(query) {
+        var q = typeof query.q !== 'undefined' ? query.q : '';
+        var sort = typeof query.sort !== 'undefined' ? query.sort : 'newest'; 
+        var page = typeof query.page !== 'undefined' ? query.page : 1; 
+        var limit = 10;
         return new Promise(function(resolve, reject) {
-            console.log(1);
             indexInstance.search({
               query: [{
                 AND: {

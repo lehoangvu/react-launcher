@@ -2,14 +2,13 @@ import React from 'react';
 import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router';
 
 import App from './../app';
-import List from './../list';
+import Home from './../home';
 
 const basePath = typeof _basePath !== 'undefined' ? _basePath : '/';
 
 const Routes = 
     <Route path={basePath} component={App}>
-        <IndexRoute component={List} ></IndexRoute>
-    </Route>
-;
+        <IndexRoute component={Home} ></IndexRoute>
+    </Route>;
 
 export default Routes;
