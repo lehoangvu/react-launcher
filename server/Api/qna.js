@@ -2,8 +2,52 @@ var Helper = require('./../Helper');
 var db = require('./db');
 var algolia = require('./algolia');
 
-var limit = 10;
+var indexInstance; 
+var searchIndex = require('./search-index');
+// searchIndex.flush({
+//     indexPath: 'qna'
+// });
+// ({
+//     indexPath: 'qna',
+//     logLevel: 'error'
+// }).then(function(instance) {
+//     console.log('Create search instance success!');
+//     indexInstance = instance;
+// }, function(err) {
+//     console.log('Cannot create search instance!');
+//     console.log(err);
+// });
+
+var EventEmitter = require('events');
+var indexEmiter = new EventEmitter();
+
 var qna = {
+    listeningToIndexLocal: function() {
+
+        
+        
+
+        // Create instance
+        searchIndex.getInstance({
+            indexPath: 'qna'
+        }).then(function(instance) {
+            indexInstance = instance;
+            indexEmiter.on('triggerIndex', function (data) {
+                instance.concurrentAdd({}, [data], function(err) {
+                    if (err) {
+                        console.log('Cannot index', error);
+                    } else {
+                        console.log('Index success', data.key);
+                        instance.countDocs(function (err, count) {
+                          console.log('this index contains ' + count + ' documents')
+                        })
+                    }
+                });
+            });
+        }).catch(function(error) {
+            console.log('Cannot create instance', error);
+        })
+    },
     listeningToIndexAlgolia: function() {
         var index = algolia.initIndex('qna');
         var qnaRef = db.ref("/qna");
@@ -13,6 +57,8 @@ var qna = {
         qnaRef.on('child_removed', deleteIndexRecord);
 
         function addOrUpdateIndexRecord(snapshot) {
+            console.log('child add trigger');
+            return;
           // Get Firebase object
           var firebaseObject = {
             objectID: snapshot.key,
@@ -27,10 +73,12 @@ var qna = {
             if (err) {
               throw err;
             }
-            console.log('Firebase object indexed in Algolia', firebaseObject.objectID);
+            // console.log('Firebase object indexed in Algolia', firebaseObject.objectID);
           });
         }
         function deleteIndexRecord(snapshot) {
+            console.log('child remove trigger');
+            return;
           // Get Algolia's objectID from the Firebase object key
           var objectID = snapshot.key;
           // Remove the object from Algolia
@@ -38,16 +86,113 @@ var qna = {
             if (err) {
               throw err;
             }
-            console.log('Firebase object deleted from Algolia', objectID);
+            // console.log('Firebase object deleted from Algolia', objectID);
           });
         }
 
     },
-    search: function(q, sorts) {
+    deleteIndex(snapshot) {
+      // Get Algolia's objectID from the Firebase object key
+      var objectID = snapshot.key;
+      // Remove the object from Algolia
+      index.deleteObject(objectID, function(err, content) {
+        if (err) {
+          throw err;
+        }
+        // console.log('Firebase object deleted from Algolia', objectID);
+      });
+    },
+    index: function(object) {
+        // Create instance
+        searchIndex.getInstance({
+            indexPath: 'qna'
+        }).then(function(instance) {
+            instance.concurrentAdd({}, [object], function(err) {
+                if (err) {
+                    console.log('Cannot index', error);
+                } else 
+                    console.log('Index success', object.key);
+            });
+        }).catch(function(error) {
+            console.log('Cannot create instance', error);
+        })
+    },
+    browser: function(sorts, cursor) {
+        var index = algolia.initIndex('qna');
+        index.clearCache();
+
+        var searchSetting = {
+            'customRanking': [],
+            'hitsPerPage': 2,
+
+        };
+
+        Object.keys(sorts).forEach(function(field){
+            var orderBy = sorts[field];
+            if(orderBy === 'desc')
+                searchSetting.customRanking.push('desc('+field+')');
+            else
+                searchSetting.customRanking.push('asc('+field+')');
+                
+        });
+
+        if(searchSetting.customRanking.length === 0){
+            searchSetting.customRanking.push('desc(create_at)');
+        }
+
+        index.setSettings(searchSetting);
+
+        return new Promise(function(resolve, reject) {
+            var browser;
+            if(cursor) 
+                browser = index.browseFrom(cursor, onResult);
+            else{
+                browser = index.browse({
+                              query: '',
+                              hitsPerPage: 2
+                            }, onResult);
+            }
+
+            function onResult(err, content) {
+                if (err) {
+                    return reject({
+                        error: 'Algolia search error'
+                    });
+                }
+                return resolve({
+                    data: content.hits,
+                    cursor: content.cursor || undefined,
+                    total: content.nbHits,
+                    pages: content.nbPages,
+                    current_page: content.page,
+                    limit: content.hitsPerPage
+                });
+            }
+        });
+    },
+    search: function(q, sorts, page) {
+        return new Promise(function(resolve, reject) {
+            console.log(1);
+            indexInstance.search({
+              query: [{
+                AND: {
+                  'title': [q]   // search for "search" and "words" in all ("*") fields
+                }
+              }],
+              // offset: ((page - 1) * limit ),
+              // pageSize: limit
+            }).on('data', function(data) {
+                return resolve(data);
+            })
+        });
+
+        return;
         var index = algolia.initIndex('qna');
 
         var searchSetting = {
-            'customRanking': []
+            'customRanking': [],
+            'hitsPerPage': 2,
+
         };
 
         Object.keys(sorts).forEach(function(field){
@@ -58,59 +203,25 @@ var qna = {
                 searchSetting.customRanking.push('asc('+field+')');
                 
         })
-        console.log(searchSetting);
         index.setSettings(searchSetting);
-        
         return new Promise(function(resolve, reject) {
-                // .setSettings({"attributesForFaceting":["searchable(brand)", "price_range", "categories", "type", "price", "free_shipping", "rating", "popularity", "hierachicalCategories"]});
+            // var browser = index.browseAll();
+            // browser.on('result', function onResult(content) {
+            //     return resolve(content.hits);
+            // });
+            
             index.search(q, function(err, content) {
                 if (err) {
                     return reject({
                         error: 'Algolia search error'
                     });
                 }
-                return resolve(content.hits);
-            });
-        });
-    },
-    filter: function(options) {
-        return new Promise(function(resolve, reject) {
-            var sort_table = 'qna_field_create_at_desc';
-            var last_key = false;
-            switch(options.sort) {
-                case 'oldest':
-                    sort_table = 'qna_field_create_at';
-                    break;
-                case 'vote':
-                    sort_table = '-vote';
-                    break;
-                case 'down-vote':
-                    sort_table = '-down_vote';
-                    break;
-                case 'reply':
-                    sort_table = '-reply_count';
-                    break;
-                default:
-                    sort_table = 'qna_field_create_at_desc';
-            }
-            if(typeof options.from !== 'undefined'){
-                last_key = options.from;
-            }
-
-            var query = db.ref(sort_table).orderByKey();
-            if(last_key !== false){
-                query = query.startAt(null, last_key);
-            }
-            query.limitToFirst(limit)
-            .once('value').then(function(snapshot) {
-                var dataOrdered = []
-                snapshot.forEach(function(child) {
-                    dataOrdered.push({data: child.val(), key: child.key});
-                });
-                return resolve(dataOrdered);
-            }, function() {
-                return reject({
-                    error: 'Something whent wrong'
+                return resolve({
+                    data: content.hits,
+                    total: content.nbHits,
+                    pages: content.nbPages,
+                    current_page: content.page,
+                    limit: content.hitsPerPage
                 });
             });
         });
@@ -138,13 +249,14 @@ var qna = {
                     var contentData = {};
                     contentData['qna_content/' + key] = data.content;
                     db.ref().update(contentData).then(function(){
+                        postData.key = snapshot.key;
+                        indexEmiter.emit('triggerIndex', postData);
                         return resolve({key: key});
                     }, function(){
                         return reject({
                             error: 'Cannot update content back'
                         });
-                    })
-                    return resolve();
+                    });
                 }, function(){
                     return reject({
                         error: 'Something whent wrong'
@@ -339,4 +451,5 @@ var qna = {
         });
     }
 }
+qna.listeningToIndexLocal();
 module.exports = qna;
