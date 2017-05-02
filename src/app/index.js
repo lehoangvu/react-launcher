@@ -10,7 +10,9 @@ class App extends React.Component{
 	render() {
 		return <div className={s.rootApp}>
         	<Header/>
-        	{this.props.children}
+            <div className={s.mainContent}>
+        	   {this.props.children}
+            </div>
         	
 		</div>;
 	}

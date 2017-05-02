@@ -17,5 +17,7 @@
 	"react-router-redux",
 	"numeral",
 	"moment",
-	"react-google-login-component"
+	"react-google-login-component",
+	"classnames",
+	"rc-tabs"
 ]

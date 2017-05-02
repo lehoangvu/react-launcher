@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import HomeWrap from './components/HomeWrap';
+import _Home from './components/Home';
 
 const mapStateToProps = (state) => {
     return {
@@ -15,5 +15,5 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch)
 });
 
-const Home = connect(mapStateToProps, mapDispatchToProps)(HomeWrap);
+const Home = connect(mapStateToProps, mapDispatchToProps)(_Home);
 export default Home;
