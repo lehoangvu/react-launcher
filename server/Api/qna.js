@@ -1,21 +1,51 @@
 var Helper = require('./../Helper');
 var mongo = require('./../db/mongo');
-
+var collectionName = 'qna';
+var limit = 3;
 var qna = {
     search: function(query) {
-        var q = typeof query.q !== 'undefined' ? query.q : '';
-        var sort = typeof query.sort !== 'undefined' ? query.sort : 'newest'; 
+        var q = typeof query.q !== 'undefined' ? query.q.trim() : '';
+        var sortString = typeof query.sort !== 'undefined' ? query.sort : 'newest';
+        var sortOps;
+        switch(sortString) {
+            case 'useful':
+                sortOps = {
+                    vote: -1,
+                    reply: -1,
+                    create_at: -1
+                };
+                break;
+            case 'feedback':
+                sortOps = {
+                    reply: -1,
+                    vote: -1
+                };
+                break;
+            case 'newest':
+                sortOps = {
+                    create_at: -1,
+                    vote: -1
+                };
+                break;
+            default:
+                sortOps = {
+                    create_at: -1,
+                    vote: -1
+                };
+            
+        }
+        console.log(sortOps);
         var page = typeof query.page !== 'undefined' ? query.page : 1; 
-        var limit = 10;
-
-        db.messages.find({$text: {$search: "cat"}}, {score: {$meta: "textScore"}}).sort({score:{$meta:"textScore"}})
-
-        return resolve({
-            data: content.hits,
-            total: content.nbHits,
-            pages: content.nbPages,
-            current_page: content.page,
-            limit: content.hitsPerPage
+        var skip = (page - 1) * limit;
+        var searchData;
+        return new Promise(function(resolve, reject) {
+            mongo.search(collectionName, q, sortOps, skip, limit).then(function(results) {
+                return resolve(results);
+            }).catch(function(err) {
+                return reject({
+                    error: 'Something when wrong'
+                })
+            });
         });
     },
     add: function(data) {

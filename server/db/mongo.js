@@ -31,15 +31,48 @@ var mongoDB = {
 			
 		})
 	},
-	find: function(collectionName) {
+	count: function(collectionName, text) {
 		var collection = database.collection(collectionName);
-		collection.find().toArray(function(err, items) {
-			console.log(items);
+		var query;
+		if(text === '')
+			query = collection.find();
+		else
+			query = collection.find({$text: {$search: text}}, {score: {$meta: "textScore"}});
+		return new Promise(function(resolve, reject) {
+			query.count(function(err, count) {
+				if(err) {
+					return reject(err);
+				}
+				return resolve(count);
+			})
 		});
 	},
-	ensureIndex: function(collectionName, field) {
+	search: function(collectionName, text, sorts, skip, limit) {
 		var collection = database.collection(collectionName);
-		collection.ensureIndex(field);
+		var originResults;
+
+		if(text === '')
+			originResults = collection.find().sort(sorts).skip(skip).limit(limit);
+		else
+			originResults = collection.find({$text: {$search: text}}, {score: {$meta: "textScore"}}).sort(sorts).skip(skip).limit(limit);
+
+		return new Promise(function(resolve, reject) {
+			mongoDB.count(collectionName, text).then(function(total) {
+				originResults.toArray(function(err, items) {
+					if(err) {
+						return reject(err);
+					}
+					var userfulResults = {
+						total: total,
+						data: items
+					}
+					return resolve(userfulResults);
+				});
+			})
+			
+		});
+		
+		
 	},
 	index: function(collectionName, description) {
 		var collection = database.collection(collectionName);
