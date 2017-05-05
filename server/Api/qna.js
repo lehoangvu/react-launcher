@@ -34,7 +34,6 @@ var qna = {
                 };
             
         }
-        console.log(sortOps);
         var page = typeof query.page !== 'undefined' ? query.page : 1; 
         var skip = (page - 1) * limit;
         var searchData;

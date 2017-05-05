@@ -25,6 +25,7 @@
     "dotenv": "^4.0.0",
     "events": "^1.1.1",
     "express": "^4.14.0",
+    "googleapis": "^19.0.0",
     "isomorphic-style-loader": "^1.1.0",
     "jquery": "^3.1.1",
     "moment": "^2.15.2",

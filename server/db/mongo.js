@@ -1,13 +1,15 @@
 // Retrieve
 var MongoClient = require('mongodb').MongoClient;
 var database;
-
+// mongodb://<dbuser>:<dbpassword>@ds127101.mlab.com:27101/qna_development
 var mongoDB = {
 	connect: function() {
-		var connectionString = 'mongodb://localhost:27017/qna';
+		var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
 		return new Promise(function(resolve, reject) {
 			// Connect to the db
-			MongoClient.connect(connectionString, function(err, di) {
+			MongoClient.connect(connectionString, {
+				connectTimeoutMS: 480000,
+			}, function(err, di) {
 			  if(err) {
 			  	return reject({
 			  		error: err
@@ -24,6 +26,8 @@ var mongoDB = {
 		return new Promise(function(resolve, reject) {
 			collection.insert(doc, {w: 1}, function(err, result) {
 				if(err) {
+					console.log(err);
+					process.exit();
 					return reject(err);
 				}
 				return resolve(result);
@@ -77,6 +81,9 @@ var mongoDB = {
 	index: function(collectionName, description) {
 		var collection = database.collection(collectionName);
 		collection.createIndex(description);
+	},
+	updateDocument: function(collectionName, doc) {
+
 	}
 }
 
