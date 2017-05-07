@@ -7,9 +7,6 @@ import { QuestionItem, Pagination } from './../../global';
 class HomeTabs extends React.Component {
     constructor(props) {
         super(props);
-        
-        console.log(QuestionItem);
-        console.log(Pagination);
     }
 
     _onChange() {

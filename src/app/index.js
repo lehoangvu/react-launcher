@@ -1,21 +1,21 @@
-import React from 'react';
-import Header from './components/Header';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './styles/app.scss';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import App from './components/App';
 
-class App extends React.Component{
-	constructor(props) {
-		super(props);
-	}
-	render() {
-		return <div className={s.rootApp}>
-        	<Header/>
-            <div className={s.mainContent}>
-        	   {this.props.children}
-            </div>
-        	
-		</div>;
-	}
-}
+import { loginWithToken, fetchInfo } from './action';
 
-export default withStyles(s)(App);
+const mapStateToProps = (state) => {
+    return {
+        user: state.app.user
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({
+        loginWithToken,
+        fetchInfo
+    }, dispatch)
+});
+
+const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
+export default AppContainer;

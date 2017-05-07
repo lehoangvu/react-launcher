@@ -22,6 +22,8 @@ var mongoDB = {
 		})
 	},
 	addDocument: function(collectionName, doc) {
+        doc['create_at'] = new Date().getTime();
+        doc['update_at'] = new Date().getTime();
 		var collection = database.collection(collectionName);
 		return new Promise(function(resolve, reject) {
 			collection.insert(doc, {w: 1}, function(err, result) {
@@ -84,6 +86,19 @@ var mongoDB = {
 	},
 	updateDocument: function(collectionName, doc) {
 
+	},
+	findOne: function(collectionName, query) {
+		var collection = database.collection(collectionName);
+		return new Promise(function(resolve, reject) {
+			var result = collection.findOne(query, function(err, result){
+				if(err) {
+					return reject(err);
+				}
+				if(result)
+					return resolve(result);
+				return resolve(false);
+			});
+		})
 	}
 }
 

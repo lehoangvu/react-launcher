@@ -5,19 +5,20 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var qna = require('./Api/qna');
 var oauthGG = require('./Api/oauthGG');
+var oauth = require('./Api/oauth');
 var mongo = require('./db/mongo');
-
+app.use(require('express-promise')());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
 
-function response(res, data, success) {
-    res.setHeader('Content-Type', 'application/json');
-    if(!success)
-        res.status(400);
-    res.send(data);
-}
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 
 app.route('/api/qna/search').get(function (req, res) {
     var query = {
@@ -26,24 +27,42 @@ app.route('/api/qna/search').get(function (req, res) {
         page: req.page || 1
     };
     qna.search(req.query).then(function(results) {
-        response(res, results, true);
+        res.send(results).bind(res);
     }).catch(function(err) {
-        response(res, err, false);
+        res.sendStatus(400).bind(res);
+        res.send(err).bind(res);
     });
 });
 
-app.route('/api/user/login-google').get(function (req, res) {
-    var token = req.query.token || false;
-    console.log(req.query);
+app.route('/api/auth/login-google').post(function (req, res) {
+    var token = req.body.token || false;
     if(!token) {
         return response(res, {
             error: 'Token is require'
         }, false);
     }
-    oauthGG.getInfo(token).then(function(results) {
-        response(res, results, true);
+    oauth.socialLogin(token, 'google')
+    .then(function(results) {
+        res.send(results);
     }).catch(function(err) {
-        response(res, err, false);
+        res.sendStatus(400);
+        res.send(err);
+    });
+});
+
+app.route('/api/customer/me').post(function (req, res) {
+    var token = req.body.token || false;
+    if(!token) {
+        return response(res, {
+            error: 'Token is require'
+        }, false);
+    }
+    oauth.fetch(token)
+    .then(function(result) {
+        res.send(result);
+    }).catch(function(err) {
+        res.sendStatus(400);
+        res.send(err);
     });
 });
 

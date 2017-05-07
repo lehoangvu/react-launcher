@@ -27,13 +27,13 @@ function getInfo (token) {
 					error: 'Token invalid or exprire'
 				});
 			}
-			var info = {
+			var user = {
 				email: me.emails[0].value,
 				fullname: me.displayName,
-				image: me.image,
+				image: me.image.url,
 				source: 'google'
-			}
-			return resolve(info);
+			};
+			return resolve(user);
 		});
 		
 	});

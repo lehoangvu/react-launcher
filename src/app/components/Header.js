@@ -12,7 +12,7 @@ class Header extends React.Component {
             <div className="container">
                 <div className={s.menu}>
                     <a href="" className={s.logoLink}>
-                        <img src="/public/img/logo.png" />
+                        <img src="/public/img/logo-2.svg" />
                     </a>
                     <ul className={s.menuList}>
                         <li>
@@ -28,7 +28,7 @@ class Header extends React.Component {
                 </div>
 
                 <Search />
-                <UserBar />
+                <UserBar user={this.props.user} loginWithToken={this.props.loginWithToken} fetchInfo={this.props.fetchInfo} />
             </div>
         </div>
     }

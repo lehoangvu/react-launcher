@@ -50,8 +50,6 @@ var qna = {
     add: function(data) {
         var postData = {
             'title': data.title,
-            'create_at': data.create_at,
-            'update_at': data.create_at,
             'view': Helper.random(0, 300),
             'vote': Helper.random(1, 125),
             'down_vote': Helper.random(1, 125),

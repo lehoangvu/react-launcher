@@ -5,7 +5,8 @@ import WithStylesContex from './global/WithStylesContext';
 import store from './store';
 import Routes from './routes';
 import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router';
-
+import jQuery from 'jquery';
+window.$ = jQuery;
 render(
     <WithStylesContex onInsertCss={styles => Array.isArray(styles) ? styles.map((style)=>{style._insertCss()}): styles._insertCss()}>
         <Provider store={store}>

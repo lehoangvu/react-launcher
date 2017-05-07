@@ -38,8 +38,8 @@ class GoogleLoginBtn extends React.Component{
 		fetch_basic_profile: false,
 		scope: scope
 	  });
-	  auth2.signIn().then(function(googleUser) {
-		responseHandler(googleUser);
+	  auth2.signIn().then(function(response) {
+		responseHandler(response.getAuthResponse());
 	  });
 	});
   }

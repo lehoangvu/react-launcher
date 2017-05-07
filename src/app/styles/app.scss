@@ -40,3 +40,28 @@ a {
 .mainContent {
     padding-top: 80px;
 }
+
+:global .btn {
+    text-decoration: none;
+    border: 0px;
+    padding: 8px 15px;
+    background: #0095ff;
+    color: #fff;
+    &:hover, &.active, &.focus {
+        color: #fff;
+        text-decoration: none;
+        background: #048bea;
+    }
+}
+
+:global .text-left {
+    text-align: left;
+}
+
+:global .text-center {
+    text-align: center;
+}
+
+:global .text-right {
+    text-align: right;
+}
