@@ -1,13 +1,12 @@
 var express = require('express');
 var app = express();
 var request = require("request")
-var path = require('path');
+// var path = require('path');
 var bodyParser = require('body-parser');
 var qna = require('./Api/qna');
-var oauthGG = require('./Api/oauthGG');
 var oauth = require('./Api/oauth');
 var mongo = require('./db/mongo');
-app.use(require('express-promise')());
+// app.use(require('express-promise')());
 app.use(bodyParser.urlencoded({
     extended: true
 }));

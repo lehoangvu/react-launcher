@@ -36,7 +36,7 @@
         color: #333;
         border-left: 1px solid #e4e6e8;
         border-right: 1px solid #e4e6e8;
-        margin-bottom: -1px;
+        transform: translateY(1px);
         &:hover {
             background: inherit!important;
             color: inherit!important;
