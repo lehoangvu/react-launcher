@@ -64,7 +64,7 @@ var oauth = {
                         mongo.addDocument(collectionName, userData)
                         .then(function(result) {
                             if(result.insertedCount === 1) {
-                                console.log(result);
+                                // console.log(result);
                                 createAccessToken(result.insertedIds[0]).then(function(token) {
                                     return resolve({
                                         me: userData,
@@ -115,7 +115,7 @@ var oauth = {
                     });
                 }
                 mongo.findOne('user', {_id: result.uid}).then(function(result) {
-                    console.log(result);
+                    // console.log(result);
                     if(!result) {
                         return reject({
                             error: 'Token invalid!'

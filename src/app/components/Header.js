@@ -12,7 +12,7 @@ class Header extends React.Component {
             <div className="container">
                 <div className={s.menu}>
                     <a href="" className={s.logoLink}>
-                        <img src="/public/img/logo-2.svg" />
+                        <img src="/public/img/logo.svg" />
                     </a>
                     <ul className={s.menuList}>
                         <li>

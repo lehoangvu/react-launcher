@@ -1,17 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { getTabList } from './action';
 import _Home from './components/Home';
 
 const mapStateToProps = (state) => {
     return {
-        list: state.list
+        ...state.home
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
-
+		getTabList
     }, dispatch)
 });
 

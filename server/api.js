@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var qna = require('./Api/qna');
 var oauth = require('./Api/oauth');
 var mongo = require('./db/mongo');
+var user = require('./Api/user');
 // app.use(require('express-promise')());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -77,7 +78,12 @@ app.route('/api/customer/me').post(function (req, res) {
 //     });
 // });
 mongo.connect().then(function() {
-    console.log('Connect Mongo Success and listerning to connection to API!');
+    // qna.search({
+    //     q: '',
+    //     sort: 'newest',
+    //     page: 1
+    // }).then(function(res){console.log(res)}).catch(function(res){console.log(res)});
+    // console.log('Connect Mongo Success and listerning to connection to API!');
     app.listen(process.env.PORT || 5100); //the port you want to use
 
     

@@ -13,16 +13,29 @@ class HomeTabs extends React.Component {
 
     }
 
-    render() {
-        return <div className={s.root}>
+    componentDidMount() {
+        this.props.list.map((item) => {
+            item.current && this.props.getTabList(item.query, 1);
+        })
+    }
+
+    getTabNav() {
+        let tabNav = this.props.list.map((item, index)=>{
+            return item.current ? <li key={index} className={s.tabNavActive}><a href="javascript:">{item.title}</a></li> : <li key={index}><a href="javascript:">{item.title}</a></li>;
+        });
+        return (
             <div className={s.tabNav}>
                 <label className={s.bigLabel}>Top câu hỏi</label>
                 <ul>
-                    <li className={s.tabNavActive}><a href="">Mới nhất</a></li>
-                    <li><a href="">Hữu ích</a></li>
-                    <li><a href="">Phản hồi</a></li>
+                    {tabNav}
                 </ul>
             </div>
+        );
+    }
+
+    render() {
+        return <div className={s.root}>
+            {this.getTabNav()}
             <div className={s.tabContent}>
                 <QuestionItem />
                 <QuestionItem />

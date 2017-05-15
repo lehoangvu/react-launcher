@@ -15,7 +15,7 @@ export default class Home extends React.Component {
 	render() {
 		return <div className="root">
             <div className="container">
-                <Tabs />
+                <Tabs list={this.props.tabs} getTabList={this.props.actions.getTabList} />
                 <Sidebar />
             </div>
 		</div>

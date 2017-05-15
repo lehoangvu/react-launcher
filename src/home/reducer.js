@@ -2,13 +2,16 @@ const intinalState = {
     list: [],
     tabs: [{
         title: 'Mới nhất',
-        query: 'newest'
+        query: 'newest',
+        current: true
     }, {
         title: 'Hữu ích',
-        query: 'vote|desc'
+        query: 'useful',
+        current: false
     }, {
         title: 'Phản hồi',
-        query: 'reply|desc'
+        query: 'feedback',
+        current: false
     }],
 }
 

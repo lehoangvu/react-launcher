@@ -1,8 +1,10 @@
 // Retrieve
-var MongoClient = require('mongodb').MongoClient;
+var mongoIns = require('mongodb');
+var MongoClient = mongoIns.MongoClient;
 var database;
 // mongodb://<dbuser>:<dbpassword>@ds127101.mlab.com:27101/qna_development
 var mongoDB = {
+	_: mongoIns,
 	connect: function() {
 		var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
 		return new Promise(function(resolve, reject) {

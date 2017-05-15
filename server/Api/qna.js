@@ -1,7 +1,8 @@
 var Helper = require('./../Helper');
 var mongo = require('./../db/mongo');
+var user = require('./user');
 var collectionName = 'qna';
-var limit = 3;
+var limit = 20;
 var qna = {
     search: function(query) {
         var q = typeof query.q !== 'undefined' ? query.q.trim() : '';
@@ -39,10 +40,25 @@ var qna = {
         var searchData;
         return new Promise(function(resolve, reject) {
             mongo.search(collectionName, q, sortOps, skip, limit).then(function(results) {
-                return resolve(results);
+                var userPromises = [];
+                results.data.forEach(function(item) {
+                    var pr = user.get(new mongo._.ObjectID(item.uid), ['email', 'fullname']);
+                    userPromises.push(pr);
+                });
+                Promise.all(userPromises).then(function(users){
+                    results.data.forEach(function(item, index) {
+                        results.data[index]['user'] = users[index];
+                    });
+                    console.log(results);
+                    return resolve(results);
+                }).catch(function(err) {
+                    console.log(err);
+
+                });
             }).catch(function(err) {
+                console.log(err);
                 return reject({
-                    error: 'Something when wrong'
+                    error: '1Something when wrong'
                 })
             });
         });

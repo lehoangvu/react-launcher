@@ -47,13 +47,20 @@ a {
     padding: 8px 15px;
     background: #0095ff;
     color: #fff;
+    display: inline-block;
     &:hover, &.active, &.focus {
         color: #fff;
         text-decoration: none;
         background: #048bea;
     }
 }
-
+div {
+    &:after,
+    &:before{
+        display: table;
+        content: " ";
+    }
+}
 :global .text-left {
     text-align: left;
 }
