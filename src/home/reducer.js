@@ -1,5 +1,10 @@
 const intinalState = {
-    list: [],
+    list: {
+        data: [],
+        total: 0,
+        limit: 20,
+        current: 1
+    },
     tabs: [{
         title: 'Mới nhất',
         query: 'newest',
@@ -17,11 +22,35 @@ const intinalState = {
 
 export default (state = intinalState, action) => {
     switch(action.type){
-        case 'LOAD_SUCCESS':
+        case 'GET_LIST_SUCCESS':
             return {
                 ...state,
-                ...action.data
+                list: {
+                    ...state.list,
+                    ...action.data
+                }
             }
+            break;
+        case 'SET_CURRENT_TAB':
+            let {tabs} = state;
+            if(['newest', 'useful', 'feedback'].indexOf(action.query) !== -1) {
+                return {
+                    ...state,
+                    tabs: state.tabs.map((item, index) => {
+                        if(item.query === action.query) {
+                            return {
+                                ...item,
+                                current: true
+                            }
+                        }
+                        return {
+                                ...item,
+                                current: false
+                            };
+                    })
+                }
+            }
+            return state;
             break;
 
         default:

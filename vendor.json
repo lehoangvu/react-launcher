@@ -6,7 +6,6 @@
 	"react-redux",
 	"react-dom",
 	"react-helmet",
-	"react-router",
 	"react-redux",
 	"isomorphic-style-loader/lib/withStyles",
 	"react-addons-css-transition-group",

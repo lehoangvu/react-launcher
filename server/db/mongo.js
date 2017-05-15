@@ -72,6 +72,7 @@ var mongoDB = {
 					}
 					var userfulResults = {
 						total: total,
+						limit: limit,
 						data: items
 					}
 					return resolve(userfulResults);

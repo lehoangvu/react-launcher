@@ -42,23 +42,22 @@ var qna = {
             mongo.search(collectionName, q, sortOps, skip, limit).then(function(results) {
                 var userPromises = [];
                 results.data.forEach(function(item) {
-                    var pr = user.get(new mongo._.ObjectID(item.uid), ['email', 'fullname']);
+                    var pr = user.get(new mongo._.ObjectID(item.uid), ['fullname']);
                     userPromises.push(pr);
                 });
                 Promise.all(userPromises).then(function(users){
                     results.data.forEach(function(item, index) {
                         results.data[index]['user'] = users[index];
                     });
-                    console.log(results);
                     return resolve(results);
                 }).catch(function(err) {
-                    console.log(err);
-
+                    return reject({
+                        error: 'Something when wrong'
+                    })
                 });
             }).catch(function(err) {
-                console.log(err);
                 return reject({
-                    error: '1Something when wrong'
+                    error: 'Something when wrong'
                 })
             });
         });

@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getTabList } from './action';
+import { getTabList, setCurentTab } from './action';
 import _Home from './components/Home';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        ...state.home
+        ...state.home,
+        query: ownProps.location.query
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
-		getTabList
+		getTabList,
+		setCurentTab
     }, dispatch)
 });
 
