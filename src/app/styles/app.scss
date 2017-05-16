@@ -48,6 +48,7 @@ a {
     background: #0095ff;
     color: #fff;
     display: inline-block;
+    cursor: pointer;
     &:hover, &.active, &.focus {
         color: #fff;
         text-decoration: none;

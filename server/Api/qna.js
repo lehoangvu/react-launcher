@@ -62,25 +62,26 @@ var qna = {
             });
         });
     },
+    get: function() {
+
+    },
     add: function(data) {
-        var postData = {
-            'title': data.title,
-            'view': Helper.random(0, 300),
-            'vote': Helper.random(1, 125),
-            'down_vote': Helper.random(1, 125),
-            'reply': Helper.random(0, 20),
-            'uid': data.uid
-        };
         return new Promise(function(resolve, reject) {
-            mongo.addDocument('qna', postData).then(function(snapshot) {
-                postData._id = snapshot.insertedIds;
-                return resolve(postData);
+            data.create_at = new Date().getTime();
+            data.update_at = new Date().getTime();
+            data.view = 0;
+            data.vote = 0;
+            data.down_vote = 0;
+            data.reply = 0;
+            mongo.addDocument('qna', data).then(function(snapshot) {
+                data._id = snapshot.insertedIds;
+                return resolve(data);
             }).catch(function() {
                 return reject({
                     error: 'Something whent wrong'
                 });
             });
-        });  
+        });
     },
 }
 

@@ -13,16 +13,24 @@ export default class Home extends React.Component {
 
     }
 
+    handleTab() {
+    	const query = this.props.query;
+    	const tab = typeof query.tab !== 'undefined' ? query.tab : 'newest';
+    	const page = typeof query.page !== 'undefined' ? parseInt(query.page) : 1;
+    	return <Tabs
+                	tab={tab}
+                	page={page}
+                	tabs={this.props.tabs}
+                	list={this.props.list}
+                	getTabList={this.props.actions.getTabList}
+                	setCurentTab={this.props.actions.setCurentTab} />;
+    }
+
 	render() {
 
 		return <div className="root">
             <div className="container">
-                <Tabs
-                	query={this.props.query} 
-                	tabs={this.props.tabs}
-                	list={this.props.list}
-                	getTabList={this.props.actions.getTabList}
-                	setCurentTab={this.props.actions.setCurentTab} />
+                {this.handleTab()}
                 <Sidebar />
             </div>
 		</div>

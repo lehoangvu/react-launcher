@@ -16,31 +16,30 @@ class HomeTabs extends React.Component {
 
     }
 
-    setCurrentTabByQuery(props) {
+    setCurrentTabByQuery(query) {
         let sort = 'newest';
-        if(typeof props.query.tab !== 'undefined') {
-            sort = props.query.tab;
+        if(typeof query.tab !== 'undefined') {
+            sort = query.tab;
         }
-        props.setCurentTab(sort, this.props.query.page);
+        props.setCurentTab(sort, this.query.page);
     }
 
     componentDidMount() {
-        this.setCurrentTabByQuery(this.props);
-        // this.props.getTabList(this.props.query.tab, this.props.query.page);
+        this.props.setCurentTab(this.props.tab, this.props.page);
     }
 
     componentWillReceiveProps(nextProps) {
-        if(typeof (this.props.query.tab) === 'undefined' || nextProps.query.tab !== this.props.query.tab) {
-            return this.setCurrentTabByQuery(nextProps);
+        if(nextProps.tab !== this.props.tab) {
+            return this.props.setCurentTab(nextProps.tab, nextProps.page);
         }
-        if(typeof nextProps.query.page !== 'undefined' && (typeof (this.props.query.page) === 'undefined' || nextProps.query.page !== this.props.query.page)) {
-            return this.props.getTabList(nextProps.query.tab, nextProps.query.page);
+        if(this.props.page !== nextProps.page) {
+            return this.props.getTabList(nextProps.tab, nextProps.page);
         }
     }
 
     getTabNav() {
         let tabNav = this.props.tabs.map((item, index)=>{
-            return item.current ? <li key={index} className={s.tabNavActive}><Link to={"/?tab=" + item.query}>{item.title}</Link></li> : <li key={index}><Link to={"/?tab=" + item.query}>{item.title}</Link></li>;
+            return item.current ? <li key={index} className={s.tabNavActive}><span className={s.link}>{item.title}</span></li> : <li key={index}><Link className={s.link} to={"/?tab=" + item.query}>{item.title}</Link></li>;
         });
         return (
             <div className={s.tabNav}>

@@ -1,13 +1,14 @@
 var express = require('express');
 var app = express();
 var request = require("request")
-// var path = require('path');
 var bodyParser = require('body-parser');
-var qna = require('./Api/qna');
 var oauth = require('./Api/oauth');
 var mongo = require('./db/mongo');
 var user = require('./Api/user');
-// app.use(require('express-promise')());
+var expressValidator = require('express-validator');
+
+app.use(expressValidator());
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -19,20 +20,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-
-app.route('/api/qna/search').get(function (req, res) {
-    var query = {
-        q: req.query || '',
-        sort: req.query.sort || 'newest',
-        page: req.page || 1
-    };
-    qna.search(req.query).then(function(results) {
-        res.send(results).bind(res);
-    }).catch(function(err) {
-        res.sendStatus(400).bind(res);
-        res.send(err).bind(res);
-    });
-});
 
 app.route('/api/auth/login-google').post(function (req, res) {
     var token = req.body.token || false;
@@ -77,13 +64,20 @@ app.route('/api/customer/me').post(function (req, res) {
 //         console.log(err);
 //     });
 // });
+
+
+// routerLoader(app, './controllers/QnaController');
+
 mongo.connect().then(function() {
+    console.log('Connect Mongo Success and listerning to connection to API!');
     // qna.search({
     //     q: '',
     //     sort: 'newest',
     //     page: 1
     // }).then(function(res){console.log(res)}).catch(function(res){console.log(res)});
-    console.log('Connect Mongo Success and listerning to connection to API!');
+
+    require('./controllers/QnaController')(app);
+
     app.listen(process.env.PORT || 5100); //the port you want to use
 
     
