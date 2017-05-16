@@ -40,6 +40,7 @@
     "react": "^15.3.2",
     "react-addons-css-transition-group": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-form": "^1.2.7",
     "react-google-login-component": "^0.7.0",
     "react-helmet": "^3.1.0",
     "react-redux": "^4.4.5",

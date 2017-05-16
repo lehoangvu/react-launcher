@@ -1,6 +1,7 @@
 const intinalState = {
     list: {
         data: [],
+        loading: true,
         total: 0,
         limit: 20,
         current: 1

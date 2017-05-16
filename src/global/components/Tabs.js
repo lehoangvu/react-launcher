@@ -5,7 +5,7 @@ import s from './styles/tab.scss';
 import RcTabs, { RcTabPane } from 'rc-tabs';
 import RcTabContent from 'rc-tabs/lib/TabContent';
 import RcScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
-console.log(RcTabs);
+
 
 export default class Tabs extends React.Component {
     constructor(props) {

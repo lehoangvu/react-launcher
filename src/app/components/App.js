@@ -16,7 +16,7 @@ class App extends React.Component{
 		return <div className={s.rootApp}>
         	<Header user={this.props.user} loginWithToken={this.props.actions.loginWithToken} fetchInfo={this.props.actions.fetchInfo} />
             <div className={s.mainContent}>
-        	   {this.props.children}
+        	   {this.props.user !== false && this.props.children}
             </div>
 		</div>;
 	}

@@ -38,6 +38,7 @@ export const fetchInfo = (token) => {
             }).done(function(response) {
                 dispatch({
                     type: 'FETCH_SUCCESS',
+                    token: token,
                     user: response
                 });
             }).fail(function(error) {

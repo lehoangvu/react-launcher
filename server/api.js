@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "x-customer-token");
   next();
 });
 
@@ -83,7 +83,7 @@ mongo.connect().then(function() {
     //     sort: 'newest',
     //     page: 1
     // }).then(function(res){console.log(res)}).catch(function(res){console.log(res)});
-    // console.log('Connect Mongo Success and listerning to connection to API!');
+    console.log('Connect Mongo Success and listerning to connection to API!');
     app.listen(process.env.PORT || 5100); //the port you want to use
 
     

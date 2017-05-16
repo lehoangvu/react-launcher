@@ -3,6 +3,27 @@ var mongo = require('./../db/mongo');
 var collectionName = 'user';
 var oauthGG = require('./oauthGG');
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getNickName(email) {
+    var emailArr = email.split('@');
+    var ext;
+    switch(emailArr[1]) {
+        case 'gmail.com': 
+            ext = getRandomInt(200, 300);
+            break;
+            
+        case 'yahoo.com': 
+            ext = getRandomInt(100, 200);
+            break;
+
+        default: 
+            ext = getRandomInt(300, 400);
+    }
+    return emailArr[0] + '.' + ext;
+}
 
 function getToken() {
     return crypto.randomBytes(48).toString('hex');
@@ -57,6 +78,7 @@ var oauth = {
                         var userData = {
                             email: results.email,
                             fullname: results.fullname,
+                            nickname: getNickName(results.email),
                             image: results.image,
                             source: results.source,
                             notice: 0
@@ -124,6 +146,7 @@ var oauth = {
                     var userData = {
                         email: result.email,
                         fullname: result.fullname,
+                        nickname: result.nickname,
                         image: result.image,
                         source: result.source,
                         notice: result.notice

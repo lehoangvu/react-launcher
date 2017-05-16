@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import moment from 'moment';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './styles/question-item.scss';
@@ -51,7 +52,7 @@ class QuestionItem extends React.Component {
                     </h3>
                     {this.renderTag()} 
                     <div className={s.meta}>
-                        <span className={s.update_at}>{this.getCreateText()}</span> bởi <a className={s.author}>{user.fullname}</a>
+                        <span className={s.update_at}>{this.getCreateText()}</span> bởi <Link to={"user/" + user.nickname} className={s.author}>{user.fullname}</Link>
                     </div>  
                 </div>
             </div>

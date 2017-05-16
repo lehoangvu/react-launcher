@@ -62,7 +62,6 @@ class Pagination extends React.Component {
         }
 
         let pages = [];
-        console.log(begin, to);
         for(let i = begin; i < to; i++) {
             if(i !== current) {
                 pages.push(<Link key={i} to={this.getPageUri(i)}>{i}</Link>);

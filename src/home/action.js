@@ -5,7 +5,8 @@ export const getTabList = (sort, page = 1) => {
 		        data: [],
 		        total: 0,
 		        limit: 20,
-		        current: 1
+		        current: 1,
+		        loading: true
 		    },
 			type: 'GET_LIST_SUCCESS'
 		});
@@ -20,6 +21,7 @@ export const getTabList = (sort, page = 1) => {
 			dispatch({
 				data: {
 					...json,
+		        	loading: false,
 					current: page
 				},
 				type: 'GET_LIST_SUCCESS'
@@ -30,9 +32,9 @@ export const getTabList = (sort, page = 1) => {
 		})
    	}
 }
-export const setCurentTab = (query) => {
+export const setCurentTab = (query, page = 1) => {
 	return dispatch => {
-		dispatch(getTabList(query));
+		dispatch(getTabList(query, page));
 		dispatch({
 			query,
 			type: 'SET_CURRENT_TAB'

@@ -30,6 +30,7 @@ class UserBar extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
         let state = {
             ...this.state,
             isLogin: nextProps.user !== null && nextProps.user !== false,
@@ -65,7 +66,7 @@ class UserBar extends React.Component {
     render() {
         if(this.state.user === false) {
             return <div className={s.root}>
-                <Skeleton w="75px" h="26px" />
+                <Skeleton w="75px" h="26px" fl="right" />
             </div>
         }
         if(this.state.isLogin){

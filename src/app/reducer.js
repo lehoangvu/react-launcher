@@ -21,6 +21,9 @@ export default (state = intinalState, action) => {
             };
             break;
         case 'FETCH_SUCCESS':
+            if(action.user !== null){
+                saveToken(action.token);
+            }
             return {
                 ...state,
                 fetched: true,

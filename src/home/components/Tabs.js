@@ -3,6 +3,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { Link } from 'react-router';
 import s from './../styles/tabs.scss';
 
+import { Skeleton } from './../../global';
+
 import { QuestionItem, Pagination } from './../../global';
 
 class HomeTabs extends React.Component {
@@ -15,18 +17,20 @@ class HomeTabs extends React.Component {
     }
 
     setCurrentTabByQuery(props) {
+        let sort = 'newest';
         if(typeof props.query.tab !== 'undefined') {
-            props.setCurentTab(props.query.tab);
+            sort = props.query.tab;
         }
+        props.setCurentTab(sort, this.props.query.page);
     }
 
     componentDidMount() {
         this.setCurrentTabByQuery(this.props);
-        this.props.getTabList(this.props.query.tab, this.props.query.page);
+        // this.props.getTabList(this.props.query.tab, this.props.query.page);
     }
 
     componentWillReceiveProps(nextProps) {
-        if(typeof nextProps.query.tab !== 'undefined' && (typeof (this.props.query.tab) === 'undefined' || nextProps.query.tab !== this.props.query.tab)) {
+        if(typeof (this.props.query.tab) === 'undefined' || nextProps.query.tab !== this.props.query.tab) {
             return this.setCurrentTabByQuery(nextProps);
         }
         if(typeof nextProps.query.page !== 'undefined' && (typeof (this.props.query.page) === 'undefined' || nextProps.query.page !== this.props.query.page)) {
@@ -57,6 +61,16 @@ class HomeTabs extends React.Component {
     }
 
     renderList() {
+        if(this.props.list.loading) {
+            return [1, 2, 3, 4].map((i)=>{
+                return <Skeleton key={i} wrap={true} mb="30px" mt="20px">
+                    <Skeleton w="168px" h="60px" mr="10px" />
+                    <Skeleton w="calc(100% - 178px)" h="15px" mb="20px" />
+                    <Skeleton w="200px" h="25px" />
+                    <Skeleton w="200px" h="15px" fl="right" />
+                </Skeleton>
+            })
+        }
         return this.props.list.data.map((item, index) => {
             return <QuestionItem key={index} item={item} />
         })
@@ -67,7 +81,6 @@ class HomeTabs extends React.Component {
             {this.getTabNav()}
             <div className={s.tabContent}>
                 {this.renderList()}
-                
                 <Pagination uri={this.generateUri()} total={this.props.list.total} limit={this.props.list.limit} current={this.props.list.current} />
             </div>
         </div>

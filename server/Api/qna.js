@@ -42,7 +42,7 @@ var qna = {
             mongo.search(collectionName, q, sortOps, skip, limit).then(function(results) {
                 var userPromises = [];
                 results.data.forEach(function(item) {
-                    var pr = user.get(new mongo._.ObjectID(item.uid), ['fullname']);
+                    var pr = user.get(new mongo._.ObjectID(item.uid), ['fullname', 'nickname']);
                     userPromises.push(pr);
                 });
                 Promise.all(userPromises).then(function(users){
