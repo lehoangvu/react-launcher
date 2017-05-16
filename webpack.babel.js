@@ -3,7 +3,6 @@ import webpack from 'webpack';
 import ModernizrPlugin from 'modernizr-webpack-plugin';
 import Package from './package.json';
 import Vendor from './vendor.json';
-
 const config = {
 	cache: true,
 	debug: true,
@@ -52,7 +51,11 @@ const config = {
 				'css-loader?modules&camelCase&-url&localIdentName=[name]_[local]_[hash:base64:3]',
 				'postcss-loader'
 			]
-		}]
+		},{
+	        test: /\.json$/,
+	        loader: 'json-loader'
+	      }
+		]
 	},
 	postcss: (bundler) => {
 	    return [
