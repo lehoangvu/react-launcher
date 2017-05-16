@@ -14,23 +14,24 @@
         list-style: none;
         li {
             display: inline-block;
-            a {
-                color: #9E9E9E;
-                line-height: 1;
-                padding: 15px 10px;
-                display: inline-block;
-                margin-left: 10px;
-                background: #fff;
-                &:hover {
-                    background: #f4f4f4;
-                    color: #333;
-                }
-            }
+            
         }
     }
 }
+.link {
+    color: #9E9E9E;
+    line-height: 1;
+    padding: 15px 10px;
+    display: inline-block;
+    margin-left: 10px;
+    background: #fff;
+    &:hover {
+        background: #f4f4f4;
+        color: #333;
+    }
+}
 .tabNavActive {
-    a {
+    span {
         margin-bottom: -1px;
         box-shadow: 0px 2px 0 0px #ffa400 inset;
         color: #333;

@@ -16,5 +16,7 @@
 	"react-router-redux",
 	"numeral",
 	"moment",
-	"react-google-login-component"
+	"react-google-login-component",
+	"react-form",
+	"markdown-it"
 ]

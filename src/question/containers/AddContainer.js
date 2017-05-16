@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import AddForm from '../components/AddForm';
+import AddQuestion from '../components/AddQuestion';
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AddQuestion);

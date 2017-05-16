@@ -1,6 +1,7 @@
 const intinalState = {
     add: {
-        title: 'Blabla bla'
+        title: 'Blabla bla',
+        content: '#'
     }
 };
 
