@@ -1,7 +1,8 @@
 const intinalState = {
     add: {
-        title: 'Blabla bla',
-        content: '#'
+        title: '',
+        content: '## markdown me ^_^ ',
+        tags: ''
     }
 };
 

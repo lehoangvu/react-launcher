@@ -6,7 +6,8 @@
 }
 body {
     color: #333;
-    font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+    // font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 13px;
 }
 * {
@@ -72,4 +73,150 @@ div {
 
 :global .text-right {
     text-align: right;
+}
+:global .markdown-render {
+    pre {
+        margin-bottom: 1em;
+        padding: 5px;
+        width: auto;
+        max-height: 600px;
+        overflow: auto;
+        font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif;
+        font-size: 13px;
+        background-color: rgb(66, 66, 66);
+    }
+
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        word-wrap: break-word
+    }
+
+    ul p:last-of-type,
+    ul p:last-of-type,
+    ol p:last-of-type,
+    ol p:last-of-type {
+        margin-bottom: 0
+    }
+
+    li>ul,
+    li>ul,
+    li>ol,
+    li>ol {
+        padding-top: .5em
+    }
+
+    pre{
+        word-wrap: normal
+    }
+
+    code {
+        font-size: 13px;
+        padding: 0 5px;
+        color: #fff;
+        background-color: rgb(66, 66, 66);
+    }
+
+    hr{
+        background-color: #d6d9dc;
+        color: #d6d9dc
+    }
+
+    li{
+        word-wrap: break-word
+    }
+
+    h1,
+    h1,
+    h2,
+    h2,
+    h3,
+    h3,
+    h4,
+    h4,
+    h5,
+    h5,
+    h6,
+    h6 {
+        font-weight: bold !important
+    }
+
+    h1 code,
+    h1 code,
+    h2 code,
+    h2 code,
+    h3 code,
+    h3 code,
+    h4 code,
+    h4 code,
+    h5 code,
+    h5 code,
+    h6 code,
+    h6 code {
+        margin-bottom: .5em
+    }
+
+    h1,
+    h1,
+    h1 code,
+    h1 code {
+        font-size: 21px
+    }
+
+    h2,
+    h2,
+    h2 code,
+    h2 code {
+        font-size: 19px
+    }
+
+    h3,
+    h3,
+    h3 code,
+    h3 code {
+        font-size: 17px
+    }
+
+    h4,
+    h4,
+    h4 code,
+    h4 code {
+        font-size: 15px
+    }
+
+    p img,
+    p img,
+    li img,
+    li img,
+    blockquote img,
+    blockquote img {
+        margin-bottom: 0
+    }
+
+    ul li,
+    ul li,
+    ol li,
+    ol li {
+        margin-bottom: .5em
+    }
+
+    ul li:last-child,
+    ul li:last-child,
+    ol li:last-child,
+    ol li:last-child {
+        margin-bottom: 0
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        word-wrap: break-word
+    }
 }
