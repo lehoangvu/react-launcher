@@ -8,8 +8,11 @@ class AddQuestion extends React.Component {
     constructor(props) {
         super(props);
         this.handleValidate = this.handleValidate.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-        	markdown_code: this.props.form.content
+        	markdown_code: this.props.form.data.content,
+            disable_form: false,
+            loading_form: false
         }
     }
 
@@ -56,7 +59,15 @@ class AddQuestion extends React.Component {
 	}
 
 	handleSubmit(values) {
-      console.log('Success!', values)
+
+        this.setState({
+            disable_form: true,
+            loading_form: true
+        })
+
+        this.props.actions.create({
+            ...values
+        });
 	}
 
     render() {
@@ -72,21 +83,21 @@ class AddQuestion extends React.Component {
 						     	return <form onSubmit={submitForm}>
 								    <div className={s.formGroup}>
 								    	<label>Bạn muốn hỏi gì ?</label>
-								    	<Text field='title' placeholder='Nhập nội dung ngắn gọn của câu hỏi ?' />
+								    	<Text disabled={this.state.disable_form} field='title' placeholder='Nhập nội dung ngắn gọn của câu hỏi ?' />
 								    </div>
 								    <div className={s.formGroup}>
 								    	<label>Nội dung chi tiết</label>
-								    	<Textarea field='content' placeholder='Nhập nội dung chi tiết ?' onChange={(val, onChange) => {this.setState({markdown_code: val.currentTarget.value}); onChange()}} />
+								    	<Textarea disabled={this.state.disable_form} field='content' placeholder='Nhập nội dung chi tiết ?' onChange={(val, onChange) => {this.setState({markdown_code: val.currentTarget.value}); onChange()}} />
 								    	<div className={s.preview}>
 									    	<div className="markdown-render" dangerouslySetInnerHTML={this.renderMarkDown()} />
 								    	</div>
 								    </div>
 								    <div className={s.formGroup}>
 								    	<label>Thêm tag cho câu hỏi để dễ dàng tìm kiếm</label>
-								    	<Text field='tag' placeholder='Nhập các tag cách nhau bởi dấu ","' />
+								    	<Text disabled={this.state.disable_form} field='tags' placeholder='Nhập các tag cách nhau bởi dấu ","' />
 								    </div>
 								    <div className={s.formGroup}>
-								    	<button className="btn" type="submit">Gửi câu hỏi</button>
+								    	<button disabled={this.state.disable_form} className={this.state.loading_form ? "btn loading" : "btn"} type="submit">Gửi câu hỏi</button>
 								    </div>
 							    </form>
 							}}

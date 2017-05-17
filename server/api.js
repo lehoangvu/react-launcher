@@ -6,6 +6,14 @@ var oauth = require('./Api/oauth');
 var mongo = require('./db/mongo');
 var user = require('./Api/user');
 var expressValidator = require('express-validator');
+var apicache = require('apicache');
+
+// var oauthFB = require('./Api/oauthFB');
+// oauthFB.getInfo("EAAIPZCBIIt5gBANOls1lokoIMvLNuRv7i5pHAuvdaitJ5CjtMtXO5CdLLakd2Nf2dnrVf1ZAL2WdK3tPVkuAXXbZAbZA9PQMWGyvgZBRp50Yjmhu5JWWyLxKE3EnX1JUFrkloCCUBdhpzORkZBI6LwNfXiZBDNxj5WqD9ryCNCm8XkGFJCz3JKdzvuR1vhcqRMZD");
+
+var cache = apicache.middleware;
+
+// app.use(cache('5 minutes'));
 
 app.use(expressValidator());
 
@@ -36,8 +44,23 @@ app.route('/api/auth/login-google').post(function (req, res) {
         res.send(err);
     });
 });
+app.route('/api/auth/login-facebook').post(function (req, res) {
+    var token = req.body.token || false;
+    if(!token) {
+        return response(res, {
+            error: 'Token is require'
+        }, false);
+    }
+    oauth.socialLogin(token, 'facebook')
+    .then(function(results) {
+        res.send(results);
+    }).catch(function(err) {
+        res.sendStatus(400);
+        res.send(err);
+    });
+});
 
-app.route('/api/customer/me').post(function (req, res) {
+app.route('/api/customer/me' ).post(function (req, res) {
     var token = req.body.token || false;
     if(!token) {
         return response(res, {

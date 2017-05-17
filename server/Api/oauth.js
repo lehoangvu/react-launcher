@@ -2,6 +2,7 @@ var crypto = require('crypto');
 var mongo = require('./../db/mongo');
 var collectionName = 'user';
 var oauthGG = require('./oauthGG');
+var oauthFB = require('./oauthFB');
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -63,6 +64,9 @@ var oauth = {
             switch(type) {
                 case 'google':
                     socialPromise = oauthGG.getInfo(token);
+                    break;
+                case 'facebook':
+                    socialPromise = oauthFB.getInfo(token);
                     break;
                 default:
                     socialPromise = oauthGG.getInfo(token);

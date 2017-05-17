@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './styles/question-item.scss';
+import Helper from './../helper';
+// import 
 class QuestionItem extends React.Component {
     constructor(props) {
         super(props);
@@ -25,6 +27,13 @@ class QuestionItem extends React.Component {
         return `Đăng ${create_at}`;
 
     }
+
+    getLink() {
+        let slug = this.props.item.url || Helper.slugify(this.props.item.title);
+        let id = this.props.item._id;
+        return 'questions/' + id + '/' + slug;
+    }
+
     render() {
         const item = this.props.item;
         const user = item.user;
@@ -48,7 +57,7 @@ class QuestionItem extends React.Component {
                 </div>
                 <div className={s.summary}>
                     <h3>
-                        <a href="#">{item.title}</a>
+                        <Link to={this.getLink()}>{item.title}</Link>
                     </h3>
                     {this.renderTag()} 
                     <div className={s.meta}>

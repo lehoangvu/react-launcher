@@ -55,6 +55,17 @@ a {
         text-decoration: none;
         background: #048bea;
     }
+    &.loading {
+        background: linear-gradient(135deg, #0095ff 0%, #0095ff 25%, #0f83d6 25%, #0f83d6 50%,#0095ff 50%, #0095ff 75%, #0f83d6 75%);
+        background-position: 122px center;
+        background-size: 30px 100%;
+        animation-duration: 10s;
+        animation-fill-mode: forwards;
+        animation-iteration-count: infinite;
+        animation-name: placeHolderShimmer;
+        animation-timing-function: linear;
+        opacity: 0.9;
+    }
 }
 div {
     &:after,
@@ -62,6 +73,14 @@ div {
         display: table;
         content: " ";
     }
+}
+@keyframes :global (placeHolderShimmer) {
+  0% {
+    background-position: -468px 0
+  }
+  100% {
+    background-position: 468px 0
+  }
 }
 :global .text-left {
     text-align: left;

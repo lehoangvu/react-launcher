@@ -1,3 +1,4 @@
+var shortid = require('shortid');
 var Helper = require('./../Helper');
 var mongo = require('./../db/mongo');
 var user = require('./user');
@@ -73,12 +74,30 @@ var qna = {
             data.vote = 0;
             data.down_vote = 0;
             data.reply = 0;
-            mongo.addDocument('qna', data).then(function(snapshot) {
-                data._id = snapshot.insertedIds;
-                return resolve(data);
-            }).catch(function() {
+            data._id = shortid.generate();
+            // check id
+            mongo.findOne(collectionName, {_id: data._id}).then(function(result) {
+                if(!result) {
+                    mongo.addDocument('qna', data).then(function(snapshot) {
+                        if(snapshot.insertedIds.length === 1)
+                            return resolve(data);
+                        else
+                            return reject({
+                                error: '1Something whent wrong'
+                            });
+                    }).catch(function() {
+                        return reject({
+                            error: '2Something whent wrong'
+                        });
+                    });
+                } else {
+                    return reject({
+                        error: '3Something whent wrong'
+                    });
+                }
+            }).catch(function(err) {
                 return reject({
-                    error: 'Something whent wrong'
+                    error: '4Something whent wrong'
                 });
             });
         });

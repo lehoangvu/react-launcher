@@ -5,8 +5,14 @@ import {
 	AddContainer
 } from 'question/containers';
 
+const params = {
+    id: string({}),
+    slug: string({})
+};
+
 export default (
-	<Route>
+	<Route params={params}>
 		<Route path="question/add" component={AddContainer} />
+		<Route path="question/:id/:slug" component={AddContainer} />
 	</Route>
 );

@@ -5,43 +5,115 @@ import s from './../styles/facebookLogin.scss';
 class FacebookLoginBtn extends React.Component{
   constructor(props) {
 	super(props);
+	this.state = {
+		isSdkLoaded: false,
+		isProcessing: false,
+	};
+
   }
 
-  componentDidMount () {
-	(function(d, s, id){
-	 var js, gs = d.getElementsByTagName(s)[0];
-	 if (d.getElementById(id)) {return;}
-	 js = d.createElement(s); js.id = id;
-	 js.src = 'https://apis.google.com/js/platform.js'
-	 gs.parentNode.insertBefore(js, gs);
-   }(document, 'script', 'google-platform'));
-  }
-
-  checkLoginState (response) {
-	if (auth2.isSignedIn.get()) {
-	  var profile = auth2.currentUser.get().getBasicProfile();
-	} else {
-	  if(this.props.responseHandler) {
-		this.props.responseHandler({status: response.status});
-	  }
+	sdkLoaded() {
+		this.setState({ isSdkLoaded: true });
 	}
-  }
 
-  clickHandler () {
-	var socialId = this.props.socialId,
-		responseHandler = this.props.responseHandler,
-		scope = this.props.scope;
+	setFbAsyncInit() {
+		const { appId, xfbml, cookie, version, autoLoad } = this.props;
+		window.fbAsyncInit = () => {
+		  window.FB.init({
+		    version: `v${version}`,
+		    appId,
+		    xfbml,
+		    cookie,
+		  });
+		  this.setState({ isSdkLoaded: true });
+		  if (autoLoad || window.location.search.includes('facebookdirect')) {
+		    window.FB.getLoginStatus(this.checkLoginAfterRefresh.bind(this));
+		  }
+		};
+	}
 
-	gapi.load('auth2', function() {
-	  var auth2 = gapi.auth2.init({
-		client_id: socialId,
-		fetch_basic_profile: false,
-		scope: scope
-	  });
-	  auth2.signIn().then(function(googleUser) {
-		responseHandler(googleUser);
-	  });
-	});
+	checkLoginAfterRefresh (response) {
+	    if (response.status === 'connected') {
+	      this.checkLoginState(response);
+	    } else {
+	      window.FB.login(loginResponse => this.checkLoginState(loginResponse), true);
+	    }
+  	}
+
+  	responseApi(authResponse) {
+	    window.FB.api('/me', { locale: this.props.language, fields: this.props.fields }, (me) => {
+	      Object.assign(me, authResponse);
+	      this.props.callback(me);
+	    });
+	  };
+
+  	checkLoginState(response) {
+	    this.setState({ isProcessing: false });
+	    if (response.authResponse) {
+	      this.responseApi(response.authResponse);
+	    } else {
+	      if (this.props.callback) {
+	        this.props.callback({ status: response.status });
+	      }
+	    }
+	  };
+	loadSdkAsynchronously() {
+		const { language } = this.props;
+		((d, s, id) => {
+		  const element = d.getElementsByTagName(s)[0];
+		  const fjs = element;
+		  let js = element;
+		  if (d.getElementById(id)) { return; }
+		  js = d.createElement(s); js.id = id;
+		  js.src = `//connect.facebook.net/${language}/all.js`;
+		  fjs.parentNode.insertBefore(js, fjs);
+		})(document, 'script', 'facebook-jssdk');
+	}
+	componentDidMount () {
+		if (document.getElementById('facebook-jssdk')) {
+			this.sdkLoaded();
+			return;
+		}
+		this.setFbAsyncInit();
+		this.loadSdkAsynchronously();
+		let fbRoot = document.getElementById('fb-root');
+		if (!fbRoot) {
+			fbRoot = document.createElement('div');
+			fbRoot.id = 'fb-root';
+			document.body.appendChild(fbRoot);
+		}
+	}
+
+  clickHandler (e) {
+  	if (!this.state.isSdkLoaded || this.state.isProcessing || this.props.isDisabled) {
+      return;
+    }
+    this.setState({ isProcessing: true });
+    const { scope, appId, onClick, reAuthenticate, redirectUri, disableMobileRedirect } = this.props;
+
+    if (typeof onClick === 'function') {
+      onClick(e);
+      if (e.defaultPrevented) {
+        return;
+      }
+    }
+
+    const params = {
+      client_id: appId,
+      redirect_uri: redirectUri,
+      state: 'facebookdirect',
+      scope,
+    };
+
+    if (reAuthenticate) {
+      params.auth_type = 'reauthenticate';
+    }
+
+    if (this.props.isMobile && !disableMobileRedirect) {
+      window.location.href = `//www.facebook.com/dialog/oauth?${objectToParams(params)}`;
+    } else {
+      window.FB.login(loginResponse => this.checkLoginState(loginResponse), { scope, auth_type: params.auth_type });
+    }
   }
 
   render () {

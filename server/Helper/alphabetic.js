@@ -20,7 +20,26 @@ var AlphabeticID = {
    *  [@param](http://twitter.com/param) integer
    *  [@return](http://twitter.com/return) string
    **/
+  string2number:function(_str){
+    var _num = '1';
+    for(var i = 0; i < _str.length; i++) {
+      var c = _str[i];
+      if(!parseInt(c) && parseInt(c) !== 0) {
+        var n = c.charCodeAt(0) - 97;
+        if(n < 10) {
+          n = '0'+n;
+        }
+        _num += n;
+      } else {
+        _num += '0' + c;
+      }
+    }
+    return _num;
+
+  },
   encode:function(_number){
+    _number = parseInt(AlphabeticID.string2number(_number));
+    console.log(_number);
     if('undefined' == typeof _number){
       return null;
     }
