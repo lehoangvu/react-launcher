@@ -67,4 +67,18 @@ module.exports = function(app) {
         });
     });
 
+    app.route('/api/qna/questions').get(function(req, res) {
+        var id = req.query.id;
+        if(!id) {
+            res.status(400).send({
+                error: 'Require id'
+            });
+        }
+        qna.get(id).then(function(results) {
+            res.send(results);
+        }).catch(function(err) {
+            res.status(400).send(err);
+        });
+    });
+
 }

@@ -9,17 +9,25 @@ const intinalState = {
     		},
     		error: []
     	} 
-    		
-    }
+    },
+	detail: false
 };
 
 export default (state = intinalState, action) => {
     switch(action.type){
     	case 'CREATE_SUCCESS': 
-			browserHistory.push('/question/'+action.id);
+			browserHistory.push('/questions/'+action.id+'/'+action.url);
 			return state;
     		break;
     	case 'CREATE_FAIL': 
+			return state;
+    	case 'GET_DETAIL_SUCCESS': 
+			return {
+				...state,
+				detail: action.data
+			};
+    		break;
+    	case 'GET_DETAIL_FAIL': 
 			return state;
 
     		break;

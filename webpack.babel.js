@@ -59,7 +59,6 @@ const config = {
 	},
 	postcss: (bundler) => {
 	    return [
-	    	require('postcss-animation')(),
             require('postcss-import')(),
             require('postcss-custom-properties')(),
             require('postcss-calc')(),

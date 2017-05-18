@@ -1,0 +1,81 @@
+.tags {
+    display: inline-block;
+    a {
+        margin-bottom: 5px;
+        color: #39739d;
+        background-color: #E1ECF4;
+        border-color: transparent;
+        margin-right: 5px;
+        padding: 5px 8px;
+        font-size: 12px;
+        display: inline-block;
+        &:hover {
+            color: #33658a;
+            background-color: #cee0ed;
+            border-color: rgba(0,0,0,0);
+        }
+    }
+}
+
+.userBox {
+    display: table;
+    img {
+        display: inline-block;
+        float: left;
+        width: 32px;
+        height: 32px;
+        border-radius: 1px;
+    }
+}
+.userBoxMeta {
+    display: inline-block;
+    float: left;
+    margin-left: 8px;
+}
+.userBoxName {
+    font-size: 12px;
+}
+
+.voteBtn {
+    background: #5fba7d;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    padding: 15px 0;
+    text-align: center;
+    display: table;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    transition: 300ms;
+    > span {
+        width: 100%;
+        display: inline-block;
+    }
+    div {
+        position: absolute;
+        bottom: -200%;
+        width: 100%;
+        background: #428658;
+
+        span {
+            width: 50%;
+            display: inline-block;
+            float: left;
+            color: #ffd740;
+            padding: 5px 0;
+            font-size: 16px;
+            cursor: pointer;
+            &:hover {
+                background: #ffd740;
+                color: #fff;
+            }
+        }
+    }
+    &:hover {
+        padding: 3px 0 27px 0;
+        div {
+            bottom: 0%;
+        }
+    }
+}

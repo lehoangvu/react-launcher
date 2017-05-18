@@ -9,11 +9,34 @@ export const create = (data) => {
 		}).done((json)=>{
 			dispatch({
 				type: 'CREATE_SUCCESS',
-				id: json._id
+				id: json._id,
+				url: json.url
 			});
 		}).fail((err)=>{
 			dispatch({
 				type: 'CREATE_FAIL',
+				error: error
+			});
+		})
+	}
+}
+
+export const getDetail = (id) => {
+	return dispatch => {
+		$.ajax({
+			url: config.API_URL + 'qna/questions',
+			data: {
+				id: id
+			},
+			type: 'GET'
+		}).done((json)=>{
+			dispatch({
+				type: 'GET_DETAIL_SUCCESS',
+				data: json
+			});
+		}).fail((err)=>{
+			dispatch({
+				type: 'GET_DETAIL_FAIL',
 				error: error
 			});
 		})

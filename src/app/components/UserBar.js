@@ -30,7 +30,6 @@ class UserBar extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         let state = {
             ...this.state,
             isLogin: nextProps.user !== null && nextProps.user !== false,

@@ -63,8 +63,25 @@ var qna = {
             });
         });
     },
-    get: function() {
-
+    get: function(id) {
+        return new Promise(function(resolve, reject) {
+            mongo.findOne(collectionName, {_id:id}).then((result)=>{
+                if(!result) {
+                    return reject({
+                        error: 'Something went wrong!'
+                    })
+                }
+                var pr = user.get(new mongo._.ObjectID(result.uid), ['fullname', 'nickname', 'image']);
+                pr.then((user)=>{
+                    result.user = user;
+                    return resolve(result);
+                });
+            }).catch((err)=>{
+                return reject({
+                    error: 'Something went wrong!'
+                })
+            });
+        });
     },
     add: function(data) {
         return new Promise(function(resolve, reject) {

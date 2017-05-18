@@ -41,24 +41,7 @@
         font-weight: 400;
     }
 }
-.tags {
-    display: inline-block;
-    a {
-        margin-bottom: 5px;
-        color: #39739d;
-        background-color: #E1ECF4;
-        border-color: transparent;
-        margin-right: 5px;
-        padding: 5px 8px;
-        font-size: 12px;
-        display: inline-block;
-        &:hover {
-            color: #33658a;
-            background-color: #cee0ed;
-            border-color: rgba(0,0,0,0);
-        }
-    }
-}
+
 .meta {
     display: inline-block;
     float: right;

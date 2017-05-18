@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './styles/question-item.scss';
+import Tags from './Tags';
 import Helper from './../helper';
 // import 
 class QuestionItem extends React.Component {
@@ -14,9 +15,9 @@ class QuestionItem extends React.Component {
             return <a key={index} href={Helper.removeSigh(tag)} title="">{tag}</a>;
         })
         return (
-            <div className={s.tags}>
+            <Tags>
                 {tags}
-            </div> 
+            </Tags> 
         )
     }
     getCreateText() {
