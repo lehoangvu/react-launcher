@@ -31,7 +31,7 @@ class QuestionItem extends React.Component {
 
     getLink() {
         let slug = this.props.item.url || Helper.slugify(this.props.item.title);
-        let id = this.props.item._id;
+        let id = this.props.item.id;
         return 'questions/' + id + '/' + slug;
     }
 

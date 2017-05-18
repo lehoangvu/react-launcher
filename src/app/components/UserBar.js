@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import GoogleLoginBtn from './GoogleLoginBtn';
 import FacebookLoginBtn from './FacebookLoginBtn';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
@@ -10,7 +11,8 @@ class UserBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showLoginTooltip: false
+            showLoginTooltip: false,
+            showUserMenu: false
         };
     }
 
@@ -33,7 +35,8 @@ class UserBar extends React.Component {
         let state = {
             ...this.state,
             isLogin: nextProps.user !== null && nextProps.user !== false,
-            user: nextProps.user
+            user: nextProps.user,
+            showUserMenu: false
         };
         this.setState(state);
     }
@@ -69,7 +72,28 @@ class UserBar extends React.Component {
             showLoginTooltip: !this.state.showLoginTooltip
         })
     }
-
+    menuToggle() {
+        const show = !this.state.showUserMenu;
+        // if(show) {
+        //     document.addEventListener("click", this.menuToggle.bind(this));
+        // } else {
+        //     document.removeEventListener("click", this.menuToggle.bind(this));
+        // }
+        this.setState({
+            showUserMenu: show
+        })
+    }
+    logout(e) {
+        e.preventDefault();
+        this.props.logout();
+    }
+    getMenu() {
+        if(this.state.showUserMenu) {
+            return <div className={s.userMenuContent}>
+                <a href="javascript:" onClick={this.logout.bind(this)}>Đăng xuất</a>
+            </div>;
+        }
+    }
     render() {
         if(this.state.user === false) {
             return <div className={s.root}>
@@ -79,10 +103,14 @@ class UserBar extends React.Component {
         if(this.state.isLogin){
             let user = this.props.user;
             return <div className={s.root}>
-                <a title="Thông báo của bạn"><i className="ion-android-notifications" /></a>
-                <a className={s.userLink}>
+                <Link to = "notice" title="Thông báo của bạn"><i className="ion-android-notifications" /></Link>
+                <Link to="/me" className={s.userLink}>
                     <img src={user.image} />
-                </a>
+                </Link>
+                <div className={s.userMenu}>
+                    <button onClick={this.menuToggle.bind(this)}><i className="ion-navicon"/></button>
+                    {this.getMenu()}
+                </div>
             </div>;
         }
         else

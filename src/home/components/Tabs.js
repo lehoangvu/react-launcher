@@ -70,9 +70,12 @@ class HomeTabs extends React.Component {
                 </Skeleton>
             })
         }
+        if(this.props.list.data.length === 0) {
+            return <p>Chưa có câu hỏi nào, hãy là người <Link to="/questions/add">hỏi</Link> đầu tiên</p>
+        }
         return this.props.list.data.map((item, index) => {
             return <QuestionItem key={index} item={item} />
-        })
+        });
     }
 
     render() {

@@ -1,4 +1,4 @@
-
+import {browserHistory} from 'react-router';
 
 export const create = (data) => {
 	return dispatch => {
@@ -7,11 +7,12 @@ export const create = (data) => {
 			data: data,
 			type: 'POST'
 		}).done((json)=>{
-			dispatch({
-				type: 'CREATE_SUCCESS',
-				id: json._id,
-				url: json.url
-			});
+			browserHistory.push('/questions/'+json.id+'/'+json.url);
+			// dispatch({
+			// 	type: 'CREATE_SUCCESS',
+			// 	id: json.id,
+			// 	url: json.url
+			// });
 		}).fail((err)=>{
 			dispatch({
 				type: 'CREATE_FAIL',

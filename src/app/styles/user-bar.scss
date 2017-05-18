@@ -58,3 +58,25 @@
         right: 70px;
     }
 }
+.userMenu {
+    float: right;
+    button {
+        border: 0;
+        background: transparent;
+        font-size: 30px;
+        margin-top: -2px;
+        margin-left: 25px;
+        position: relative;
+    }
+}
+.userMenuContent {
+    position: absolute;
+    width: 300px;
+    max-height: 600px;
+    padding: 10px 15px 20px 15px;
+    background: #fff;
+    top: 37px;
+    right: 0;
+    box-shadow: 0 0 5px #ccc;
+    border-bottom: 5px solid #2196F3;
+}

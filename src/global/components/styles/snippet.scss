@@ -36,12 +36,10 @@
     font-size: 12px;
 }
 .voteBtn {
-    border: 1px solid #5fba7d;
-    background: #f1fff6;
-    color: #757575;
+    border: 1px solid #9E9E9E;
     width: 80px;
     height: 85px;
-    padding-top: 17px;
+    padding-top: 8px;
     text-align: center;
     display: table;
     vertical-align: middle;
@@ -49,6 +47,9 @@
     > span {
         width: 100%;
         display: inline-block;
+        &:nth-child(1) {
+            font-size: 22px;
+        }
     }
 }
 
@@ -56,15 +57,13 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    background: rgba(95, 186, 125, 0.03);
-    border-top: 1px solid #5fba7d;
+    border-top: 1px solid #9E9E9E;
 
     span, a {
         width: 50%;
         display: inline-block;
         float: left;
         color: #5fba7d;
-        background: rgba(126, 200, 150, 0.38);
         padding: 2px 0;
         font-size: 22px;
         cursor: pointer;

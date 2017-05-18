@@ -42,7 +42,10 @@ export const fetchInfo = (token) => {
                     user: response
                 });
             }).fail(function(error) {
-                console.log('faild');
+                dispatch({
+                    type: 'FETCH_SUCCESS',
+                    user: null
+                });
             });
         };
     } else {
@@ -51,4 +54,10 @@ export const fetchInfo = (token) => {
             user: null
         };
     }
+}
+
+export const logout = () => {
+    return {
+        type: 'LOGOUT'
+    };
 }

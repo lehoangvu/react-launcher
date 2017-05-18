@@ -31,6 +31,20 @@ export default (state = intinalState, action) => {
             };
             break;
 
+        case 'LOGOUT':
+            $.ajaxSetup({
+                headers: {}
+            });
+            if(localStorage) {
+                localStorage.removeItem('customer_token');
+            }
+            return {
+                ...state,
+                fetched: true,
+                user: null
+            };
+            break;
+
         default:
             return state;
     }

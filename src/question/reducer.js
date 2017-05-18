@@ -1,4 +1,4 @@
-import {browserHistory} from 'react-router';
+
 const intinalState = {
     add: {
     	form: {
@@ -15,8 +15,7 @@ const intinalState = {
 
 export default (state = intinalState, action) => {
     switch(action.type){
-    	case 'CREATE_SUCCESS': 
-			browserHistory.push('/questions/'+action.id+'/'+action.url);
+    	case 'CREATE_SUCCESS':
 			return state;
     		break;
     	case 'CREATE_FAIL': 

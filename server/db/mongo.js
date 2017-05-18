@@ -87,8 +87,16 @@ var mongoDB = {
 		var collection = database.collection(collectionName);
 		collection.createIndex(description);
 	},
-	updateDocument: (collectionName, doc) => {
-
+	updateDocument: (collectionName, data, id) => {
+		var collection = database.collection(collectionName);
+		return new Promise((resolve, reject) => {
+			collection.update({_id: mongoIns.ObjectID(id)}, data).then((err, result)=>{
+				if(err) {
+					return reject(err);
+				}
+				return resolve(result);
+			})
+		})
 	},
 	findOne: (collectionName, query) => {
 		var collection = database.collection(collectionName);

@@ -13,7 +13,7 @@ import {
 
 export default (
 	<Route>
-		<Route path="question/add" component={AddContainer} />
+		<Route path="questions/add" component={AddContainer} />
 		<Route path="questions/:id/:slug" component={DetailContainer} />
 	</Route>
 );

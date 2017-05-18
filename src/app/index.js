@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import App from './components/App';
 
-import { loginWithToken, fetchInfo } from './action';
+import { loginWithToken, fetchInfo, logout } from './action';
 
 const mapStateToProps = (state) => {
     return {
@@ -13,7 +13,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
         loginWithToken,
-        fetchInfo
+        fetchInfo,
+        logout
     }, dispatch)
 });
 

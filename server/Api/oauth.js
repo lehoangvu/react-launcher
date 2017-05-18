@@ -3,6 +3,7 @@ var mongo = require('./../db/mongo');
 var collectionName = 'user';
 var oauthGG = require('./oauthGG');
 var oauthFB = require('./oauthFB');
+var user = require('./user');
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -30,13 +31,13 @@ function getToken() {
     return crypto.randomBytes(48).toString('hex');
 }
 
-function createAccessToken(id) {
+function createAccessToken(_id) {
     var token = getToken();
     return new Promise(function(resolve, reject) {
         var tokenData = {
             value: token,
             expire: new Date().getTime() + (3600 * 24 * 60 * 1000),
-            uid: id
+            uid: _id
         };
         mongo.addDocument('user_token', tokenData).then(function(result) {
             if(result.insertedCount === 1) {
@@ -140,13 +141,7 @@ var oauth = {
                         error: 'Token invalid!'
                     });
                 }
-                mongo.findOne('user', {_id: result.uid}).then(function(result) {
-                    // console.log(result);
-                    if(!result) {
-                        return reject({
-                            error: 'Token invalid!'
-                        });
-                    }
+                user.get(result.uid, ['email', 'fullname', 'nickname', 'image', 'source', 'notice']).then((result) => {
                     var userData = {
                         email: result.email,
                         fullname: result.fullname,
@@ -156,7 +151,7 @@ var oauth = {
                         notice: result.notice
                     };
                     return resolve(userData);
-                }).catch(function(err) {
+                }).catch((err) => {
                     return reject({
                         error: 'Cannot find user!'
                     });

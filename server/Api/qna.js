@@ -43,7 +43,7 @@ var qna = {
             mongo.search(collectionName, q, sortOps, skip, limit).then(function(results) {
                 var userPromises = [];
                 results.data.forEach(function(item) {
-                    var pr = user.get(new mongo._.ObjectID(item.uid), ['fullname', 'nickname']);
+                    var pr = user.get(item.uid, ['fullname', 'nickname']);
                     userPromises.push(pr);
                 });
                 Promise.all(userPromises).then(function(users){
@@ -63,16 +63,15 @@ var qna = {
             });
         });
     },
-    getVote: (id, token) => {
+    getVote: (_id, token) => {
         return new Promise((resolve, reject) => {
             if(token === null) {
                 return resolve(false);
             }
             user.getByToken(token, ['_id']).then(function(user) {
-                console.log(user);
                 mongo.findOne('user_vote_question', {
-                    uid: user._id.toString(),
-                    question_id: id
+                    user_id: user._id.toString(),
+                    question_id: _id
                 }).then((result)=>{
                     return resolve(result);
                 }).catch((err)=>{
@@ -81,15 +80,15 @@ var qna = {
             });
         });
     },
-    get: (id, token = null) => {
+    get: (id, token) => {
         return new Promise((resolve, reject) => {
-            mongo.findOne(collectionName, {_id:id}).then((result)=>{
+            mongo.findOne(collectionName, {id:id}).then((result)=>{
                 if(!result) {
                     return reject({
                         error: 'Something went wrong!'
                     })
                 }
-                var pr = user.get(new mongo._.ObjectID(result.uid), ['fullname', 'nickname', 'image']);
+                var pr = user.get(result.uid, ['fullname', 'nickname', 'image']);
                 pr.then((user)=>{
                     result.user = user;
                     //get vote data
@@ -125,30 +124,30 @@ var qna = {
             data.vote = 0;
             data.down_vote = 0;
             data.reply = 0;
-            data._id = shortid.generate();
+            data.id = shortid.generate();
             // check id
-            mongo.findOne(collectionName, {_id: data._id}).then((result) => {
+            mongo.findOne(collectionName, {id: data.id}).then((result) => {
                 if(!result) {
                     mongo.addDocument('qna', data).then((snapshot) => {
                         if(snapshot.insertedIds.length === 1)
                             return resolve(data);
                         else
                             return reject({
-                                error: '1Something whent wrong'
+                                error: 'Something whent wrong'
                             });
                     }).catch(() => {
                         return reject({
-                            error: '2Something whent wrong'
+                            error: 'Something whent wrong'
                         });
                     });
                 } else {
                     return reject({
-                        error: '3Something whent wrong'
+                        error: 'Something whent wrong'
                     });
                 }
             }).catch((err) => {
                 return reject({
-                    error: '4Something whent wrong'
+                    error: 'Something whent wrong'
                 });
             });
         });
@@ -157,5 +156,4 @@ var qna = {
 
     }
 }
-
 module.exports = qna;

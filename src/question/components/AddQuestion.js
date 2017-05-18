@@ -35,8 +35,8 @@ class AddQuestion extends React.Component {
     	if(!value || value.length === 0) {
     		return 'Hãy nhập nội dung';
     	}
-    	if(value.length < 100 || value.length > 1000) {
-    		return 'Nội dung từ 100 đến 1000 ký tự';
+    	if(value.length < 80) {
+    		return 'Nội dung dài hơn 80 ký tự';
     	}
     }
 

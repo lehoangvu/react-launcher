@@ -29,7 +29,7 @@ class Header extends React.Component {
                 </div>
 
                 <Search />
-                <UserBar user={this.props.user} loginWithToken={this.props.loginWithToken} fetchInfo={this.props.fetchInfo} />
+                <UserBar logout={this.props.logout} user={this.props.user} loginWithToken={this.props.loginWithToken} fetchInfo={this.props.fetchInfo} />
             </div>
         </div>
     }

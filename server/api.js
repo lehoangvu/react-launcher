@@ -71,8 +71,7 @@ app.route('/api/customer/me' ).post(function (req, res) {
     .then(function(result) {
         res.send(result);
     }).catch(function(err) {
-        res.sendStatus(400);
-        res.send(err);
+        res.status(400).send(err);
     });
 });
 
@@ -100,6 +99,14 @@ mongo.connect().then(function() {
     // }).then(function(res){console.log(res)}).catch(function(res){console.log(res)});
 
     require('./controllers/QnaController')(app);
+
+    // mongo.updateDocument('qna', {
+    //     title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod(updated)'
+    // }, 'B1sjLAcxW').then((result) => {
+    //     console.log(result);
+    // }).catch((err) => {
+    //     console.log(err);
+    // });
 
     app.listen(process.env.PORT || 5100); //the port you want to use
 

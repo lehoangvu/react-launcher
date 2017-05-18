@@ -3,7 +3,7 @@ var mongo = require('./../db/mongo');
 module.exports = {
 	get: function(id, fields) {
 		return new Promise(function(resolve, reject) {
-			mongo.findOne('user', {_id: id}).then(function(result) {
+			mongo.findOne('user', {_id: new mongo._.ObjectID(id)}).then(function(result) {
 				if(!result)
 					return resolve(false);
 				var data = {};
