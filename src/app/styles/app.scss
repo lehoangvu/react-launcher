@@ -58,7 +58,7 @@ a {
     &.loading {
         background: linear-gradient(135deg, #0095ff 0%, #0095ff 25%, #0f83d6 25%, #0f83d6 50%,#0095ff 50%, #0095ff 75%, #0f83d6 75%);
         background-position: 122px center;
-        background-size: 30px 100%;
+        background-size: 30px 30px;
         animation-duration: 10s;
         animation-fill-mode: forwards;
         animation-iteration-count: infinite;
@@ -74,6 +74,27 @@ div {
         content: " ";
     }
 }
+
+:global .loadingLayer {
+    background: linear-gradient(135deg, #ccc 0%, #ccc 25%, #fff 25%, #fff 50%, #ccc 50%, #ccc 75%, #fff 75%)!important;
+    background-position: 122px center!important;
+    background-size:50px 50px!important;
+    animation-duration: 10s!important;
+    animation-fill-mode: forwards!important;
+    animation-iteration-count: infinite!important;
+    animation-name: placeHolderShimmer!important;
+    animation-timing-function: linear!important;
+    opacity: 0.9!important;
+    position: absolute!important;
+    top: 0!important;
+    left: 0!important;
+    width: 100%!important;
+    height: 100%!important;
+    z-index: 1!important;
+    opacity: 0.2!important;
+    cursor: not-allowed!important;
+}
+
 @keyframes :global (placeHolderShimmer) {
   0% {
     background-position: -468px 0
@@ -94,6 +115,9 @@ div {
     text-align: right;
 }
 :global .markdown-render {
+    p {
+        margin: 2px 0 6px 0;
+    }
     pre {
         margin-bottom: 1em;
         padding: 5px;
@@ -102,7 +126,12 @@ div {
         overflow: auto;
         font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif;
         font-size: 13px;
-        background-color: rgb(66, 66, 66);
+        background-color: #f7f3d1;
+        code {
+            border: 0px;
+            border-radius: 0px;
+            padding: 0;
+        }
     }
 
 
@@ -136,8 +165,10 @@ div {
     code {
         font-size: 13px;
         padding: 0 5px;
-        color: #fff;
-        background-color: rgb(66, 66, 66);
+        color: #2f2f2f;    
+        background-color: #f7f3d1;
+        border: 1px solid #d8d4b1;
+        border-radius: 2px;
     }
 
     hr{

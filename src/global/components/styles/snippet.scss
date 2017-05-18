@@ -35,47 +35,45 @@
 .userBoxName {
     font-size: 12px;
 }
-
 .voteBtn {
-    background: #5fba7d;
-    color: #fff;
-    width: 60px;
-    height: 60px;
-    padding: 15px 0;
+    border: 1px solid #5fba7d;
+    background: #f1fff6;
+    color: #757575;
+    width: 80px;
+    height: 85px;
+    padding-top: 17px;
     text-align: center;
     display: table;
     vertical-align: middle;
     position: relative;
-    overflow: hidden;
-    transition: 300ms;
     > span {
         width: 100%;
         display: inline-block;
     }
-    div {
-        position: absolute;
-        bottom: -200%;
-        width: 100%;
-        background: #428658;
+}
 
-        span {
-            width: 50%;
-            display: inline-block;
-            float: left;
-            color: #ffd740;
-            padding: 5px 0;
-            font-size: 16px;
-            cursor: pointer;
-            &:hover {
-                background: #ffd740;
-                color: #fff;
-            }
-        }
+.voteBtnAct {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(95, 186, 125, 0.03);
+    border-top: 1px solid #5fba7d;
+
+    span, a {
+        width: 50%;
+        display: inline-block;
+        float: left;
+        color: #5fba7d;
+        background: rgba(126, 200, 150, 0.38);
+        padding: 2px 0;
+        font-size: 22px;
+        cursor: pointer;
+        opacity: 0.8;
     }
-    &:hover {
-        padding: 3px 0 27px 0;
-        div {
-            bottom: 0%;
+    a {
+        color: #9E9E9E;
+        &:hover {
+            opacity: 1;
         }
     }
 }

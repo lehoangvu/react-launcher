@@ -23,6 +23,10 @@ export const create = (data) => {
 
 export const getDetail = (id) => {
 	return dispatch => {
+		dispatch({
+			type: 'GET_DETAIL_SUCCESS',
+			data: false
+		});
 		$.ajax({
 			url: config.API_URL + 'qna/questions',
 			data: {

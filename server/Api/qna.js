@@ -5,7 +5,7 @@ var user = require('./user');
 var collectionName = 'qna';
 var limit = 20;
 var qna = {
-    search: function(query) {
+    search: (query) => {
         var q = typeof query.q !== 'undefined' ? query.q.trim() : '';
         var sortString = typeof query.sort !== 'undefined' ? query.sort : 'newest';
         var sortOps;
@@ -63,8 +63,26 @@ var qna = {
             });
         });
     },
-    get: function(id) {
-        return new Promise(function(resolve, reject) {
+    getVote: (id, token) => {
+        return new Promise((resolve, reject) => {
+            if(token === null) {
+                return resolve(false);
+            }
+            user.getByToken(token, ['_id']).then(function(user) {
+                console.log(user);
+                mongo.findOne('user_vote_question', {
+                    uid: user._id.toString(),
+                    question_id: id
+                }).then((result)=>{
+                    return resolve(result);
+                }).catch((err)=>{
+                    return reject(err);
+                })
+            });
+        });
+    },
+    get: (id, token = null) => {
+        return new Promise((resolve, reject) => {
             mongo.findOne(collectionName, {_id:id}).then((result)=>{
                 if(!result) {
                     return reject({
@@ -74,7 +92,23 @@ var qna = {
                 var pr = user.get(new mongo._.ObjectID(result.uid), ['fullname', 'nickname', 'image']);
                 pr.then((user)=>{
                     result.user = user;
-                    return resolve(result);
+                    //get vote data
+                    qna.getVote(result._id, token).then((vote)=>{
+                        if(!vote) {
+                            result.voted = false;
+                            result.down_voted = false;
+                        } else {
+                            result.voted = vote.value > 0;
+                            result.down_voted = vote.value < 0;
+                        }
+
+                        return resolve(result);
+
+                    }).catch((err)=>{
+                        return reject({
+                            error: 'Something went wrong!'
+                        })
+                    });
                 });
             }).catch((err)=>{
                 return reject({
@@ -83,8 +117,8 @@ var qna = {
             });
         });
     },
-    add: function(data) {
-        return new Promise(function(resolve, reject) {
+    add: (data) => {
+        return new Promise((resolve, reject) => {
             data.create_at = new Date().getTime();
             data.update_at = new Date().getTime();
             data.view = 0;
@@ -93,16 +127,16 @@ var qna = {
             data.reply = 0;
             data._id = shortid.generate();
             // check id
-            mongo.findOne(collectionName, {_id: data._id}).then(function(result) {
+            mongo.findOne(collectionName, {_id: data._id}).then((result) => {
                 if(!result) {
-                    mongo.addDocument('qna', data).then(function(snapshot) {
+                    mongo.addDocument('qna', data).then((snapshot) => {
                         if(snapshot.insertedIds.length === 1)
                             return resolve(data);
                         else
                             return reject({
                                 error: '1Something whent wrong'
                             });
-                    }).catch(function() {
+                    }).catch(() => {
                         return reject({
                             error: '2Something whent wrong'
                         });
@@ -112,13 +146,16 @@ var qna = {
                         error: '3Something whent wrong'
                     });
                 }
-            }).catch(function(err) {
+            }).catch((err) => {
                 return reject({
                     error: '4Something whent wrong'
                 });
             });
         });
     },
+    update: (data) => {
+
+    }
 }
 
 module.exports = qna;

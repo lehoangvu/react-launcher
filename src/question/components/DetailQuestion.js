@@ -67,7 +67,12 @@ class DetailQuestion extends React.Component {
 	            	<div className={s.summary}>
                         <h1 className={s.title}>{detail.title}</h1>
                         <div className={s.left}>
-                            <VoteButton />
+                            <VoteButton 
+                            voted={detail.voted}
+                            down_voted={detail.down_voted}
+                            vote={detail.vote}
+                            down_vote={detail.down_vote}
+                             />
                         </div>
                         <div className={s.right}>
                             <div className={s.contentWrap}>

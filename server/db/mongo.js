@@ -5,13 +5,13 @@ var database;
 // mongodb://<dbuser>:<dbpassword>@ds127101.mlab.com:27101/qna_development
 var mongoDB = {
 	_: mongoIns,
-	connect: function() {
+	connect: () => {
 		var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
 		return new Promise(function(resolve, reject) {
 			// Connect to the db
 			MongoClient.connect(connectionString, {
 				connectTimeoutMS: 480000,
-			}, function(err, di) {
+			}, (err, di) => {
 			  if(err) {
 			  	return reject({
 			  		error: err
@@ -23,12 +23,12 @@ var mongoDB = {
 			
 		})
 	},
-	addDocument: function(collectionName, doc) {
+	addDocument: (collectionName, doc) => {
         doc['create_at'] = new Date().getTime();
         doc['update_at'] = new Date().getTime();
 		var collection = database.collection(collectionName);
-		return new Promise(function(resolve, reject) {
-			collection.insert(doc, {w: 1}, function(err, result) {
+		return new Promise((resolve, reject) => {
+			collection.insert(doc, {w: 1}, (err, result) => {
 				if(err) {
 					console.log(err);
 					process.exit();
@@ -39,15 +39,15 @@ var mongoDB = {
 			
 		})
 	},
-	count: function(collectionName, text) {
+	count: (collectionName, text) => {
 		var collection = database.collection(collectionName);
 		var query;
 		if(text === '')
 			query = collection.find();
 		else
 			query = collection.find({$text: {$search: text}}, {score: {$meta: "textScore"}});
-		return new Promise(function(resolve, reject) {
-			query.count(function(err, count) {
+		return new Promise((resolve, reject) => {
+			query.count((err, count) => {
 				if(err) {
 					return reject(err);
 				}
@@ -55,7 +55,7 @@ var mongoDB = {
 			})
 		});
 	},
-	search: function(collectionName, text, sorts, skip, limit) {
+	search: (collectionName, text, sorts, skip, limit) => {
 		var collection = database.collection(collectionName);
 		var originResults;
 
@@ -64,9 +64,9 @@ var mongoDB = {
 		else
 			originResults = collection.find({$text: {$search: text}}, {score: {$meta: "textScore"}}).sort(sorts).skip(skip).limit(limit);
 
-		return new Promise(function(resolve, reject) {
-			mongoDB.count(collectionName, text).then(function(total) {
-				originResults.toArray(function(err, items) {
+		return new Promise((resolve, reject) => {
+			mongoDB.count(collectionName, text).then((total) => {
+				originResults.toArray((err, items) => {
 					if(err) {
 						return reject(err);
 					}
@@ -83,17 +83,17 @@ var mongoDB = {
 		
 		
 	},
-	index: function(collectionName, description) {
+	index: (collectionName, description) => {
 		var collection = database.collection(collectionName);
 		collection.createIndex(description);
 	},
-	updateDocument: function(collectionName, doc) {
+	updateDocument: (collectionName, doc) => {
 
 	},
-	findOne: function(collectionName, query) {
+	findOne: (collectionName, query) => {
 		var collection = database.collection(collectionName);
-		return new Promise(function(resolve, reject) {
-			var result = collection.findOne(query, function(err, result){
+		return new Promise((resolve, reject) => {
+			var result = collection.findOne(query, (err, result) => {
 				if(err) {
 					return reject(err);
 				}

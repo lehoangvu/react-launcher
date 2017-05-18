@@ -69,12 +69,17 @@ module.exports = function(app) {
 
     app.route('/api/qna/questions').get(function(req, res) {
         var id = req.query.id;
+        var token = null;
+
+        if (typeof req.headers['x-customer-token'] !== 'undefined') {
+            token = req.headers['x-customer-token'];
+        }
         if(!id) {
             res.status(400).send({
                 error: 'Require id'
             });
         }
-        qna.get(id).then(function(results) {
+        qna.get(id, token).then(function(results) {
             res.send(results);
         }).catch(function(err) {
             res.status(400).send(err);
