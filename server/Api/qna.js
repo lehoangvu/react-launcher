@@ -1,9 +1,11 @@
 var shortid = require('shortid');
 var Helper = require('./../Helper');
+
 var mongo = require('./../db/mongo');
 var user = require('./user');
 var collectionName = 'qna';
 var limit = 20;
+
 var qna = {
     search: (query) => {
         var q = typeof query.q !== 'undefined' ? query.q.trim() : '';
@@ -29,6 +31,12 @@ var qna = {
                     vote: -1
                 };
                 break;
+            case 'oldest':
+                sortOps = {
+                    create_at: 1,
+                    vote: -1
+                };
+                break;
             default:
                 sortOps = {
                     create_at: -1,
@@ -39,11 +47,13 @@ var qna = {
         var page = typeof query.page !== 'undefined' ? query.page : 1; 
         var skip = (page - 1) * limit;
         var searchData;
+        var type = typeof query.type !== 'undefined' ? query.type : 'question'; 
+        var question_id = typeof query.question_id !== 'undefined' ? query.question_id : false; 
         return new Promise(function(resolve, reject) {
-            mongo.search(collectionName, q, sortOps, skip, limit).then(function(results) {
+            mongo.search(collectionName, q, sortOps, skip, limit, type, question_id).then(function(results) {
                 var userPromises = [];
                 results.data.forEach(function(item) {
-                    var pr = user.get(item.uid, ['fullname', 'nickname']);
+                    var pr = user.get(item.uid, ['fullname', 'nickname', 'image']);
                     userPromises.push(pr);
                 });
                 Promise.all(userPromises).then(function(users){
@@ -69,9 +79,10 @@ var qna = {
                 return resolve(false);
             }
             user.getByToken(token, ['_id']).then(function(user) {
-                mongo.findOne('user_vote_question', {
-                    user_id: user._id.toString(),
-                    question_id: _id
+                mongo.findOne('user_react_question', {
+                    uid: user._id,
+                    action: 'vote',
+                    question_id: mongo.toObjectId(_id)
                 }).then((result)=>{
                     return resolve(result);
                 }).catch((err)=>{
@@ -80,35 +91,16 @@ var qna = {
             });
         });
     },
-    get: (id, token) => {
+    get: (id) => {
         return new Promise((resolve, reject) => {
-            mongo.findOne(collectionName, {id:id}).then((result)=>{
+            mongo.findOne(collectionName, {id: id}).then((result)=>{
                 if(!result) {
                     return reject({
                         error: 'Something went wrong!'
                     })
                 }
-                var pr = user.get(result.uid, ['fullname', 'nickname', 'image']);
-                pr.then((user)=>{
-                    result.user = user;
-                    //get vote data
-                    qna.getVote(result._id, token).then((vote)=>{
-                        if(!vote) {
-                            result.voted = false;
-                            result.down_voted = false;
-                        } else {
-                            result.voted = vote.value > 0;
-                            result.down_voted = vote.value < 0;
-                        }
-
-                        return resolve(result);
-
-                    }).catch((err)=>{
-                        return reject({
-                            error: 'Something went wrong!'
-                        })
-                    });
-                });
+                var question = result;
+                return resolve(question);
             }).catch((err)=>{
                 return reject({
                     error: 'Something went wrong!'
@@ -152,8 +144,8 @@ var qna = {
             });
         });
     },
-    update: (data) => {
-
+    vote: (question_id, vote) => {
+        
     }
 }
 module.exports = qna;

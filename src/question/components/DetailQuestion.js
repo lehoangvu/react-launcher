@@ -6,6 +6,11 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from '../styles/detail.scss';
 import { Skeleton, Tags, UserBox, VoteButton } from './../../global';
 import MarkdownIt from 'markdown-it';
+import Helmet from "react-helmet";
+import striptags from "striptags";
+
+import AddAnswer from './AddAnswer';
+import DetailQUestionItem from './DetailQUestionItem';
 class DetailQuestion extends React.Component {
     constructor(props) {
         super(props);
@@ -25,15 +30,7 @@ class DetailQuestion extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // this.props.actions.getDetail(this.props.params.id);
-        console.log(nextProps);
     }
-
-	renderMarkDown(content) {
-		return {
-			'__html' : new MarkdownIt().render(content)
-		}
-	}
-
     
     renderTag() {
         let tags = this.props.detail.tags && this.props.detail.tags.map((tag, index) => {
@@ -46,50 +43,57 @@ class DetailQuestion extends React.Component {
         )
     }
 
+    helmetRender() {
+        const detail = this.props.detail;
+        return <Helmet 
+            title={detail.title}
+            link={[
+                {"rel": "canonical", "href": config.BASE_URL + `questions/${detail.id}/${detail.url}`}
+            ]}
+            meta={[
+                {name: 'description', content: striptags(new MarkdownIt().render(detail.content))}
+            ]} />
+    }
+
     render() {
         const detail = this.props.detail;
         if(!detail) {
             return (
                 <div className="container">
                     <div className={s.summary}>
-                        <Skeleton wrap={true}>
-                            <Skeleton w='80%' h='20px' mb='30px'/>
-                            <Skeleton w='80%' mb='30px' h='300px'/>
-                            <Skeleton w='300px' h='30px'/>
+                        <Skeleton w='80%' h='20px' mb='30px'/>
+                        <Skeleton wrap={true} mb='20px'>
+                            <Skeleton w='100px' h='100px' mr='20px'/>
+                            <Skeleton w='calc(100% - 120px)' h='120px' mb='20px' />
+                            <Skeleton fl='right' w='100px' h='40px'/>
+                        </Skeleton>
+                        <Skeleton wrap={true} mb='20px'>
+                            <Skeleton w='100px' h='100px' mr='20px'/>
+                            <Skeleton w='calc(100% - 120px)' h='120px' mb='20px' />
+                            <Skeleton fl='right' w='100px' h='40px'/>
+                        </Skeleton>
+                        <Skeleton wrap={true} mb='20px'>
+                            <Skeleton w='100px' h='100px' mr='20px'/>
+                            <Skeleton w='calc(100% - 120px)' h='120px' mb='20px' />
+                            <Skeleton fl='right' w='100px' h='40px'/>
                         </Skeleton>
                     </div>
                 </div>
             );
         }
+        let last_ans_id = '';
         return (
         	<div className={s.root}>
+                {this.helmetRender()}
             	<div className="container">
 	            	<div className={s.summary}>
-                        <h1 className={s.title}>{detail.title}</h1>
-                        <div className={s.left}>
-                            <VoteButton 
-                            voted={detail.voted}
-                            down_voted={detail.down_voted}
-                            vote={detail.vote}
-                            down_vote={detail.down_vote}
-                             />
-                        </div>
-                        <div className={s.right}>
-                            <div className={s.contentWrap}>
-                                <div className="markdown-render" dangerouslySetInnerHTML={this.renderMarkDown(detail.content)} />
-                            </div>
-                            <div className={s.tagWrap}>
-                                {this.renderTag()}
-                            </div>
-                            <div className={s.metaWrap}>
-                                <div className={s.authorBox}>
-                                    <span>{this.getCreateText()}</span>
-                                    <UserBox user={detail.user}/>
-                                </div>
-                            </div>
-                        </div>
+                        <DetailQUestionItem user={this.props.user} detail={detail} onVote={this.props.actions.vote} />
+                        {detail.answers.data.map((answer)=>{
+                            last_ans_id = answer.id;
+                            return <DetailQUestionItem user={this.props.user} key={answer.id} detail={answer} onVote={this.props.actions.vote} />
+                        })}
+                        <AddAnswer key={last_ans_id} onAnswer={(content) => this.props.actions.answer(detail.id, content)} />
 				    </div>
-            		
             		<div className={s.sidebar}>
 		    		</div>
 

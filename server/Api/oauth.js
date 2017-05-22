@@ -30,8 +30,8 @@ function getNickName(email) {
 function getToken() {
     return crypto.randomBytes(48).toString('hex');
 }
-
 function createAccessToken(_id) {
+    _id = mongo.toObjectId(_id);
     var token = getToken();
     return new Promise(function(resolve, reject) {
         var tokenData = {

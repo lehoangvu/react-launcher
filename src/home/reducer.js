@@ -33,7 +33,6 @@ export default (state = intinalState, action) => {
             }
             break;
         case 'SET_CURRENT_TAB':
-            let {tabs} = state;
             if(['newest', 'useful', 'feedback'].indexOf(action.query) !== -1) {
                 return {
                     ...state,

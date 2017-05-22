@@ -1,21 +1,38 @@
 import {browserHistory} from 'react-router';
-
+console.log(browserHistory);
 export const create = (data) => {
 	return dispatch => {
 		$.ajax({
 			url: config.API_URL + 'qna/create',
 			data: data,
-			type: 'POST'
+			type: 'PUT'
 		}).done((json)=>{
 			browserHistory.push('/questions/'+json.id+'/'+json.url);
-			// dispatch({
-			// 	type: 'CREATE_SUCCESS',
-			// 	id: json.id,
-			// 	url: json.url
-			// });
 		}).fail((err)=>{
 			dispatch({
 				type: 'CREATE_FAIL',
+				error: error
+			});
+		})
+	}
+}
+export const answer = (question_id, content) => {
+	return dispatch => {
+		$.ajax({
+			url: config.API_URL + `qna/questions/${question_id}/answer`,
+			data: {
+				content: content
+			},
+			type: 'PUT'
+		}).done((json)=>{
+			// dispatch(getDetail(question_id));
+			dispatch({
+				type: 'ANSWER_SUCCESS',
+				answer: json
+			});
+		}).fail((err)=>{
+			dispatch({
+				type: 'ANSWER_FAIL',
 				error: error
 			});
 		})
@@ -29,10 +46,7 @@ export const getDetail = (id) => {
 			data: false
 		});
 		$.ajax({
-			url: config.API_URL + 'qna/questions',
-			data: {
-				id: id
-			},
+			url: config.API_URL + 'qna/questions/' + id,
 			type: 'GET'
 		}).done((json)=>{
 			dispatch({
@@ -43,6 +57,27 @@ export const getDetail = (id) => {
 			dispatch({
 				type: 'GET_DETAIL_FAIL',
 				error: error
+			});
+		})
+	}
+}
+
+export const vote = (question_id, value) => {
+	return dispatch => {
+		$.ajax({
+			url: config.API_URL + `qna/questions/${question_id}/vote`,
+			data: {
+				vote: value
+			},
+			type: 'POST'
+		}).done((json)=>{
+			dispatch({
+				type: 'VOTE_SUCCESS',
+				vote: json.vote
+			});
+		}).fail((err)=>{
+			dispatch({
+				type: 'VOTE_FAIL'
 			});
 		})
 	}

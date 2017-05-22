@@ -11,14 +11,13 @@ class UserBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showLoginTooltip: false,
+            showSigninPopup: false,
             showUserMenu: false
         };
     }
 
     componentDidMount() {
-
-        if(localStorage){
+        if (localStorage) {
             var tokenData = localStorage.getItem('customer_token');
             this.props.fetchInfo(JSON.parse(tokenData));
         }
@@ -29,6 +28,7 @@ class UserBar extends React.Component {
             user: this.props.user
         };
         this.setState(state);
+        window.showSigninPopup = () => {this.showLogin(true)};
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,19 +41,25 @@ class UserBar extends React.Component {
         this.setState(state);
     }
 
-    responseGoogleLogin (info) {
+    responseGoogleLogin(info) {
         this.props.loginWithToken(info.access_token, 'google');
     }
-    responseFacebookLogin (info) {
+    responseFacebookLogin(info) {
         this.props.loginWithToken(info.accessToken, 'facebook');
     }
 
     getLoginTooltip() {
-        if(this.state.showLoginTooltip) 
-            return (<div className={s.popup}>
+        if (this.state.showSigninPopup)
+            return (
+            <div className={s.popup}>
+                <div className={s.popupBackDrop} onClick={()=>{this.showLogin(false)}}>
+                </div>
+                <div className={s.popup}>
+                    <div className={s.signinTitle}>Đăng nhập</div>
+                    <div className={s.signinNote}>Hiện tại bạn chỉ có thể đăng nhập thông qua tài khoản Google hoặc Facebook.</div>
                     <GoogleLoginBtn onClick={this.loginTolltipToggle.bind(this)} socialId="60036624360-59ceaveq0votucv9inc7fvn2u70c6cg8.apps.googleusercontent.com"
-                         scope="profile email openid"
-                         responseHandler={this.responseGoogleLogin.bind(this)} >
+                        scope="profile email openid"
+                        responseHandler={this.responseGoogleLogin.bind(this)} >
                     </GoogleLoginBtn>
                     <FacebookLoginBtn onClick={this.loginTolltipToggle.bind(this)}
                         appId="580525262157720"
@@ -64,21 +70,23 @@ class UserBar extends React.Component {
                         redirectUri="http://localhost:5000"
                         icon="fa-facebook">
                     </FacebookLoginBtn>
-                </div>);
+                </div>
+            </div>);
+    }
+
+    showLogin(show) {
+        this.setState({
+            showSigninPopup: show
+        })
     }
 
     loginTolltipToggle() {
         this.setState({
-            showLoginTooltip: !this.state.showLoginTooltip
+            showSigninPopup: !this.state.showSigninPopup
         })
     }
     menuToggle() {
         const show = !this.state.showUserMenu;
-        // if(show) {
-        //     document.addEventListener("click", this.menuToggle.bind(this));
-        // } else {
-        //     document.removeEventListener("click", this.menuToggle.bind(this));
-        // }
         this.setState({
             showUserMenu: show
         })
@@ -88,34 +96,34 @@ class UserBar extends React.Component {
         this.props.logout();
     }
     getMenu() {
-        if(this.state.showUserMenu) {
+        if (this.state.showUserMenu) {
             return <div className={s.userMenuContent}>
-                <a href="javascript:" onClick={this.logout.bind(this)}>Đăng xuất</a>
+                <a href="javascript:" onClick={this.logout.bind(this)}>Thoát tài khoản: {this.state.user.fullname}</a>
             </div>;
         }
     }
     render() {
-        if(this.state.user === false) {
+        if (this.state.user === false) {
             return <div className={s.root}>
                 <Skeleton w="75px" h="26px" fl="right" />
             </div>
         }
-        if(this.state.isLogin){
+        if (this.state.isLogin) {
             let user = this.props.user;
             return <div className={s.root}>
-                <Link to = "notice" title="Thông báo của bạn"><i className="ion-android-notifications" /></Link>
+                <Link to="notice" title="Thông báo của bạn"><i className="ion-android-notifications" /></Link>
                 <Link to="/me" className={s.userLink}>
                     <img src={user.image} />
                 </Link>
                 <div className={s.userMenu}>
-                    <button onClick={this.menuToggle.bind(this)}><i className="ion-navicon"/></button>
+                    <button onClick={this.menuToggle.bind(this)}><i className="ion-navicon" /></button>
                     {this.getMenu()}
                 </div>
             </div>;
         }
         else
             return <div className={s.root}>
-                <a title="Đăng nhâp" className={s.showLogin} href="javascript:" onClick={this.loginTolltipToggle.bind(this)}>
+                <a title="Đăng nhâp" className={s.showLogin} href="javascript:" onClick={()=>{this.showLogin(true)}}>
                     Đăng nhập với <span className={s.loginGoogleIcon}><i className="ion-social-google-outline" /></span> hoặc <span className={s.loginFacebookIcon}><i className="ion-social-facebook" /></span>
                 </a>
                 {this.getLoginTooltip()}

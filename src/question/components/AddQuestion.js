@@ -35,7 +35,7 @@ class AddQuestion extends React.Component {
     	if(!value || value.length === 0) {
     		return 'Hãy nhập nội dung';
     	}
-    	if(value.length < 80) {
+    	if(value.length < 60) {
     		return 'Nội dung dài hơn 80 ký tự';
     	}
     }
@@ -88,7 +88,7 @@ class AddQuestion extends React.Component {
 								    <div className={s.formGroup}>
 								    	<label>Nội dung chi tiết</label>
 								    	<Textarea disabled={this.state.disable_form} field='content' placeholder='Nhập nội dung chi tiết ?' onChange={(val, onChange) => {this.setState({markdown_code: val.currentTarget.value}); onChange()}} />
-								    	<div className={s.preview}>
+								    	<div className={s.preview} style={{display: this.state.markdown_code.length > 0 ? 'block' : 'nones'}}>
 									    	<div className="markdown-render" dangerouslySetInnerHTML={this.renderMarkDown()} />
 								    	</div>
 								    </div>
