@@ -87,10 +87,10 @@ var mongoDB = {
 		var collection = database.collection(collectionName);
 		collection.createIndex(description);
 	},
-	updateDocument: (collectionName, data, id) => {
+	updateDocument: (collectionName, data, _id) => {
 		var collection = database.collection(collectionName);
 		return new Promise((resolve, reject) => {
-			collection.update({_id: mongoIns.ObjectID(id)}, data).then((err, result)=>{
+			collection.update({_id: mongoIns.ObjectID(_id)}, data, (err, result)=>{
 				if(err) {
 					return reject(err);
 				}
