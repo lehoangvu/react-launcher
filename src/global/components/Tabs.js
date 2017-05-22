@@ -1,13 +1,12 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { Link } from 'react-router';
-import s from './../styles/tabs.scss';
+import s from './styles/tabs.scss';
+import Skeleton from './Skeleton';
+import QuestionItem from './QuestionItem';
+import Pagination from './Pagination';
 
-import { Skeleton } from './../../global';
-
-import { QuestionItem, Pagination } from './../../global';
-
-class HomeTabs extends React.Component {
+class Tabs extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -43,7 +42,7 @@ class HomeTabs extends React.Component {
         });
         return (
             <div className={s.tabNav}>
-                <label className={s.bigLabel}>Top câu hỏi</label>
+                <label className={s.bigLabel}>{this.props.navText || `Top câu hỏi` }</label>
                 <ul>
                     {tabNav}
                 </ul>
@@ -89,4 +88,4 @@ class HomeTabs extends React.Component {
     }
 }
 
-export default  withStyles(s)(HomeTabs)
+export default  withStyles(s)(Tabs)

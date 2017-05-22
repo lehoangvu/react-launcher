@@ -1,7 +1,9 @@
 import React from 'react';
 
-import Tabs from './Tabs';
+import { Tabs } from './../../global';
 import Sidebar from './Sidebar';
+
+console.log(Tabs);
 
 export default class Home extends React.Component {
 	constructor(props) {

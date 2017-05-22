@@ -5,6 +5,10 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './styles/question-item.scss';
 import Tags from './Tags';
 import Helper from './../helper';
+
+import MarkdownIt from 'markdown-it';
+import striptags from "striptags";
+
 // import 
 class QuestionItem extends React.Component {
     constructor(props) {
@@ -38,6 +42,11 @@ class QuestionItem extends React.Component {
     render() {
         const item = this.props.item;
         const user = item.user;
+        const content = striptags(new MarkdownIt().render(item.content));
+        let preview = content.substr(0, 200);
+        if(content.length >= 200) {
+            preview += '...';
+        }
         return (
             <div className={s.root}>
                 <div className={s.attributeWrap}>
@@ -60,6 +69,9 @@ class QuestionItem extends React.Component {
                     <h3>
                         <Link to={this.getLink()}>{item.title}</Link>
                     </h3>
+                    <p className={s.description}>
+                        {preview}
+                    </p>
                     {this.renderTag()} 
                     <div className={s.meta}>
                         <span className={s.update_at}>{this.getCreateText()}</span> bởi <Link to={"user/" + user.nickname} className={s.author}>{user.fullname}</Link>
