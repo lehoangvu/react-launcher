@@ -1,9 +1,9 @@
 var mongo = require('./../db/mongo');
 
 module.exports = {
-	get: function(id, fields) {
+	get: function(_id, fields) {
 		return new Promise(function(resolve, reject) {
-			mongo.findOne('user', {_id: new mongo._.ObjectID(id)}).then(function(result) {
+			mongo.findOne('user', {_id: mongo.toObjectId(_id)}).then(function(result) {
 				if(!result)
 					return resolve(false);
 				var data = {};
@@ -26,7 +26,6 @@ module.exports = {
                     });
                 }
                 mongo.findOne('user', {_id: result.uid}).then(function(result) {
-                    // console.log(result);
                     if(!result) {
                         return reject({
                             error: 'Token invalid!'

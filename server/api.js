@@ -1,3 +1,4 @@
+"use strict";
 var express = require('express');
 var app = express();
 var request = require("request")
@@ -24,6 +25,7 @@ app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
   res.header("Access-Control-Allow-Headers", "x-customer-token");
   next();
 });
@@ -92,6 +94,7 @@ app.route('/api/customer/me' ).post(function (req, res) {
 
 mongo.connect().then(function() {
     console.log('Connect Mongo Success and listerning to connection to API!');
+
     // qna.search({
     //     q: '',
     //     sort: 'newest',

@@ -1,4 +1,6 @@
 @import './normalize';
+@import './global.scss';
+@import './markdown.scss';
 
 :root {
     --link-color: #07C;
@@ -13,6 +15,7 @@ body {
 * {
     margin: 0;
     padding: 0;
+    outline: none;
 }
 *, ::after, ::before {
     box-sizing: border-box;
@@ -113,160 +116,4 @@ div {
 
 :global .text-right {
     text-align: right;
-}
-:global .markdown-render {
-    p {
-        margin: 2px 0 6px 0;
-    }
-    pre {
-        margin-bottom: 1em;
-        padding: 5px;
-        width: auto;
-        max-height: 600px;
-        overflow: auto;
-        font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif;
-        font-size: 13px;
-        background-color: #f7f3d1;
-        code {
-            border: 0px;
-            border-radius: 0px;
-            padding: 0;
-        }
-    }
-
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        word-wrap: break-word
-    }
-
-    ul p:last-of-type,
-    ul p:last-of-type,
-    ol p:last-of-type,
-    ol p:last-of-type {
-        margin-bottom: 0
-    }
-
-    li>ul,
-    li>ul,
-    li>ol,
-    li>ol {
-        padding-top: .5em
-    }
-
-    pre{
-        word-wrap: normal
-    }
-
-    code {
-        font-size: 13px;
-        padding: 0 5px;
-        color: #2f2f2f;    
-        background-color: #f7f3d1;
-        border: 1px solid #d8d4b1;
-        border-radius: 2px;
-    }
-
-    hr{
-        background-color: #d6d9dc;
-        color: #d6d9dc
-    }
-
-    li{
-        word-wrap: break-word
-    }
-
-    h1,
-    h1,
-    h2,
-    h2,
-    h3,
-    h3,
-    h4,
-    h4,
-    h5,
-    h5,
-    h6,
-    h6 {
-        font-weight: bold !important
-    }
-
-    h1 code,
-    h1 code,
-    h2 code,
-    h2 code,
-    h3 code,
-    h3 code,
-    h4 code,
-    h4 code,
-    h5 code,
-    h5 code,
-    h6 code,
-    h6 code {
-        margin-bottom: .5em
-    }
-
-    h1,
-    h1,
-    h1 code,
-    h1 code {
-        font-size: 21px
-    }
-
-    h2,
-    h2,
-    h2 code,
-    h2 code {
-        font-size: 19px
-    }
-
-    h3,
-    h3,
-    h3 code,
-    h3 code {
-        font-size: 17px
-    }
-
-    h4,
-    h4,
-    h4 code,
-    h4 code {
-        font-size: 15px
-    }
-
-    p img,
-    p img,
-    li img,
-    li img,
-    blockquote img,
-    blockquote img {
-        margin-bottom: 0
-    }
-
-    ul li,
-    ul li,
-    ol li,
-    ol li {
-        margin-bottom: .5em
-    }
-
-    ul li:last-child,
-    ul li:last-child,
-    ol li:last-child,
-    ol li:last-child {
-        margin-bottom: 0
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        word-wrap: break-word
-    }
 }

@@ -4,6 +4,14 @@ var MongoClient = mongoIns.MongoClient;
 var database;
 // mongodb://<dbuser>:<dbpassword>@ds127101.mlab.com:27101/qna_development
 var mongoDB = {
+    toObjectId: (id) => {
+    	try {
+        	return new mongoIns.ObjectId(id.toString());
+		}
+		catch(err) {
+		    return false;
+		}
+    },
 	_: mongoIns,
 	connect: () => {
 		var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
@@ -30,8 +38,6 @@ var mongoDB = {
 		return new Promise((resolve, reject) => {
 			collection.insert(doc, {w: 1}, (err, result) => {
 				if(err) {
-					console.log(err);
-					process.exit();
 					return reject(err);
 				}
 				return resolve(result);
@@ -39,7 +45,7 @@ var mongoDB = {
 			
 		})
 	},
-	count: (collectionName, text) => {
+	count: (collectionName, text, type) => {
 		var collection = database.collection(collectionName);
 		var query;
 		if(text === '')
@@ -55,29 +61,63 @@ var mongoDB = {
 			})
 		});
 	},
-	search: (collectionName, text, sorts, skip, limit) => {
+	countv2: (collectionName, query) => {
+		var collection = database.collection(collectionName);
+		return new Promise((resolve, reject) => {
+			collection.find(query).count((err, count) => {
+				if(err) {
+					return reject(err);
+				}
+				return resolve(count);
+			})
+		});
+	},
+	search: (collectionName, text, sorts, skip, limit, type, question_id) => {
 		var collection = database.collection(collectionName);
 		var originResults;
+		var countQuery;
 
-		if(text === '')
-			originResults = collection.find().sort(sorts).skip(skip).limit(limit);
-		else
-			originResults = collection.find({$text: {$search: text}}, {score: {$meta: "textScore"}}).sort(sorts).skip(skip).limit(limit);
+		if(text === '') {
+			var query = {};
+			if(type !== null) {
+				query['type'] = type;
+			}
+			if(question_id !== false) {
+				query['question_id'] = question_id;
+			}
+			countQuery = collection.find(query);
+			originResults = countQuery.sort(sorts).skip(skip).limit(limit);
+		} else {
+			var query = {$text: {$search: text}};
+			if(type !== null) {
+				query['type'] = type;
+			}
+			if(question_id !== false) {
+				query['question_id'] = question_id;
+			}
+			countQuery = collection.find(query, {score: {$meta: "textScore"}});
+			originResults = countQuery.sort(sorts).skip(skip).limit(limit);
+		}
 
 		return new Promise((resolve, reject) => {
-			mongoDB.count(collectionName, text).then((total) => {
+			countQuery.count((err, count) => {
+				if(err) {
+					return reject(err);
+				}
 				originResults.toArray((err, items) => {
 					if(err) {
 						return reject(err);
 					}
 					var userfulResults = {
-						total: total,
+						total: count,
 						limit: limit,
 						data: items
 					}
 					return resolve(userfulResults);
 				});
-			})
+			});
+			// mongoDB.count(collectionName, text, type).then((total) => {
+			// })
 			
 		});
 		
@@ -90,7 +130,7 @@ var mongoDB = {
 	updateDocument: (collectionName, data, id) => {
 		var collection = database.collection(collectionName);
 		return new Promise((resolve, reject) => {
-			collection.update({_id: mongoIns.ObjectID(id)}, data).then((err, result)=>{
+			collection.update({_id: mongoDB.toObjectId(id)}, data, (err, result)=>{
 				if(err) {
 					return reject(err);
 				}
@@ -111,6 +151,26 @@ var mongoDB = {
 			});
 		})
 	}
+	// findAndModify: (collectionName, query, updateQuery) => {
+	// 	var collection = database.collection(collectionName);
+	// 	// var groupQuery = {
+	// 	// 	query: query,
+	// 	// 	sort: {create_at: 1},
+	// 	// 	update: updateQuery,
+	// 	// 	upsert: true
+	// 	// };
+	// 	// console.log(groupQuery);
+	// 	return new Promise((resolve, reject) => {
+	// 		var result = collection.findAndModify(query, {create_at: 1}, updateQuery, {upsert: false}, (err, result) => {
+	// 			if(err) {
+	// 				return reject(err);
+	// 			}
+	// 			if(result)
+	// 				return resolve(result);
+	// 			return resolve(false);
+	// 		});
+	// 	})
+	// }
 }
 
 module.exports = mongoDB; 

@@ -18,5 +18,7 @@
 	"moment",
 	"react-google-login-component",
 	"react-form",
+	"react-helmet",
+	"striptags",
 	"markdown-it"
 ]
