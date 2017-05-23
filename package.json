@@ -7,7 +7,10 @@
     "dev": "webpack -d --color --watch --progress --config webpack.babel.js",
     "build:server": "webpack -d --color --progress --config webpack-server.babel.js",
     "test": "mocha server/tests/index.js --recursive --watch",
-    "cover": "istanbul cover _mocha server/tests/index.js --recursive"
+    "cover": "istanbul cover _mocha server/tests/index.js --recursive",
+    "start:server": "ENV_STR=env_file:.env.dev,app_type:server  node server",
+    "start:api": "ENV_STR=env_file:.env.dev,app_type:api  node server",
+    "start:cron": "ENV_STR=env_file:.env.dev,app_type:cron  node server"
   },
   "repository": {
     "type": "git",
@@ -61,6 +64,7 @@
     "source-map-support": "^0.4.3",
     "spdy": "^3.4.3",
     "term-cluster": "0.0.1",
+    "usage": "^0.7.1",
     "webpack": "^1.13.2"
   },
   "devDependencies": {

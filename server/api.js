@@ -77,56 +77,17 @@ app.route('/api/customer/me' ).post(function (req, res) {
     });
 });
 
-// app.route('/api/qna/create').get(function (req, res) {
-//     qna.add({
-//         title: 'Title ' + from,
-//         create_at: new Date().getTime(),
-//         uid: 12412
-//     }).then(function(snap) {
-//         console.log(snap.title);
-//     }).catch(function(err) {
-//         console.log(err);
-//     });
-// });
-
-
-// routerLoader(app, './controllers/QnaController');
+app.route('/api/status' ).get(function (req, res) {
+    var pid = process.pid;
+    require('usage').lookup(pid, function(err, result) {
+        res.send(result);
+    });
+});
 
 mongo.connect().then(function() {
     console.log('Connect Mongo Success and listerning to connection to API!');
-
-    // qna.search({
-    //     q: '',
-    //     sort: 'newest',
-    //     page: 1
-    // }).then(function(res){console.log(res)}).catch(function(res){console.log(res)});
-
     require('./controllers/QnaController')(app);
-
-    // mongo.updateDocument('qna', {
-    //     title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod(updated)'
-    // }, 'B1sjLAcxW').then((result) => {
-    //     console.log(result);
-    // }).catch((err) => {
-    //     console.log(err);
-    // });
-
     app.listen(process.env.PORT || 5100); //the port you want to use
-
-    
-
-    // mongo.count('qna', '').then(function(results) {
-    //     console.log(results);
-    // }).catch(function(err) {
-    //     console.log(err);
-    // })
-
-    // qna.add({
-    //     title: 'Awesome title 1',
-    //     create_at: new Date().getTime(),
-    //     uid: 9999
-    // });
-
 }).catch(function(err) {
     console.log(err);
 });

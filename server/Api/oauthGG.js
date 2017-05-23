@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 

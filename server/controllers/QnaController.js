@@ -1,4 +1,5 @@
 "use strict";
+var request = require('request');
 var qna = require('../Api/qna');
 var mongo = require('../db/mongo');
 var Updater = require('../Helper/Updater');
@@ -231,7 +232,19 @@ module.exports = function (app) {
                         mongo.countv2('user_react_question', viewData).then((count) => {
                             if (count === 0) {
                                 mongo.addDocument('user_react_question', viewData);
-                                Updater.createCronUpdateView(question._id);
+                                // Updater.createCronUpdateView(question._id);
+                                var createCronReq = {
+                                    url: 'http://localhost:5200/update',
+                                    method: 'POST',
+                                    form: {
+                                        action: 'view',
+                                        id: question._id.toString()
+                                    },
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded'
+                                    }
+                                };
+                                request(createCronReq);
                             }
                         });
                     }

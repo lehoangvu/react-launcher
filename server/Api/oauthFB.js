@@ -1,4 +1,3 @@
-require('dotenv').config();
 var graph = require('fbgraph');
 graph.setVersion("2.9");
 

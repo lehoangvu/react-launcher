@@ -129,7 +129,7 @@ var mongoDB = {
 	updateDocument: (collectionName, data, _id) => {
 		var collection = database.collection(collectionName);
 		return new Promise((resolve, reject) => {
-			collection.update({_id: mongoDB.toObjectId(id)}, data, (err, result)=>{
+			collection.update({_id: mongoDB.toObjectId(_id)}, data, (err, result)=>{
 				if(err) {
 					return reject(err);
 				}
