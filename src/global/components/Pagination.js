@@ -29,7 +29,7 @@ class Pagination extends React.Component {
 
         let { current, limit, total } = this.props;
         current = parseInt(current);
-        const num_page = Math.floor(total / limit);
+        const num_page = Math.ceil(total / limit);
 
         let preview;
         let next;
@@ -62,7 +62,7 @@ class Pagination extends React.Component {
         }
 
         let pages = [];
-        for(let i = begin; i < to; i++) {
+        for(let i = begin; i <= to; i++) {
             if(i !== current) {
                 pages.push(<Link key={i} to={this.getPageUri(i)}>{i}</Link>);
             } else {

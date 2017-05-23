@@ -1,4 +1,4 @@
-export const getTabList = (sort, page = 1) => {
+export const getTabList = (q = '', sort, page = 1) => {
 	return dispatch => {
 		dispatch({
 			data: {
@@ -13,9 +13,9 @@ export const getTabList = (sort, page = 1) => {
 		$.ajax({
 			url: config.API_URL + 'qna/search',
 			data: {
-				q: '',
-				sort: sort,
-				page: page
+				q,
+				sort,
+				page
 			}
 		}).done((json)=>{
 			dispatch({
@@ -32,10 +32,11 @@ export const getTabList = (sort, page = 1) => {
 		})
    	}
 }
-export const setCurentTab = (query, page = 1) => {
+export const setCurentTab = (q = '', query, page = 1) => {
 	return dispatch => {
-		dispatch(getTabList(query, page));
+		dispatch(getTabList(q, query, page));
 		dispatch({
+			q, 
 			query,
 			type: 'SET_CURRENT_TAB'
 		});

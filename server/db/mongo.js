@@ -86,7 +86,6 @@ var mongoDB = {
 				query['question_id'] = question_id;
 			}
 			countQuery = collection.find(query);
-			originResults = countQuery.sort(sorts).skip(skip).limit(limit);
 		} else {
 			var query = {$text: {$search: text}};
 			if(type !== null) {
@@ -96,7 +95,6 @@ var mongoDB = {
 				query['question_id'] = question_id;
 			}
 			countQuery = collection.find(query, {score: {$meta: "textScore"}});
-			originResults = countQuery.sort(sorts).skip(skip).limit(limit);
 		}
 
 		return new Promise((resolve, reject) => {
@@ -104,6 +102,7 @@ var mongoDB = {
 				if(err) {
 					return reject(err);
 				}
+				var originResults = countQuery.sort(sorts).skip(skip).limit(limit);
 				originResults.toArray((err, items) => {
 					if(err) {
 						return reject(err);

@@ -16,7 +16,7 @@ class QuestionItem extends React.Component {
     }
     renderTag() {
         let tags = this.props.item.tags && this.props.item.tags.map((tag, index) => {
-            return <a key={index} href={Helper.removeSigh(tag)} title="">{tag}</a>;
+            return <Link key={index} to={`/tagged/${Helper.removeSigh(tag)}`} title="">{tag}</Link>;
         })
         return (
             <Tags>

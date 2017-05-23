@@ -10,7 +10,30 @@ const intinalState = {
     		error: []
     	} 
     },
-	detail: false
+	detail: false,
+    search: {
+        list: {
+            data: [],
+            loading: true,
+            total: 0,
+            limit: 20,
+            current: 1
+        },
+        q: '',
+        tabs: [{
+            title: 'Mới nhất',
+            query: 'newest',
+            current: true
+        }, {
+            title: 'Hữu ích',
+            query: 'useful',
+            current: false
+        }, {
+            title: 'Phản hồi',
+            query: 'feedback',
+            current: false
+        }],
+    }
 };
 
 export default (state = intinalState, action) => {
@@ -61,6 +84,42 @@ export default (state = intinalState, action) => {
 			return state;
 
     		break;
+            case 'SEARCH_GET_LIST_SUCCESS':
+            return {
+                ...state,
+                search: {
+                    ...state.search,
+                    list: {
+                        ...state.search.list,
+                        ...action.data
+                    }
+                }
+            }
+            break;
+        case 'SEARCH_SET_CURRENT_TAB':
+            if(['newest', 'useful', 'feedback'].indexOf(action.query) !== -1) {
+                return {
+                    ...state,
+                    search: {
+                        ...state.search,
+                        q: action.q,
+                        tabs: state.search.tabs.map((item, index) => {
+                            if(item.query === action.query) {
+                                return {
+                                    ...item,
+                                    current: true
+                                }
+                            }
+                            return {
+                                    ...item,
+                                    current: false
+                                };
+                        })
+                    }
+                }
+            }
+            return state;
+            break;
         default:
             return state;
     }

@@ -15,7 +15,7 @@ import {
 export default (
 	<Route>
 		<Route path="search" component={SearchContainer} />
-		<Route path="questions/tagged/:tag" component={DetailContainer} />
+		<Route path="/tagged/:tag" component={SearchContainer} />
 		<Route path="questions/:id/:slug" component={DetailContainer} />
 		
 		<Route path="questions/delete" component={AddContainer} />

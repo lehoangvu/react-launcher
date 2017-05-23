@@ -1,5 +1,5 @@
 import {browserHistory} from 'react-router';
-console.log(browserHistory);
+
 export const create = (data) => {
 	return dispatch => {
 		$.ajax({
@@ -80,5 +80,50 @@ export const vote = (question_id, value) => {
 				type: 'VOTE_FAIL'
 			});
 		})
+	}
+}
+
+export const getTabList = (q = '', sort, page = 1) => {
+	return dispatch => {
+		dispatch({
+			data: {
+		        data: [],
+		        total: 0,
+		        limit: 20,
+		        current: 1,
+		        loading: true
+		    },
+			type: 'SEARCH_GET_LIST_SUCCESS'
+		});
+		$.ajax({
+			url: config.API_URL + 'qna/search',
+			data: {
+				q,
+				sort,
+				page
+			}
+		}).done((json)=>{
+			dispatch({
+				data: {
+					...json,
+		        	loading: false,
+					current: page
+				},
+				type: 'SEARCH_GET_LIST_SUCCESS'
+			})
+		})
+		.fail((error)=>{
+
+		})
+   	}
+}
+export const setCurentTab = (q = '', query, page = 1) => {
+	return dispatch => {
+		dispatch(getTabList(q, query, page));
+		dispatch({
+			q, 
+			query,
+			type: 'SEARCH_SET_CURRENT_TAB'
+		});
 	}
 }

@@ -17,13 +17,13 @@ class Header extends React.Component {
                     </Link>
                     <ul className={s.menuList}>
                         <li>
-                            <a href="">Javascript</a>
+                            <Link to="/tagged/javascript">Javascript</Link>
                         </li>
                         <li>
-                            <a href="">PHP</a>
+                            <Link to="/tagged/php">PHP</Link>
                         </li>
                         <li>
-                            <a href="">Html/CSS</a>
+                            <Link to="/tagged/css">CSS</Link>
                         </li>
                     </ul>
                 </div>
