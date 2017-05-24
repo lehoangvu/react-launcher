@@ -68,6 +68,8 @@
     "spdy": "^3.4.3",
     "term-cluster": "0.0.1",
     "usage": "^0.7.1",
+    "body-parser": "^1.17.1",
+    "es6-promise": "^4.1.0",
     "webpack": "^1.13.2"
   },
   "devDependencies": {
@@ -84,12 +86,10 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.16.3",
-    "body-parser": "^1.17.1",
     "chai": "^3.5.0",
     "css-loader": "^0.25.0",
     "elasticsearch": "^13.0.0",
     "elasticsearchclient": "^0.5.3",
-    "es6-promise": "^4.1.0",
     "eslint": "^3.7.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-loader": "^1.5.0",
