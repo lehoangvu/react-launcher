@@ -36,7 +36,7 @@ class QuestionItem extends React.Component {
     getLink() {
         let slug = this.props.item.url || Helper.slugify(this.props.item.title);
         let id = this.props.item.id;
-        return 'questions/' + id + '/' + slug;
+        return '/questions/' + id + '/' + slug;
     }
 
     render() {
@@ -74,7 +74,7 @@ class QuestionItem extends React.Component {
                     </p>
                     {this.renderTag()} 
                     <div className={s.meta}>
-                        <span className={s.update_at}>{this.getCreateText()}</span> bởi <Link to={"user/" + user.nickname} className={s.author}>{user.fullname}</Link>
+                        <span className={s.update_at}>{this.getCreateText()}</span> bởi <Link to={"/user/" + user.nickname} className={s.author}>{user.fullname}</Link>
                     </div>  
                 </div>
             </div>
