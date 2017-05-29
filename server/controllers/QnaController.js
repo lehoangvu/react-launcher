@@ -88,7 +88,7 @@ module.exports = function (app) {
                             // res.send(model);
                             qna.add(model).then(function (snap) {
                                 snap.user = user;
-                                Updater.createCronUpdateVoteAnswer(question._id);
+                                Updater.createCronUpdateAnswer(question._id);
                                 res.send(snap);
                             }).catch(function (err) {
                                 res.status(400).send(err);
@@ -306,5 +306,63 @@ module.exports = function (app) {
         }).catch(function (err) {
             res.status(400).send(err);
         });
+    });
+    app.route('/api/qna/questions/:id').post(function (req, res) {
+        let id = req.params.id;
+        if (!id) {
+            res.status(400).send({
+                error: 'Require id'
+            });
+        }
+        if (typeof req.headers['x-customer-token'] !== 'undefined') {
+            User.getByToken(req.headers['x-customer-token'], ['_id']).then(function (user) {
+                
+                if(req.body.type === 'question') {
+                    req.checkBody('title', 'Invalid title').notEmpty().len(10, 80);
+                }
+                req.checkBody('content', 'Invalid content').notEmpty().len(60, 2000);
+
+                req.getValidationResult().then(function (result) {
+                    if (!result.isEmpty()) {
+                        res.status(400).send({ error: 'Data invalid' });
+                        return;
+                    } else {
+                        req.sanitizeBody('title').trim();
+                        req.sanitizeBody('tag').trim();
+
+                        var tags = typeof req.body.tags === 'undefined' ? [] : req.body.tags.split(',');
+                        if (tags.length > 0) {
+                            tags.forEach(function (tag, index) {
+                                tags[index] = tag.trim();
+                            });
+                        }
+
+                        var model = {
+                            'id': id,
+                            'title': req.body.title,
+                            'content': req.body.content,
+                            'tags': tags,
+                            'uid': user._id
+                        };
+
+                        // res.send(model);
+                        qna.update(model).then(function (snap) {
+                            res.send(snap);
+                        }).catch(function (err) {
+                            res.status(400).send(err);
+                        });
+                    }
+                });
+
+            }).catch(function (err) {
+                res.status(400).send({
+                    error: 'User invalid'
+                });
+            });
+        } else {
+            res.status(400).send({
+                error: 'Require login'
+            });
+        }
     });
 }

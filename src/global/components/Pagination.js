@@ -25,8 +25,6 @@ class Pagination extends React.Component {
     }
 
     render() {
-
-
         let { current, limit, total } = this.props;
         current = parseInt(current);
         const num_page = Math.ceil(total / limit);
@@ -62,13 +60,15 @@ class Pagination extends React.Component {
         }
 
         let pages = [];
-        for(let i = begin; i <= to; i++) {
-            if(i !== current) {
-                pages.push(<Link key={i} to={this.getPageUri(i)}>{i}</Link>);
-            } else {
-                pages.push(<span key={i}>{i}</span>);
+        if(begin !== to) {
+            for(let i = begin; i <= to; i++) {
+                if(i !== current) {
+                    pages.push(<Link key={i} to={this.getPageUri(i)}>{i}</Link>);
+                } else {
+                    pages.push(<span key={i}>{i}</span>);
+                }
+                    
             }
-                
         }
 
         return (

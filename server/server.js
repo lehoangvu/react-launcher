@@ -1,3 +1,4 @@
+console.log('SERVER starting ...');
 var express = require('express');
 var app = express();
 var request = require("request");
@@ -11,4 +12,5 @@ app.use(
     express.static(__dirname + '/../') //where your static content is located in your filesystem
 );
 
+console.log('SERVER ready !');
 app.listen(process.env.PORT || 5000); //the port you want to use

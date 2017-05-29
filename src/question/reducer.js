@@ -74,6 +74,39 @@ export default (state = intinalState, action) => {
     		break;
     	case 'CREATE_FAIL': 
 			return state;
+    	case 'UPDATE_SUCCESS': 
+            if(action.data.type === 'question') {
+                return {
+                    ...state,
+                    detail: {
+                        ...state.detail,
+                        ...action.data
+                    }
+                }
+            } else {
+                return {
+                    ...state,
+                    detail: {
+                        ...state.detail,
+                        answers: {
+                            ...state.detail.answers,
+                            data: state.detail.answers.data.map((ans) => {
+                                if(ans.id === action.data.id) {
+                                    return {
+                                        ...ans,
+                                        ...action.data
+                                    }
+                                }
+                                return ans;
+                            })
+                            
+                        }
+                    }
+                };
+            }
+			return state;
+    	case 'UPDATE_FAIL': 
+			return state;
     	case 'GET_DETAIL_SUCCESS': 
 			return {
 				...state,

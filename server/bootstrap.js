@@ -1,9 +1,8 @@
 var dotenv = require('dotenv');
 
 var ENV_STR = process.env.ENV_STR;
-
 var loadApp = (app_name) => {
-    switch(app_name) {
+    switch(app_name.trim()) {
         case 'api':
             require('./api');
         break;
@@ -23,9 +22,10 @@ ENV_STR.split(',').forEach((item)=>{
     switch(keyValue[0]) {
         case 'env_file':
             dotenv.config({path:'./'+keyValue[1]});
-        
+        break;
         case 'app_type':
             loadApp(keyValue[1]);
         break;
     }
 });
+ 

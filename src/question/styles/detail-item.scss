@@ -5,10 +5,10 @@
 	border-bottom: 1px solid #e4e6e8;
 }
 .title {
-	font-size: 20px;
-	font-weight: 500;
+	font-size: 23px;
+	font-weight: 400;
 	border-bottom: 1px solid #ddd;
-	padding-bottom: 20px;
+	padding-bottom: 15px;
 	margin-bottom: 20px;
 }
 .metaWrap {
@@ -25,13 +25,52 @@
 }
 .authorBox {
 	float: right;
-	display: table;
-	padding: 10px;
-	background: #e1ecf4;
+    display: table;
+    padding: 8px;
+    background: #e1ecf4;
 	> span {
-		font-size: 12px;
+		font-size: 11px;
 		color: #616161;
 		margin-bottom: 4px;
 		display: block;
+	}
+}
+
+.formGroup {
+	display: inline-block;
+	width: 100%;
+	margin: 5px 0;
+	label {
+		font-size: 14px;
+		padding: 5px 0;
+		margin: 0;
+		display: block;
+		font-weight: 500;
+	}
+	input,
+	input[type="text"],
+	input[type="password"],
+	input[type="email"]{
+		width: 100%;
+		border: 1px solid #ddd;
+		font-size: 13px;
+		padding: 5px;
+	}
+	textarea {
+		width: 100%;
+		height: 130px;
+		border: 1px solid #ddd;
+		font-size: 13px;
+		padding: 5px;
+	}
+}
+.actions {
+	display: inline-block;
+    padding-top: 10px;
+	span {
+		cursor: pointer;
+		color: #9E9E9E;
+		font-size: 12px;
+		margin-right: 5px;
 	}
 }

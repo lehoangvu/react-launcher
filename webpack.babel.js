@@ -2,74 +2,83 @@ import path from 'path';
 import webpack from 'webpack';
 import ModernizrPlugin from 'modernizr-webpack-plugin';
 import Package from './package.json';
-import Vendor from './vendor.json';
+import webpackUglifyJsPlugin from 'webpack-uglify-js-plugin';
+
+// import Vendor from './vendor.js';
 const config = {
 	cache: true,
-	debug: true,
     devtool: 'cheap-module-eval-source-map',
 	entry:  {
-		bundle: './src/bundle.js',
-		vendor: Vendor
+		bundle: './src/bundle.js'
 	},
 	output: {
 		filename: '[name].js',
 		path:     path.join(__dirname, 'dist')
 	},
 	plugins: [
-		new webpack.DefinePlugin({
-            __CLIENT__:     true,
-            __SERVER__:     false,
-            __PRODUCTION__: false,
-            __DEV__:        true,
-            __VERSION__: JSON.stringify(Package.version),
-            __APPNAME__: JSON.stringify(Package.name)
-		}),
 		new webpack.ExtendedAPIPlugin(),
-		new webpack.optimize.CommonsChunkPlugin("vendor","vendor.js")
+		// new webpackUglifyJsPlugin({
+		// 	cacheFolder: path.resolve(__dirname, 'public/cached_uglify/'),
+		// 	debug: true,
+		// 	minimize: true,
+		// 	sourceMap: true,
+		// 	output: {
+		// 		comments: false
+		// 	},
+		// 	compressor: {
+		// 		warnings: false
+		// 	}
+		// })
+		// new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', chunks: ['markdown-it', 'react'] })
 	],
+	node: {
+		fs: "empty"
+	},
 	module: {
-		postLoaders: [{
+		rules: [{
 			exclude: /node_modules/,
 			loader:  'babel-loader',
 			test:    /\.js?$/
-		}],
-		loaders: [{
+		}, {
 			test: /jquery\.js$/,
 			loader: "babel-loader"
 		},{
 			test: /\.scss$/,
-			loaders: [
-				'isomorphic-style-loader',
-				'css-loader?modules&camelCase&-url&localIdentName=[name]_[local]_[hash:base64:3]',
-				'postcss-loader',
-				'sass-loader'
+			use: [
+				{loader: 'isomorphic-style-loader'},
+				{loader: 'css-loader?modules&camelCase&-url&localIdentName=[name]_[local]_[hash:base64:3]'},
+				{loader: 'postcss-loader'},
+				{loader: 'sass-loader'}
 			]
 		},{
 			test: /\.css$/,
-			loaders: [
-				'isomorphic-style-loader',
-				'css-loader?modules&camelCase&-url&localIdentName=[name]_[local]_[hash:base64:3]',
-				'postcss-loader'
+			use: [
+				{loader: 'isomorphic-style'},
+				{loader: 'css?modules&camelCase&-url&localIdentName=[name]_[local]_[hash:base64:3]'},
+				{
+					loader: 'postcss',
+					options: {
+						plugins: (loader) => [
+						require('postcss-import')({ root: loader.resourcePath }),
+						require('postcss-custom-properties')(),
+						require('postcss-calc')(),
+						require('postcss-nesting')(),
+						require('postcss-flexbugs-fixes')(),
+						require('autoprefixer')()
+						]
+					}
+				}
 			]
-		},{
-	        test: /\.json$/,
-	        loader: 'json-loader'
-	      }
+		}
 		]
 	},
-	postcss: (bundler) => {
-	    return [
-            require('postcss-import')(),
-            require('postcss-custom-properties')(),
-            require('postcss-calc')(),
-            require('postcss-nesting')(),
-            require('postcss-flexbugs-fixes')(),
-            require('autoprefixer')()
-	    ];
-	},
 	resolve: {
-		root: [
-			path.resolve('./src')
+		// root: [
+		// 	path.resolve('./src')
+		// ]
+		modules: [
+			path.join(__dirname, "src"),
+			"node_modules"
 		]
 	}
 };

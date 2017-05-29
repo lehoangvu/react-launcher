@@ -144,6 +144,35 @@ var qna = {
             });
         });
     },
+    update: (data) => {
+        return new Promise((resolve, reject) => {
+            data.update_at = new Date().getTime();
+            // check id
+            mongo.findOne(collectionName, {id: data.id}).then((result) => {
+                if(result && result.uid.toString() === data.uid.toString()) {
+                    mongo.updateDocument('qna', {$set: data}, result._id).then((snapshot) => {
+                        return resolve({
+                            title: data.title,
+                            content: data.content,
+                            tags: data.tags
+                        });
+                    }).catch((err) => {
+                        return reject({
+                            error: 'Something whent wrong'
+                        });
+                    });
+                } else {
+                    return reject({
+                        error: 'Something whent wrong'
+                    });
+                }
+            }).catch((err) => {
+                return reject({
+                    error: 'Something whent wrong'
+                });
+            });
+        });
+    },
     vote: (question_id, vote) => {
         
     }

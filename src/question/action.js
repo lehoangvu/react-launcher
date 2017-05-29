@@ -11,7 +11,29 @@ export const create = (data) => {
 		}).fail((err)=>{
 			dispatch({
 				type: 'CREATE_FAIL',
-				error: error
+				error: err
+			});
+		})
+	}
+}
+export const update = (data) => {
+	return dispatch => {
+		$.ajax({
+			url: `${config.API_URL}qna/questions/${data.id}`,
+			data: data,
+			type: 'POST'
+		}).done((json)=>{
+			dispatch({
+				type: 'UPDATE_SUCCESS',
+				data: {
+					...data,
+					...json
+				}
+			});
+		}).fail((err)=>{
+			dispatch({
+				type: 'UPDATE_FAIL',
+				error: err
 			});
 		})
 	}
@@ -33,7 +55,7 @@ export const answer = (question_id, content) => {
 		}).fail((err)=>{
 			dispatch({
 				type: 'ANSWER_FAIL',
-				error: error
+				error: err
 			});
 		})
 	}
@@ -56,7 +78,7 @@ export const getDetail = (id) => {
 		}).fail((err)=>{
 			dispatch({
 				type: 'GET_DETAIL_FAIL',
-				error: error
+				error: err
 			});
 		})
 	}
@@ -112,9 +134,12 @@ export const getTabList = (q = '', sort, page = 1) => {
 				type: 'SEARCH_GET_LIST_SUCCESS'
 			})
 		})
-		.fail((error)=>{
-
-		})
+		.fail((err)=>{
+			dispatch({
+				type: 'SEARCH_GET_LIST_FAIL',
+				error: err
+			});
+		});
    	}
 }
 export const setCurentTab = (q = '', query, page = 1) => {

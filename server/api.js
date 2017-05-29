@@ -1,4 +1,5 @@
 "use strict";
+console.log('API starting ...');
 var express = require('express');
 var app = express();
 var request = require("request")
@@ -29,7 +30,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "x-customer-token");
   next();
 });
-
 
 app.route('/api/auth/login-google').post(function (req, res) {
     var token = req.body.token || false;

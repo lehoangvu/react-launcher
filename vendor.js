@@ -1,0 +1,24 @@
+const vendor = {
+	"jquery": "jquery",
+	"react": "react",
+	"react-router": "react-router",
+	"babel-polyfill": "babel-polyfill",
+	"react-redux": "react-redux",
+	"react-dom": "react-dom",
+	"isomorphic-style-loader/lib/withStyles": "isomorphic-style-loader/lib/withStyles",
+	"react-addons-css-transition-group": "react-addons-css-transition-group",
+	"redux": "redux",
+	"redux-thunk": "redux-thunk",
+	"redux-logger": "redux-logger",
+	"axios": "axios",
+	"react-router-redux": "react-router-redux",
+	"numeral": "numeral",
+	"moment": "moment",
+	"react-google-login-component": "react-google-login-component",
+	"react-form": "react-form",
+	"react-helmet": "react-helmet",
+	"striptags": "striptags",
+	"react-ga": "react-ga",
+	"markdown-it": "markdown-it"
+};
+export default vendor;

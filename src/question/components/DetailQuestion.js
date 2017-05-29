@@ -87,10 +87,19 @@ class DetailQuestion extends React.Component {
                 {this.helmetRender()}
             	<div className="container">
 	            	<div className={s.summary}>
-                        <DetailQUestionItem user={this.props.user} detail={detail} onVote={this.props.actions.vote} />
+                        <DetailQUestionItem 
+                            user={this.props.user} 
+                            detail={detail} 
+                            onVote={this.props.actions.vote} 
+                            onUpdate={this.props.actions.update} />
                         {detail.answers.data.map((answer)=>{
                             last_ans_id = answer.id;
-                            return <DetailQUestionItem user={this.props.user} key={answer.id} detail={answer} onVote={this.props.actions.vote} />
+                            return <DetailQUestionItem 
+                                user={this.props.user} 
+                                key={answer.id} 
+                                detail={answer} 
+                                onVote={this.props.actions.vote}
+                                onUpdate={this.props.actions.update} />
                         })}
                         <AddAnswer key={last_ans_id} onAnswer={(content) => this.props.actions.answer(detail.id, content)} />
 				    </div>

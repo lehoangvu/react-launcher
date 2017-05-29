@@ -49,7 +49,7 @@ class AddQuestion extends React.Component {
     }
 
 	handleValidateFail() {
-		alert('fail');
+		console.log('fail');
 	}
 
 	renderMarkDown() {
@@ -88,7 +88,7 @@ class AddQuestion extends React.Component {
 								    <div className={s.formGroup}>
 								    	<label>Nội dung chi tiết</label>
 								    	<Textarea disabled={this.state.disable_form} field='content' placeholder='Nhập nội dung chi tiết ?' onChange={(val, onChange) => {this.setState({markdown_code: val.currentTarget.value}); onChange()}} />
-								    	<div className={s.preview} style={{display: this.state.markdown_code.length > 0 ? 'block' : 'nones'}}>
+								    	<div className={s.preview} style={{display: this.state.markdown_code.length > 0 ? 'block' : 'none'}}>
 									    	<div className="markdown-render" dangerouslySetInnerHTML={this.renderMarkDown()} />
 								    	</div>
 								    </div>

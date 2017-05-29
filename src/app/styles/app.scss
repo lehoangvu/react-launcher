@@ -42,7 +42,7 @@ a {
 }
 
 .mainContent {
-    padding-top: 80px;
+    padding-top: 60px;
 }
 
 :global .btn {
@@ -53,6 +53,15 @@ a {
     color: #fff;
     display: inline-block;
     cursor: pointer;
+    + .btn {
+        margin-left: 10px;
+    }
+    &.cancle {
+        background: #9E9E9E;
+        &:hover, &.active, &.focus {
+            background: #757575;
+        }
+    }
     &:hover, &.active, &.focus {
         color: #fff;
         text-decoration: none;
