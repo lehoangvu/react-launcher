@@ -1,4 +1,5 @@
 var mongo = require('../db/mongo');
+var request = require('request');
 var timeoutUpdates = [];
 function createCronUpdate(type, id, callback, timeout) {
     var timeoutName = type + '-' + id;
@@ -10,6 +11,17 @@ function createCronUpdate(type, id, callback, timeout) {
     
 }
 var Updater = {
+    emit: (data) => {
+        var createCronReq = {
+            url: process.env.CRON_URL + '/update',
+            method: 'POST',
+            form: data,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        };
+        request(createCronReq);
+    },
     createCronUpdateVote: (question_id) => {
         createCronUpdate('vote', question_id, () => {
             mongo.countv2('user_react_question', {

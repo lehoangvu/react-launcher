@@ -27,6 +27,16 @@ app.route('/update').post(function (req, res) {
             Updater.createCronUpdateView(mongo.toObjectId(qid));
         }
         break;
+        case 'vote': {
+            var qid = req.body.id;
+            Updater.createCronUpdateVote(mongo.toObjectId(qid));
+        }
+        break;
+        case 'answer': {
+            var qid = req.body.id;
+            Updater.createCronUpdateAnswer(mongo.toObjectId(qid));
+        }
+        break;
             
         default:
             break;

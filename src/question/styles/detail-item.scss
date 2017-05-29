@@ -1,8 +1,12 @@
 .root {
 	padding: 15px 0;
-	display: table;
 	width: 100%;
 	border-bottom: 1px solid #e4e6e8;
+	float: left;
+	&:after, &:before {
+		content: " ";
+		display: table;
+	}
 }
 .title {
 	font-size: 23px;

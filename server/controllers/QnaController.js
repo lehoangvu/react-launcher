@@ -88,7 +88,7 @@ module.exports = function (app) {
                             // res.send(model);
                             qna.add(model).then(function (snap) {
                                 snap.user = user;
-                                Updater.createCronUpdateAnswer(question._id);
+                                Updater.emit({action: 'answer', id: question._id.toString()});
                                 res.send(snap);
                             }).catch(function (err) {
                                 res.status(400).send(err);
@@ -137,7 +137,7 @@ module.exports = function (app) {
                                             value: vote,
                                             question_id: question._id
                                         }).then(() => {
-                                            Updater.createCronUpdateVote(question._id);
+                                            Updater.emit({action: 'vote', id: question._id.toString()});
                                             res.send({
                                                 type: 'new',
                                                 vote: vote
@@ -154,7 +154,7 @@ module.exports = function (app) {
                                             });
                                         } else {
                                             mongo.updateDocument('user_react_question', { $set: { value: vote } }, result._id).then(() => {
-                                                Updater.createCronUpdateVote(question._id);
+                                                Updater.emit({action: 'vote', id: question._id.toString()});
                                                 res.send({
                                                     type: 'update',
                                                     vote: vote
@@ -232,19 +232,7 @@ module.exports = function (app) {
                         mongo.countv2('user_react_question', viewData).then((count) => {
                             if (count === 0) {
                                 mongo.addDocument('user_react_question', viewData);
-                                Updater.createCronUpdateView(question._id);
-                                // var createCronReq = {
-                                //     url: 'http://localhost:5200/update',
-                                //     method: 'POST',
-                                //     form: {
-                                //         action: 'view',
-                                //         id: question._id.toString()
-                                //     },
-                                //     headers: {
-                                //         'Content-Type': 'application/x-www-form-urlencoded'
-                                //     }
-                                // };
-                                // request(createCronReq);
+                                Updater.emit({action: 'view', id: question._id.toString()});
                             }
                         });
                     }
