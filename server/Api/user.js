@@ -1,5 +1,5 @@
 var mongo = require('./../db/mongo');
-var firebase = require('./firebase');
+// var firebase = require('./firebase');
 var db = firebase.database();
 var Raven = require('./raven');
 
