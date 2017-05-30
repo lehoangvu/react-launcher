@@ -87,6 +87,12 @@ app.route('/api/status' ).get(function (req, res) {
 mongo.connect().then(function() {
     console.log('Connect Mongo Success and listerning to connection to API!');
     require('./controllers/QnaController')(app);
+
+    // user.addNotice({
+    //     uid: mongo.toObjectId('591dcf82bf91441b481baa8e1'),
+    //     type: 'answer'
+    // })
+
     app.listen(process.env.PORT || 5100); //the port you want to use
 }).catch(function(err) {
     console.log(err);

@@ -1,7 +1,10 @@
 var mongo = require('./../db/mongo');
+var firebase = require('./firebase');
+var db = firebase.database();
+var Raven = require('./raven');
 
 module.exports = {
-	get: function(_id, fields) {
+	get: (_id, fields) => {
 		return new Promise(function(resolve, reject) {
 			mongo.findOne('user', {_id: mongo.toObjectId(_id)}).then(function(result) {
 				if(!result)
@@ -16,7 +19,7 @@ module.exports = {
 			})
 		});
 	},
-	getByToken: function(token, fields) {
+	getByToken: (token, fields) => {
 		return new Promise(function(resolve, reject) {
             mongo.findOne('user_token', {value: token})
             .then(function(result) {
@@ -48,5 +51,36 @@ module.exports = {
                 });
             });
         });
-	}
+	},
+    addNotice: (data) => {
+        // TODO: Ensure this not readed
+        data.readed = false;
+        return new Promise((resolve, reject) => {
+            // add to user
+            mongo.addDocument('user_notice', data).then((result) => {
+                // update count
+                mongo.countv2('user_notice', {readed: false, uid: data.uid}).then((count) => {
+                    mongo.updateDocument('user', {$set: {notice: count}}, data.uid).then((result) => {
+                        
+                    }).catch((err) => {
+                        Raven.captureException({
+                            error: 'Update user notice count',
+                            env: 'API'
+                        });
+                    })
+                }).catch((err) => {
+                    Raven.captureException({
+                        error: 'Count user notice',
+                        env: 'API'
+                    });
+                })
+            }).catch((err) => {
+                Raven.captureException({
+                    error: 'Add user notice',
+                    env: 'API'
+                });
+            })
+
+        })
+    }
 }

@@ -11,7 +11,7 @@ import helper from './global/helper';
 import { syncHistoryWithStore } from 'react-router-redux';
 import ReactGA from 'react-ga';
 import Raven from 'raven';
-Raven.config('https://ad18788eef8f4f2c923b8ecd5edfe050@sentry.io/173012').install();
+Raven.config('https://ad18788eef8f4f2c923b8ecd5edfe050:db040653c6fb441c9e59484f9cb5b489@sentry.io/173012').install();
 
 ReactGA.initialize('UA-71598875-1');
 let logPageView = () => {
@@ -19,13 +19,11 @@ let logPageView = () => {
   ReactGA.pageview(window.location.pathname + window.location.search);
 }
 
-
 window.config = config;
 window.Helper = helper;
 window.$ = jQuery;
 
 const history = syncHistoryWithStore(browserHistory, store);
-
 
 render(
     <WithStylesContex onInsertCss={styles => Array.isArray(styles) ? styles.map((style)=>{style._insertCss()}): styles._insertCss()}>
@@ -37,3 +35,10 @@ render(
     </WithStylesContex>,
     document.getElementById('root')
 );
+
+// FB.ui({
+//     method: 'share',
+//     href: window.location.href,
+// }, function(response){
+
+// });
