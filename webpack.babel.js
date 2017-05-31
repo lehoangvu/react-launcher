@@ -18,16 +18,16 @@ const config = {
 	},
 	plugins: [
 		new webpack.ExtendedAPIPlugin(),
-		new webpack.optimize.UglifyJsPlugin({
-			minimize: true,
-			sourceMap: true,
-			output: {
-				comments: false
-			},
-			compressor: {
-				warnings: false
-			}
-		})
+		// new webpack.optimize.UglifyJsPlugin({
+		// 	minimize: true,
+		// 	sourceMap: true,
+		// 	output: {
+		// 		comments: false
+		// 	},
+		// 	compressor: {
+		// 		warnings: false
+		// 	}
+		// })
 		// new webpack.optimize.CommonsChunkPlugin({
 		// 	name: "vendor",
 		// 	minChunks: Infinity,
