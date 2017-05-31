@@ -41,4 +41,5 @@ export const VendorArr = [
 	"striptags",
 	"react-ga",
 	"markdown-it",
+	"./src/first.js"
 ];
