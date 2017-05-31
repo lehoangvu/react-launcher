@@ -11,6 +11,9 @@ class VoteButton extends React.Component {
         }
     }
     handleClick(vote) {
+        if(this.props.user && this.props.user.nickname === this.props.owner.nickname) {
+            return;
+        }
         if(!this.props.user && typeof showSigninPopup !== 'undefined') {
             showSigninPopup();
             return;
@@ -48,6 +51,7 @@ class VoteButton extends React.Component {
         }
     }
     render() {
+        console.log('render');
         return (
             <div className={s.voteBtn} >
                 <span>{parseInt(this.props.vote) - parseInt(this.props.down_vote)}</span>

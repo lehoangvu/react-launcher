@@ -111,7 +111,7 @@ class UserBar extends React.Component {
         if (this.state.isLogin) {
             let user = this.props.user;
             return <div className={s.root}>
-                <Link to="notice" title="Thông báo của bạn"><i className="ion-android-notifications" /></Link>
+                <Link className={s.noticeLink} to="notice" title="Thông báo của bạn"><i className="ion-android-notifications" />{user.notice > 0 ? <span className={s.noticeSpan}>{user.notice}</span> : ''}</Link>
                 <Link to="/me" className={s.userLink}>
                     <img src={user.image} />
                 </Link>

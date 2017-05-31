@@ -96,3 +96,17 @@
     box-shadow: 0 0 5px #ccc;
     border-bottom: 5px solid #2196F3;
 }
+.noticeLink {
+    position: relative;
+}
+.noticeSpan {
+    color: #fff;
+    background: #ffa400;
+    border-radius: 7px;
+    font-size: 11px;
+    padding: 2px 4px;
+    position: absolute;
+    top: 10px;
+    left: 6px;
+    font-weight: 400;
+}

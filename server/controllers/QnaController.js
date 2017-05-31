@@ -129,7 +129,6 @@ module.exports = function (app) {
                             // check user has vote
                             mongo.findOne('user_react_question', { question_id: question._id, uid: user._id, action: 'vote' })
                                 .then((result) => {
-                                    console.log(result);
                                     if (!result) {
                                         mongo.addDocument('user_react_question', {
                                             uid: user._id,
@@ -138,6 +137,13 @@ module.exports = function (app) {
                                             question_id: question._id
                                         }).then(() => {
                                             Updater.emit({action: 'vote', id: question._id.toString()});
+                                            var noticeData = {
+                                                uid: question.uid,
+                                                type: 'vote',
+                                                sid: user._id,
+                                                oid: question._id
+                                            };
+                                            user.addNotice(noticeData);
                                             res.send({
                                                 type: 'new',
                                                 vote: vote
@@ -155,14 +161,22 @@ module.exports = function (app) {
                                         } else {
                                             mongo.updateDocument('user_react_question', { $set: { value: vote } }, result._id).then(() => {
                                                 Updater.emit({action: 'vote', id: question._id.toString()});
+                                                var noticeData = {
+                                                    uid: question.uid,
+                                                    type: 'vote',
+                                                    sid: user._id,
+                                                    oid: question._id
+                                                };
+                                                User.addNotice(noticeData);
                                                 res.send({
                                                     type: 'update',
                                                     vote: vote
                                                 });
                                             }).catch((err) => {
-                                                res.status(400).send({
-                                                    error: 'Something went wrong'
-                                                });
+                                                // res.status(400).send({
+                                                //     error: 'Something went wrong'
+                                                // });
+                                                res.status(400).send(err);
                                             });
                                         }
                                     }

@@ -1,11 +1,10 @@
-const vendor = {
+export const Vendor = {
 	"jquery": "jquery",
 	"react": "react",
 	"react-router": "react-router",
 	"babel-polyfill": "babel-polyfill",
 	"react-redux": "react-redux",
 	"react-dom": "react-dom",
-	"isomorphic-style-loader/lib/withStyles": "isomorphic-style-loader/lib/withStyles",
 	"react-addons-css-transition-group": "react-addons-css-transition-group",
 	"redux": "redux",
 	"redux-thunk": "redux-thunk",
@@ -21,4 +20,25 @@ const vendor = {
 	"react-ga": "react-ga",
 	"markdown-it": "markdown-it"
 };
-export default vendor;
+export const VendorArr = [
+	"jquery",
+	"react",
+	"react-router",
+	"babel-polyfill",
+	"react-redux",
+	"react-dom",
+	"react-addons-css-transition-group",
+	"redux",
+	"redux-thunk",
+	"redux-logger",
+	"axios",
+	"react-router-redux",
+	"numeral",
+	"moment",
+	"react-google-login-component",
+	"react-form",
+	"react-helmet",
+	"striptags",
+	"react-ga",
+	"markdown-it",
+];

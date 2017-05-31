@@ -2,14 +2,18 @@ import path from 'path';
 import webpack from 'webpack';
 import ModernizrPlugin from 'modernizr-webpack-plugin';
 import Package from './package.json';
-import webpackUglifyJsPlugin from 'webpack-uglify-js-plugin';
 
-// import Vendor from './vendor.js';
+import {Vendor, VendorArr} from './vendor.js';
+
+
+
+// console.log(VendorArr);
 const config = {
 	cache: true,
     devtool: 'cheap-module-eval-source-map',
 	entry:  {
-		bundle: './src/bundle.js'
+		bundle: './src/bundle.js',
+		...Vendor
 	},
 	output: {
 		filename: '[name].js',
@@ -17,19 +21,20 @@ const config = {
 	},
 	plugins: [
 		new webpack.ExtendedAPIPlugin(),
-		// new webpackUglifyJsPlugin({
-		// 	cacheFolder: path.resolve(__dirname, 'public/cached_uglify/'),
-		// 	debug: true,
-		// 	minimize: true,
-		// 	sourceMap: true,
-		// 	output: {
-		// 		comments: false
-		// 	},
-		// 	compressor: {
-		// 		warnings: false
-		// 	}
+		new webpack.optimize.UglifyJsPlugin({
+			minimize: true,
+			sourceMap: true,
+			output: {
+				comments: false
+			},
+			compressor: {
+				warnings: false
+			}
+		})
+		// new webpack.optimize.CommonsChunkPlugin({
+		// 	name: "vendor",
+		// 	minChunks: Infinity,
 		// })
-		// new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', chunks: ['markdown-it', 'react'] })
 	],
 	node: {
 		fs: "empty"
@@ -82,10 +87,23 @@ const config = {
 		]
 	}
 };
-process.argv.indexOf('--minimize') !== -1 && config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-	compress:{
-		warnings: false
-	}
+
+config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ 
+	name: 'vendor',
+	minChunks: Infinity
 }));
+
+config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ 
+	names: VendorArr,
+	minChunks: Infinity
+}));
+
+// VendorArr.map((asset) => {
+// 	config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ 
+// 		name: asset,
+// 		minChunks: Infinity
+// 	}));
+// });
+
 
 export default config;

@@ -4,10 +4,11 @@
   "description": "React, Redux, React Router, Universal, PostCSS",
   "main": "server/index.js",
   "scripts": {
-    "dev": "webpack -d --color --watch --progress --config webpack.babel.js",
+    "dev": "webpack -d --color --watch --progress --optimize-minimize --config webpack.babel.js",
     "build:server": "webpack -d --color --progress --config webpack-server.babel.js",
     "test": "mocha server/tests/index.js --recursive --watch",
     "cover": "istanbul cover _mocha server/tests/index.js --recursive",
+    "start": "run-p start:server start:api start:cron",
     "start:server": "ENV_STR=env_file:.env.dev,app_type:server  nodemon server --config nodemon.config.js",
     "start:api": "ENV_STR=env_file:.env.dev,app_type:api nodemon server --config nodemon.config.js",
     "start:cron": "ENV_STR=env_file:.env.dev,app_type:cron  nodemon server --config nodemon.config.js",

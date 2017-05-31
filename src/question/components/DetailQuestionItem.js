@@ -144,6 +144,7 @@ class DetailQuestionItem extends React.Component {
                         <VoteButton 
                         user={this.props.user}
                         id={detail.id}
+                        owner={detail.user}
                         onVote={this.props.onVote}
                         voted={detail.voted}
                         down_voted={detail.down_voted}

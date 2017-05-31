@@ -57,6 +57,11 @@ export default (state = intinalState, action) => {
                 }
             };
             break;
+        case 'VOTE_FAIL':
+            return {
+                ...state
+            };
+            break;
         case 'CREATE_SUCCESS':
             return state;
             break;
