@@ -204,7 +204,7 @@ module.exports = function (app) {
         }
     });
 
-    app.route('/api/qna/search').get(function (req, res) {
+    app.route('/api/qna/search').get(cache('5 minutes'), function (req, res) {
         var query = {
             q: req.query || '',
             sort: req.query.sort || 'newest',

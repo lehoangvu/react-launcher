@@ -16,7 +16,7 @@ var apicache = require('apicache');
 
 var cache = apicache.middleware;
 
-app.use(cache('5 minutes'));
+// app.use(cache('5 minutes'));
 
 
 app.use(compression({filter: (req, res) => {
