@@ -5,15 +5,12 @@ import Package from './package.json';
 
 import {Vendor, VendorArr} from './vendor.js';
 
-
-
-// console.log(VendorArr);
 const config = {
 	cache: true,
     devtool: 'cheap-module-eval-source-map',
 	entry:  {
+		vendor: VendorArr,
 		bundle: './src/bundle.js',
-		...Vendor
 	},
 	output: {
 		filename: '[name].js',
@@ -21,16 +18,16 @@ const config = {
 	},
 	plugins: [
 		new webpack.ExtendedAPIPlugin(),
-		new webpack.optimize.UglifyJsPlugin({
-			minimize: true,
-			sourceMap: true,
-			output: {
-				comments: false
-			},
-			compressor: {
-				warnings: false
-			}
-		})
+		// new webpack.optimize.UglifyJsPlugin({
+		// 	minimize: true,
+		// 	sourceMap: true,
+		// 	output: {
+		// 		comments: false
+		// 	},
+		// 	compressor: {
+		// 		warnings: false
+		// 	}
+		// })
 		// new webpack.optimize.CommonsChunkPlugin({
 		// 	name: "vendor",
 		// 	minChunks: Infinity,
@@ -93,17 +90,11 @@ config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
 	minChunks: Infinity
 }));
 
-config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ 
-	names: VendorArr,
-	minChunks: Infinity
-}));
+// config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ 
+// 	names: VendorArr,
+// 	minChunks: Infinity
+// }));
 
-// VendorArr.map((asset) => {
-// 	config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ 
-// 		name: asset,
-// 		minChunks: Infinity
-// 	}));
-// });
 
 
 export default config;
