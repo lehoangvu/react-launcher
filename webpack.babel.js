@@ -15,6 +15,7 @@ const config = {
 		filename: '[name].js',
 		path:     path.join(__dirname, 'dist')
 	},
+    devtool: 'cheap-module-eval-source-map',
 	plugins: [
 		new webpack.ExtendedAPIPlugin(),
 		// new webpack.ProvidePlugin({

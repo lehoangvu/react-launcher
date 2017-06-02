@@ -66,7 +66,7 @@ export default (state = intinalState, action) => {
                         answers: {
                             ...state.detail.answers,
                             data: state.detail.answers.data.map((ans) => {
-                                if(ans._id === action.id) {
+                                if(ans.id === action.id) {
                                     ans.voted = action.vote === 1;
                                     ans.down_voted = action.vote !== 1;
                                     ans.vote = ans.vote + action.vote;

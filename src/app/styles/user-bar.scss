@@ -110,3 +110,42 @@
     left: 6px;
     font-weight: 400;
 }
+.noticeList {
+    text-align: left;
+    margin: 10px -15px 0 -15px;
+    background: #e1ecf4;
+}
+.noticeListView {
+       
+}
+.noticeItem {
+    padding: 10px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    a {
+        vertical-align: baseline;
+        display: inline;
+        margin-left: 0;
+    }
+}
+.noticeItemUnread {
+    border-left: 5px solid #ffa400;
+}
+.noticeItem {
+    padding: 10px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    a {
+        vertical-align: baseline;
+        display: inline;
+        margin-left: 0;
+    }
+}
+.noticeTime {
+    display: block;
+    color: #616161;
+    font-size: 11px;
+    margin-top: 5px;
+}

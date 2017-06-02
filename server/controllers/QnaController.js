@@ -143,7 +143,7 @@ module.exports = function (app) {
                                                 sid: user._id,
                                                 oid: question._id
                                             };
-                                            user.addNotice(noticeData);
+                                            User.addNotice(noticeData);
                                             res.send({
                                                 type: 'new',
                                                 vote: vote
