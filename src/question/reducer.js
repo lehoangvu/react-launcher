@@ -33,33 +33,58 @@ const intinalState = {
             query: 'feedback',
             current: false
         }],
-    }
+    },
+    time: new Date().getTime()
 };
 
 export default (state = intinalState, action) => {
     switch(action.type){
         case 'VOTE_SUCCESS':
             let appendVote = {};
-            if(action.vote === 1) {
-                appendVote['voted'] = true;
-                appendVote['down_voted'] = false;
-                appendVote['vote'] = state.detail.vote +1;
-            } else {
-                appendVote['voted'] = false;
-                appendVote['down_voted'] = true;
-                appendVote['down_vote'] = state.detail.down_vote + 1;
-            }
-            return {
-                ...state,
-                detail: {
-                    ...state.detail,
-                    ...appendVote 
+            if(action.id === state.detail.id) {
+                if(action.vote === 1) {
+                    appendVote['voted'] = true;
+                    appendVote['down_voted'] = false;
+                    appendVote['vote'] = state.detail.vote +1;
+                } else {
+                    appendVote['voted'] = false;
+                    appendVote['down_voted'] = true;
+                    appendVote['down_vote'] = state.detail.down_vote + 1;
                 }
-            };
+                return {
+                    ...state,
+                    detail: {
+                        ...state.detail,
+                        ...appendVote 
+                    }                
+                };
+            } else {
+                return {
+                    ...state,
+                    detail: {
+                        ...state.detail,
+                        answers: {
+                            ...state.detail.answers,
+                            data: state.detail.answers.data.map((ans) => {
+                                if(ans._id === action.id) {
+                                    ans.voted = action.vote === 1;
+                                    ans.down_voted = action.vote !== 1;
+                                    ans.vote = ans.vote + action.vote;
+                                }
+                                return ans;
+                            })
+                        }
+                    }                
+                };
+            }
             break;
         case 'VOTE_FAIL':
             return {
-                ...state
+                ...state,
+                // detail: {
+                //     ...state.detail,
+                //     time: new Date().getTime()
+                // }
             };
             break;
         case 'CREATE_SUCCESS':

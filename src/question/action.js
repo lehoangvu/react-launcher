@@ -95,7 +95,8 @@ export const vote = (question_id, value) => {
 		}).done((json)=>{
 			dispatch({
 				type: 'VOTE_SUCCESS',
-				vote: json.vote
+				vote: json.vote,
+				id: question_id
 			});
 		}).fail((err)=>{
 			dispatch({

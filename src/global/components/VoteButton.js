@@ -24,6 +24,7 @@ class VoteButton extends React.Component {
         this.props.onVote(this.props.id, vote);
     }
     componentWillReceiveProps(nextProps) {
+        console.log(this.state);
         this.setState({
             loading: false
         });
