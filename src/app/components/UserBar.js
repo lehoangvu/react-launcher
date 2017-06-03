@@ -5,7 +5,7 @@ import FacebookLoginBtn from './FacebookLoginBtn';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './../styles/user-bar.scss';
 
-import { Skeleton } from './../../global';
+import { Skeleton, UserBox } from './../../global';
 
 class UserBar extends React.Component {
     constructor(props) {
@@ -36,7 +36,7 @@ class UserBar extends React.Component {
             ...this.state,
             isLogin: nextProps.user !== null && nextProps.user !== false,
             user: nextProps.user,
-            showUserMenu: false
+            showUserMenu: true
         };
         this.setState(state);
     }
@@ -99,6 +99,28 @@ class UserBar extends React.Component {
         if (this.state.showUserMenu) {
             return <div className={s.userMenuContent}>
                 <a href="javascript:" onClick={this.logout.bind(this)}>Thoát tài khoản: {this.state.user.fullname}</a>
+                <div className={s.noticeList} >
+                    <div className={s.noticeListView}>
+                        <div className={s.noticeItem}>
+                            <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
+                            <span className={s.noticeTime}>2 phút trước</span>
+                        </div>
+                        <div className={s.noticeItem}>
+                            <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
+                            <span className={s.noticeTime}>2 phút trước</span>
+                        </div>
+                        <div className={s.noticeItem}>
+                            <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
+                            <span className={s.noticeTime}>2 phút trước</span>
+                        </div>
+                        <div className={s.noticeItemUnread}>
+                            <div className={s.noticeItem}>
+                                <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
+                                <span className={s.noticeTime}>2 phút trước</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>;
             </div>;
         }
     }

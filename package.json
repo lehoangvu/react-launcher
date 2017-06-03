@@ -4,7 +4,7 @@
   "description": "React, Redux, React Router, Universal, PostCSS",
   "main": "server/index.js",
   "scripts": {
-    "dev": "webpack -d --color --watch --progress --optimize-minimize --config webpack.babel.js",
+    "dev": "webpack -d --color --watch --progress --config webpack.babel.js",
     "build:server": "webpack -d --color --progress --config webpack-server.babel.js",
     "test": "mocha server/tests/index.js --recursive --watch",
     "cover": "istanbul cover _mocha server/tests/index.js --recursive",

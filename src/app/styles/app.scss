@@ -2,6 +2,21 @@
 @import './global.scss';
 @import './markdown.scss';
 
+
+:global(::-webkit-scrollbar) {
+    width: 10px;
+}
+ 
+:global(::-webkit-scrollbar-track) {
+    // background: #ccc;
+    border-radius: 0px;
+}
+ 
+:global(::-webkit-scrollbar-thumb) {
+    background: #ffa400;
+    border-radius: 0px;
+}
+
 :root {
     --link-color: #07C;
     --border-color: #f48024;

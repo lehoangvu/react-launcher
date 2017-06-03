@@ -7,7 +7,6 @@ import {Vendor, VendorArr} from './vendor.js';
 
 const config = {
 	cache: true,
-    devtool: 'cheap-module-eval-source-map',
 	entry:  {
 		vendor: VendorArr,
 		bundle: './src/bundle.js',
@@ -16,8 +15,14 @@ const config = {
 		filename: '[name].js',
 		path:     path.join(__dirname, 'dist')
 	},
+    devtool: 'cheap-module-eval-source-map',
 	plugins: [
 		new webpack.ExtendedAPIPlugin(),
+		// new webpack.ProvidePlugin({
+		// 	$: 'jquery',
+		// 	jQuery: 'jquery',
+
+		// })
 		// new webpack.optimize.UglifyJsPlugin({
 		// 	minimize: true,
 		// 	sourceMap: true,
@@ -39,11 +44,11 @@ const config = {
 	module: {
 		rules: [{
 			exclude: /node_modules/,
-			loader:  'babel-loader',
+			use:  ['babel-loader'],
 			test:    /\.js?$/
 		}, {
 			test: /jquery\.js$/,
-			loader: "babel-loader"
+			use: ["babel-loader"]
 		},{
 			test: /\.scss$/,
 			use: [

@@ -63,6 +63,7 @@ module.exports = {
                     mongo.updateDocument('user', {$set: {notice: count}}, data.uid).then((result) => {
                         return resolve(result);
                     }).catch((err) => {
+                        console.log(err);
                         Raven.captureException({
                             error: 'Update user notice count',
                             env: 'API'
@@ -70,6 +71,7 @@ module.exports = {
                         return reject(err);
                     })
                 }).catch((err) => {
+                    console.log(err);
                     Raven.captureException({
                         error: 'Count user notice',
                         env: 'API'
@@ -77,6 +79,7 @@ module.exports = {
                     return reject(err);
                 })
             }).catch((err) => {
+                console.log(err);
                 Raven.captureException({
                     error: 'Add user notice',
                     env: 'API'
