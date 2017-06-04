@@ -62,27 +62,12 @@ var User = {
                     mongo.updateDocument('user', {$set: {notice: count}}, data.uid).then((result) => {
                         return resolve(result);
                     }).catch((err) => {
-                        console.log(err);
-                        Raven.captureException({
-                            error: 'Update user notice count',
-                            env: 'API'
-                        });
                         return reject(err);
                     })
                 }).catch((err) => {
-                    console.log(err);
-                    Raven.captureException({
-                        error: 'Count user notice',
-                        env: 'API'
-                    });
                     return reject(err);
                 })
             }).catch((err) => {
-                console.log(err);
-                Raven.captureException({
-                    error: 'Add user notice',
-                    env: 'API'
-                });
                 return reject(err);
             })
 
@@ -147,6 +132,35 @@ var User = {
             }).catch((err)=>{
                 return reject(err);
             })
+        });
+    },
+    markNoticeReaded: (notice_id, token) => {
+        return new Promise((resolve, reject) => {
+            User.getByToken(token, ['_id']).then((user)=>{
+                mongo.getCollection('user_notice').find({
+                    uid: user._id,
+                    _id: mongo.toObjectId(notice_id)
+                }).toArray((err, notices) => {
+                    if(err) {
+                        return reject(err);
+                    }
+                    if(notices.length === 1) {
+                        mongo.updateDocument('user_notice', {$set: {reader: true}}, mongo.toObjectId(notice_id)).then(()=>{
+                            mongo.countv2('user_notice', {readed: false, uid: user._id}).then((count) => {
+                                mongo.updateDocument('user', {$set: {notice: count}}, user._id);
+                            }).catch((err) => {
+                                // TODO: No check err
+                            });
+
+                            return resolve(true);
+                        }).catch((err)=>{
+                            return reject(err);
+                        })
+                    }
+                });
+            }).catch((err)=> {
+                return reject(err);
+            });
         });
     }
 }

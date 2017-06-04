@@ -7,7 +7,7 @@ var request = require("request")
 var bodyParser = require('body-parser');
 var oauth = require('./Api/oauth');
 var mongo = require('./db/mongo');
-var user = require('./Api/user');
+var User = require('./Api/user');
 var qna = require('./Api/qna');
 var expressValidator = require('express-validator');
 var apicache = require('apicache');
@@ -92,7 +92,7 @@ app.route('/api/customer/me' ).post(function (req, res) {
     });
 });
 
-app.route('/api/customer/me/notice' ).get(function (req, res) {
+app.route('/api/customer/me/notice').get(function (req, res) {
     // console.log(req.header);
     var token = req.headers['x-customer-token'] || false;
     if(!token) {
@@ -102,7 +102,7 @@ app.route('/api/customer/me/notice' ).get(function (req, res) {
         });
     }
     var page = req.query.page || 1;
-    user.getNotice(token, page)
+    User.getNotice(token, page)
     .then((result) => {
         var nprs = [];
         result.data.map((item) => {
@@ -125,6 +125,35 @@ app.route('/api/customer/me/notice' ).get(function (req, res) {
         res.status(400).send(err);
     });
 });
+
+
+// app.route('/api/customer/me/notice/read').post(function (req, res) {
+//     // console.log(req.header);
+//     var token = req.headers['x-customer-token'] || false;
+//     var notice_id = req.body.notice_id || false;
+//     if(!token) {
+//         res.status(400);
+//         res.send({
+//             error: 'Token is require'
+//         });
+//     }
+//     if(!notice_id) {
+//         res.status(400);
+//         res.send({
+//             error: 'Data invalid'
+//         });
+//     }
+//     User.markNoticeReaded(notice_id, token).then((result) => {
+//         res.send({
+//             success: true
+//         });
+//     }).catch((err) => {
+//         res.status(400);
+//         res.send({
+//             error: 'Something went wrong'
+//         });
+//     });
+// });
 
 app.route('/api/status' ).get(function (req, res) {
     var pid = process.pid;
