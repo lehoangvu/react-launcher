@@ -4,6 +4,7 @@ import GoogleLoginBtn from './GoogleLoginBtn';
 import FacebookLoginBtn from './FacebookLoginBtn';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './../styles/user-bar.scss';
+import moment from 'moment';
 
 import { Skeleton, UserBox } from './../../global';
 
@@ -12,7 +13,7 @@ class UserBar extends React.Component {
         super(props);
         this.state = {
             showSigninPopup: false,
-            showUserMenu: false
+            showUserMenu: false,
         };
     }
 
@@ -36,7 +37,7 @@ class UserBar extends React.Component {
             ...this.state,
             isLogin: nextProps.user !== null && nextProps.user !== false,
             user: nextProps.user,
-            showUserMenu: true
+            showUserMenu: false
         };
         this.setState(state);
     }
@@ -87,6 +88,9 @@ class UserBar extends React.Component {
     }
     menuToggle() {
         const show = !this.state.showUserMenu;
+        if(show && !this.props.user.notice) {
+            this.props.getNotice(1);
+        }
         this.setState({
             showUserMenu: show
         })
@@ -95,32 +99,57 @@ class UserBar extends React.Component {
         e.preventDefault();
         this.props.logout();
     }
+    // <div className={s.noticeItem}>
+    //     <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
+    //     <span className={s.noticeTime}>2 phút trước</span>
+    // </div>
+    // <div className={s.noticeItem}>
+    //     <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
+    //     <span className={s.noticeTime}>2 phút trước</span>
+    // </div>
+    // <div className={s.noticeItem}>
+    //     <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
+    //     <span className={s.noticeTime}>2 phút trước</span>
+    // </div>
+    // <div className={s.noticeItemUnread}>
+    //     <div className={s.noticeItem}>
+    //         <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
+    //         <span className={s.noticeTime}>2 phút trước</span>
+    //     </div>
+    // </div>
+    renderNotice() {
+        moment.locale('vi');
+        const noticeState = this.state.user.notice;
+        let notices = [];
+        if(!noticeState) {
+            notices = [1, 2, 3].map(()=>{
+                return <Skeleton w="100%" h="30px" mb="5px" mt="5px" />
+            });
+        } else {
+            notices = noticeState.data.map((item)=>{
+                let dateString = moment.unix(Math.round(item.create_at / 1000)).format("YYYYMMDD");
+                let create_at = moment(dateString, 'YYYYMMDD').fromNow();
+                return <div className={!item.readed ? s.noticeItemUnread : null}>
+                        <div className={s.noticeItem}>
+                            <b>{item.user.fullname}</b> đã {item.action} tại <a href={item.target_url}>{item.target_title}</a>
+                            <span className={s.noticeTime}>{create_at}</span>
+                        </div>
+                    </div>;
+            });
+        }
+        return (
+            <div className={s.noticeList} >
+                <div className={s.noticeListView}>
+                    {notices}
+                </div>
+            </div>
+        );
+    }
     getMenu() {
         if (this.state.showUserMenu) {
             return <div className={s.userMenuContent}>
                 <a href="javascript:" onClick={this.logout.bind(this)}>Thoát tài khoản: {this.state.user.fullname}</a>
-                <div className={s.noticeList} >
-                    <div className={s.noticeListView}>
-                        <div className={s.noticeItem}>
-                            <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
-                            <span className={s.noticeTime}>2 phút trước</span>
-                        </div>
-                        <div className={s.noticeItem}>
-                            <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
-                            <span className={s.noticeTime}>2 phút trước</span>
-                        </div>
-                        <div className={s.noticeItem}>
-                            <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
-                            <span className={s.noticeTime}>2 phút trước</span>
-                        </div>
-                        <div className={s.noticeItemUnread}>
-                            <div className={s.noticeItem}>
-                                <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
-                                <span className={s.noticeTime}>2 phút trước</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>;
+                {this.renderNotice()}
             </div>;
         }
     }

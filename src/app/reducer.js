@@ -1,5 +1,6 @@
 const intinalState = {
-    user: false
+    user: false,
+    notice: false
 }
 const saveToken = (token) => {
     $.ajaxSetup({
@@ -30,6 +31,22 @@ export default (state = intinalState, action) => {
                 user: action.user
             };
             break;
+        case 'GET_NOTICE_SUCCESS':
+            if(!state.notice) {
+                return {
+                    ...state,
+                    notice: action.notice
+                };
+            } else {
+                return {
+                    ...state,
+                    notice: {
+                        ...state.notice,
+                        data: state.notice.data.push(action.notice.data)
+                    }
+                };
+            }
+            break;
 
         case 'LOGOUT':
             $.ajaxSetup({
@@ -41,7 +58,8 @@ export default (state = intinalState, action) => {
             return {
                 ...state,
                 fetched: true,
-                user: null
+                user: null,
+                notice: false
             };
             break;
 

@@ -56,6 +56,27 @@ export const fetchInfo = (token) => {
     }
 }
 
+export const getNotice = (page) => {
+    return dispatch => {
+        $.ajax({
+            url: config.API_URL + 'customer/me/notice',
+            data: {
+                page: page
+            },
+            type: 'GET'
+        }).done(function(response) {
+            dispatch({
+                type: 'GET_NOTICE_SUCCESS',
+                notice: response
+            });
+        }).fail(function(error) {
+            dispatch({
+                type: 'GET_NOTICE_FAIL'
+            });
+        });
+    };
+}
+
 export const logout = () => {
     return {
         type: 'LOGOUT'

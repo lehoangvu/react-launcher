@@ -45,9 +45,10 @@ app.use(function(req, res, next) {
 app.route('/api/auth/login-google').post(function (req, res) {
     var token = req.body.token || false;
     if(!token) {
-        return response(res, {
+        res.status(400);
+        res.send({
             error: 'Token is require'
-        }, false);
+        });
     }
     oauth.socialLogin(token, 'google')
     .then(function(results) {
@@ -60,9 +61,10 @@ app.route('/api/auth/login-google').post(function (req, res) {
 app.route('/api/auth/login-facebook').post(function (req, res) {
     var token = req.body.token || false;
     if(!token) {
-        return response(res, {
+        res.status(400);
+        res.send({
             error: 'Token is require'
-        }, false);
+        });
     }
     oauth.socialLogin(token, 'facebook')
     .then(function(results) {
@@ -76,11 +78,30 @@ app.route('/api/auth/login-facebook').post(function (req, res) {
 app.route('/api/customer/me' ).post(function (req, res) {
     var token = req.body.token || false;
     if(!token) {
-        return response(res, {
+        res.status(400);
+        res.send({
             error: 'Token is require'
-        }, false);
+        });
     }
     oauth.fetch(token)
+    .then(function(result) {
+        res.send(result);
+    }).catch(function(err) {
+        res.status(400).send(err);
+    });
+});
+
+app.route('/api/customer/me/notice' ).get(function (req, res) {
+    // console.log(req.header);
+    var token = req.headers['x-customer-token'] || false;
+    if(!token) {
+        res.status(400);
+        res.send({
+            error: 'Token is require'
+        });
+    }
+    var page = req.query.page || 1;
+    user.getNotice(token, page)
     .then(function(result) {
         res.send(result);
     }).catch(function(err) {
@@ -98,11 +119,14 @@ app.route('/api/status' ).get(function (req, res) {
 mongo.connect().then(function() {
     console.log('Connect Mongo Success and listerning to connection to API!');
     require('./controllers/QnaController')(app);
-
+    
     // user.addNotice({
     //     uid: mongo.toObjectId('591dcf82bf91441b481baa8e1'),
     //     type: 'answer'
     // })
+
+    // user.getNotice('9f4fe3b97d03d5b9101fc30744df2401eebc1fb9616e06201d9ebefb513ec15135c1ec75b8b2860426498c7cd6c1ae93', 1)
+    // .then((res)=>{console.log(res)});
 
     app.listen(process.env.PORT || 5100); //the port you want to use
 }).catch(function(err) {

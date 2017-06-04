@@ -1,11 +1,11 @@
+
+var User = require('./user');
 var shortid = require('shortid');
 var Helper = require('./../Helper');
 
 var mongo = require('./../db/mongo');
-var user = require('./user');
 var collectionName = 'qna';
 var limit = 20;
-
 var qna = {
     search: (query) => {
         var q = typeof query.q !== 'undefined' ? query.q.trim() : '';
@@ -53,22 +53,26 @@ var qna = {
             mongo.search(collectionName, q, sortOps, skip, limit, type, question_id).then(function(results) {
                 var userPromises = [];
                 results.data.forEach(function(item) {
-                    var pr = user.get(item.uid, ['fullname', 'nickname', 'image']);
+                    console.log(User);
+                    var pr = User.get(item.uid, ['fullname', 'nickname', 'image']);
                     userPromises.push(pr);
                 });
+                    console.log('ok2');
                 Promise.all(userPromises).then(function(users){
+
                     results.data.forEach(function(item, index) {
                         results.data[index]['user'] = users[index];
                     });
                     return resolve(results);
                 }).catch(function(err) {
                     return reject({
+                        err: err,
                         error: 'Something when wrong'
                     })
                 });
             }).catch(function(err) {
                 return reject({
-                    error: 'Something when wrong'
+                    error: ' Something when wrong'
                 })
             });
         });
@@ -94,6 +98,23 @@ var qna = {
     get: (id) => {
         return new Promise((resolve, reject) => {
             mongo.findOne(collectionName, {id: id}).then((result)=>{
+                if(!result) {
+                    return reject({
+                        error: 'Something went wrong!'
+                    })
+                }
+                var question = result;
+                return resolve(question);
+            }).catch((err)=>{
+                return reject({
+                    error: 'Something went wrong!'
+                })
+            });
+        });
+    },
+    _get: (_id) => {
+        return new Promise((resolve, reject) => {
+            mongo.findOne(collectionName, {_id: mongo.toObjectId(_id)}).then((result)=>{
                 if(!result) {
                     return reject({
                         error: 'Something went wrong!'

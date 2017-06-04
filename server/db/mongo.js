@@ -14,6 +14,9 @@ var mongoDB = {
 		    return false;
 		}
     },
+    getCollection(collectionName) {
+    	return database.collection(collectionName);
+    },
 	_: mongoIns,
 	connect: () => {
 		var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
@@ -118,22 +121,14 @@ var mongoDB = {
 		return new Promise((resolve, reject) => {
 			countQuery.count((err, count) => {
 				if(err) {
-					Raven.captureException({
-						error: "Cannot search mongo",
-						text: JSON.stringify(err)
-					});
+					// console.log(1);
 					return reject(err);
-
 				}
 				var originResults = countQuery.sort(sorts).skip(skip).limit(limit);
 				originResults.toArray((err, items) => {
 					if(err) {
-						Raven.captureException({
-							error: "Cannot search mongo",
-							text: JSON.stringify(err)
-						});
+						// console.log(2);
 						return reject(err);
-
 					}
 					var userfulResults = {
 						total: count,
@@ -146,9 +141,7 @@ var mongoDB = {
 			// mongoDB.count(collectionName, text, type).then((total) => {
 			// })
 			
-		});
-		
-		
+		});		
 	},
 	index: (collectionName, description) => {
 		var collection = database.collection(collectionName);

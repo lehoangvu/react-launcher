@@ -24,7 +24,12 @@ class App extends React.Component{
 	render() {
 		return <div className={s.rootApp}>
 			{this.helmetRender()}
-        	<Header user={this.props.user} logout={this.props.actions.logout} loginWithToken={this.props.actions.loginWithToken} fetchInfo={this.props.actions.fetchInfo} />
+        	<Header 
+            user={this.props.user} 
+            logout={this.props.actions.logout} 
+            loginWithToken={this.props.actions.loginWithToken} 
+            getNotice={this.props.actions.getNotice} 
+            fetchInfo={this.props.actions.fetchInfo} />
             <div className={s.mainContent}>
         	   {this.props.user !== false && this.props.children}
             </div>

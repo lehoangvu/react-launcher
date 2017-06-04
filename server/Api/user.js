@@ -1,9 +1,8 @@
 var mongo = require('./../db/mongo');
-// var firebase = require('./firebase');
+// var qna = require('./qna');
 // var db = firebase.database();
 var Raven = require('./raven');
-
-module.exports = {
+var User = {
 	get: (_id, fields) => {
 		return new Promise(function(resolve, reject) {
 			mongo.findOne('user', {_id: mongo.toObjectId(_id)}).then(function(result) {
@@ -88,5 +87,75 @@ module.exports = {
             })
 
         })
+    },
+    getNotice: (token, page) => {
+        var limit = 5;
+        return new Promise((resolve, reject) => {
+            User.getByToken(token, ['_id']).then((user)=>{
+                var query = mongo.getCollection('user_notice').find({
+                    uid: user._id
+                });
+                // count
+                query.count((err, count) => {
+                    if(err) {
+                        return reject(err);
+                    }
+                    var originResults = query.sort({create_at: -1}).skip((page - 1) * limit).limit(limit);
+                    originResults.toArray((err, items) => {
+                    if(err) {
+                        return reject(err);
+                    }
+
+                    var nprs = [];
+                    var data = [];
+                    items.map((item) => {
+                        var _item = {
+                            type: item.type,
+                            create_at: item.create_at,
+                            readed: item.readed,
+                        };
+                        data.push(_item);
+                        
+                        var upr = User.get(item.sid, ['fullname']).then((user) => {
+                            _item.user = user;
+                        }).catch((err) => {
+                            // TODO: handle err
+                        });
+                        nprs.push(upr);
+
+                        var spr = qna._get(item.oid).then((question) => {
+                            _item.target_title = question.title;
+                            _item.target_url = '/questions/'+question.id+'/'+question.url;
+                        }).catch((err) => {
+                            // TODO: handle err
+                        });
+                        nprs.push(spr);
+                        switch(item.type) {
+
+                            case 'answer': {
+                                _item.action = 'trả lời';
+                            }break;
+                            case 'vote': {
+                                _item.action = 'vote';
+                            }break;
+                        }
+                        return _item;
+                    });
+                    Promise.all(nprs).then(() => {
+                        var userfulResults = {
+                            total: count,
+                            limit: limit,
+                            data: data
+                        }
+                        return resolve(userfulResults);                  
+                    });
+
+                });
+                });
+            }).catch((err)=>{
+                return reject(err);
+            })
+        });
     }
 }
+module.exports = User;
