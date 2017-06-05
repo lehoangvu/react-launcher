@@ -5,12 +5,10 @@ import App from './components/App';
 import { loginWithToken, fetchInfo, logout, getNotice } from './action';
 
 const mapStateToProps = (state) => {
-	let user = state.app.user;
-	if(user) {
-		user.notice = state.app.notice;
-	}
+	const { user, notice } = state.app
     return {
-        user
+        user, 
+        notice
     };
 };
 

@@ -1,4 +1,3 @@
-
 var User = require('./user');
 var shortid = require('shortid');
 var Helper = require('./../Helper');
@@ -53,11 +52,9 @@ var qna = {
             mongo.search(collectionName, q, sortOps, skip, limit, type, question_id).then(function(results) {
                 var userPromises = [];
                 results.data.forEach(function(item) {
-                    console.log(User);
                     var pr = User.get(item.uid, ['fullname', 'nickname', 'image']);
                     userPromises.push(pr);
                 });
-                    console.log('ok2');
                 Promise.all(userPromises).then(function(users){
 
                     results.data.forEach(function(item, index) {

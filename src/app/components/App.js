@@ -12,6 +12,9 @@ class App extends React.Component{
     componentDidMount() {
         
     }
+    componentWillReceiveProps(nextProps) {
+        // console.log(nextProps);
+    }
 
     helmetRender() {
         return <Helmet 
@@ -26,6 +29,7 @@ class App extends React.Component{
 			{this.helmetRender()}
         	<Header 
             user={this.props.user} 
+            notice={this.props.notice} 
             logout={this.props.actions.logout} 
             loginWithToken={this.props.actions.loginWithToken} 
             getNotice={this.props.actions.getNotice} 

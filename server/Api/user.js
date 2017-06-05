@@ -102,55 +102,47 @@ var User = {
                     }
                     var originResults = query.sort({create_at: -1}).skip((page - 1) * limit).limit(limit);
                     originResults.toArray((err, items) => {
-                    if(err) {
-                        return reject(err);
-                    }
-
-                    var nprs = [];
-                    var data = [];
-                    items.map((item) => {
-                        var _item = {
-                            type: item.type,
-                            create_at: item.create_at,
-                            readed: item.readed,
-                        };
-                        data.push(_item);
-                        
-                        var upr = User.get(item.sid, ['fullname']).then((user) => {
-                            _item.user = user;
-                        }).catch((err) => {
-                            // TODO: handle err
-                        });
-                        nprs.push(upr);
-
-                        var spr = qna._get(item.oid).then((question) => {
-                            _item.target_title = question.title;
-                            _item.target_url = '/questions/'+question.id+'/'+question.url;
-                        }).catch((err) => {
-                            // TODO: handle err
-                        });
-                        nprs.push(spr);
-                        switch(item.type) {
-
-                            case 'answer': {
-                                _item.action = 'trả lời';
-                            }break;
-                            case 'vote': {
-                                _item.action = 'vote';
-                            }break;
+                        if(err) {
+                            return reject(err);
                         }
-                        return _item;
-                    });
-                    Promise.all(nprs).then(() => {
-                        var userfulResults = {
-                            total: count,
-                            limit: limit,
-                            data: data
-                        }
-                        return resolve(userfulResults);                  
-                    });
 
-                });
+                        var nprs = [];
+                        var data = [];
+                        items.map((item) => {
+                            var _item = {
+                                type: item.type,
+                                create_at: item.create_at,
+                                readed: item.readed,
+                                oid: item.oid
+                            };
+                            data.push(_item);
+                            
+                            var upr = User.get(item.sid, ['fullname']).then((user) => {
+                                _item.user = user;
+                            }).catch((err) => {
+                                // TODO: handle err
+                            });
+                            nprs.push(upr);
+                            switch(item.type) {
+
+                                case 'answer': {
+                                    _item.action = 'trả lời';
+                                }break;
+                                case 'vote': {
+                                    _item.action = 'vote';
+                                }break;
+                            }
+                            return _item;
+                        });
+                        Promise.all(nprs).then(() => {
+                            var userfulResults = {
+                                total: count,
+                                limit: limit,
+                                data: data
+                            }
+                            return resolve(userfulResults);                  
+                        });
+                    });
                 });
             }).catch((err)=>{
                 return reject(err);

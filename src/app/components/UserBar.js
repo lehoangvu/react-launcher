@@ -14,6 +14,9 @@ class UserBar extends React.Component {
         this.state = {
             showSigninPopup: false,
             showUserMenu: false,
+            loadNotice: false,
+            // user: props.user,
+            isLogin: props.user !== null
         };
     }
 
@@ -22,22 +25,14 @@ class UserBar extends React.Component {
             var tokenData = localStorage.getItem('customer_token');
             this.props.fetchInfo(JSON.parse(tokenData));
         }
-
-        let state = {
-            ...this.state,
-            isLogin: this.props.user !== null,
-            user: this.props.user
-        };
-        this.setState(state);
         window.showSigninPopup = () => {this.showLogin(true)};
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
         let state = {
             ...this.state,
-            isLogin: nextProps.user !== null && nextProps.user !== false,
-            user: nextProps.user,
-            showUserMenu: false
+            isLogin: nextProps.user !== null && nextProps.user !== false
         };
         this.setState(state);
     }
@@ -88,8 +83,11 @@ class UserBar extends React.Component {
     }
     menuToggle() {
         const show = !this.state.showUserMenu;
-        if(show && !this.props.user.notice) {
+        if(show && !this.state.loadNotice) {
             this.props.getNotice(1);
+            this.setState({
+                loadNotice: true
+            });
         }
         this.setState({
             showUserMenu: show
@@ -119,14 +117,14 @@ class UserBar extends React.Component {
     // </div>
     renderNotice() {
         moment.locale('vi');
-        const noticeState = this.state.user.notice;
-        let notices = [];
-        if(!noticeState) {
-            notices = [1, 2, 3].map(()=>{
+        const notice = this.props.notice;
+        let noticeHtml = [];
+        if(!notice) {
+            noticeHtml = [1, 2, 3].map(()=>{
                 return <Skeleton w="100%" h="30px" mb="5px" mt="5px" />
             });
         } else {
-            notices = noticeState.data.map((item)=>{
+            noticeHtml = notice.data.map((item)=>{
                 let dateString = moment.unix(Math.round(item.create_at / 1000)).format("YYYYMMDD");
                 let create_at = moment(dateString, 'YYYYMMDD').fromNow();
                 return <div className={!item.readed ? s.noticeItemUnread : null}>
@@ -140,7 +138,7 @@ class UserBar extends React.Component {
         return (
             <div className={s.noticeList} >
                 <div className={s.noticeListView}>
-                    {notices}
+                    {noticeHtml}
                 </div>
             </div>
         );
@@ -148,13 +146,13 @@ class UserBar extends React.Component {
     getMenu() {
         if (this.state.showUserMenu) {
             return <div className={s.userMenuContent}>
-                <a href="javascript:" onClick={this.logout.bind(this)}>Thoát tài khoản: {this.state.user.fullname}</a>
+                <a href="javascript:" onClick={this.logout.bind(this)}>Thoát tài khoản: {this.props.user.fullname}</a>
                 {this.renderNotice()}
             </div>;
         }
     }
     render() {
-        if (this.state.user === false) {
+        if (this.props.user === false) {
             return <div className={s.root}>
                 <Skeleton w="75px" h="26px" fl="right" />
             </div>

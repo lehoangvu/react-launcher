@@ -35,7 +35,9 @@ export default (state = intinalState, action) => {
             if(!state.notice) {
                 return {
                     ...state,
-                    notice: action.notice
+                    notice: {
+                        ...action.notice
+                    }
                 };
             } else {
                 return {

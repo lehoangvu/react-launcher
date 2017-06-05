@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var oauth = require('./Api/oauth');
 var mongo = require('./db/mongo');
 var user = require('./Api/user');
+var qna = require('./Api/qna');
 var expressValidator = require('express-validator');
 var apicache = require('apicache');
 
@@ -102,9 +103,25 @@ app.route('/api/customer/me/notice' ).get(function (req, res) {
     }
     var page = req.query.page || 1;
     user.getNotice(token, page)
-    .then(function(result) {
-        res.send(result);
-    }).catch(function(err) {
+    .then((result) => {
+        var nprs = [];
+        result.data.map((item) => {
+            console.log(item.oid);
+            var spr = qna._get(item.oid).then((question) => {
+                item.target_title = question.title;
+                item.target_url = '/questions/'+question.id+'/'+question.url;
+                delete item.oid;
+            }).catch((err) => {
+                console.log(err);
+            });
+            nprs.push(spr);
+        });
+        Promise.all(nprs).then(() => {
+            res.send(result);             
+        }).catch((err) => {
+            res.status(400).send(err);
+        });
+    }).catch((err) => {
         res.status(400).send(err);
     });
 });

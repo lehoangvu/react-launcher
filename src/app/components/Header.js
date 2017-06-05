@@ -8,6 +8,9 @@ class Header extends React.Component {
     constructor(props) {
         super(props);
     }
+    componentWillReceiveProps(nextProps) {
+        // console.log(nextProps);
+    }
     render() {
         return <div className={s.root}>
             <div className="container">
@@ -33,6 +36,7 @@ class Header extends React.Component {
                 getNotice={this.props.getNotice} 
                 logout={this.props.logout} 
                 user={this.props.user} 
+                notice={this.props.notice} 
                 loginWithToken={this.props.loginWithToken} 
                 fetchInfo={this.props.fetchInfo} />
             </div>
