@@ -272,6 +272,7 @@ module.exports = function (app) {
                         question_id: question._id,
                         type: 'answer'
                     };
+
                     qna.search(ansQuery).then(function (answers) {
                         //update vote for every answer
                         var getVoteAnswerPrs = [];
@@ -301,7 +302,7 @@ module.exports = function (app) {
                     });
                 }).catch((err) => {
                     res.status(400).send({
-                        error: 'Something went wrong!'
+                        error: err
                     })
                 });
             });

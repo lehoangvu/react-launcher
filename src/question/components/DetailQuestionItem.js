@@ -3,9 +3,9 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from '../styles/detail-item.scss';
-import { Skeleton, Tags, UserBox, VoteButton } from './../../global';
+import { Tags, UserBox, VoteButton } from './../../global';
 import MarkdownIt from 'markdown-it';
-import { Form, Text, Select, Textarea, Checkbox, Radio, RadioGroup, NestedForm, FormError } from 'react-form';
+import { Form, Text, Textarea } from 'react-form';
 
 class DetailQuestionItem extends React.Component {
     constructor(props) {

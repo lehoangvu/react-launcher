@@ -42,7 +42,14 @@ const config = {
 		fs: "empty"
 	},
 	module: {
-		rules: [{
+		rules: [
+		// {
+		// 	enforce: "pre",
+		// 	exclude: /node_modules/,
+		// 	loader:  'eslint-loader',
+		// 	test:    /\.js?$/
+		// },
+		{
 			exclude: /node_modules/,
 			use:  ['babel-loader'],
 			test:    /\.js?$/

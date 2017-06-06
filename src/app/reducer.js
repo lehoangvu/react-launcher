@@ -44,7 +44,7 @@ export default (state = intinalState, action) => {
                     ...state,
                     notice: {
                         ...state.notice,
-                        data: state.notice.data.push(action.notice.data)
+                        data: state.notice.data.concat(action.notice.data)
                     }
                 };
             }

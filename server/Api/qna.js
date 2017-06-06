@@ -79,7 +79,7 @@ var qna = {
             if(token === null) {
                 return resolve(false);
             }
-            user.getByToken(token, ['_id']).then(function(user) {
+            User.getByToken(token, ['_id']).then(function(user) {
                 mongo.findOne('user_react_question', {
                     uid: user._id,
                     action: 'vote',

@@ -3,8 +3,13 @@
 @import './markdown.scss';
 
 
-:global(::-webkit-scrollbar) {
+:global(body::-webkit-scrollbar) {
     width: 10px;
+    height: 6px;
+}
+:global(body *::-webkit-scrollbar) {
+    width: 5px;
+    height: 5px;
 }
  
 :global(::-webkit-scrollbar-track) {
@@ -13,7 +18,7 @@
 }
  
 :global(::-webkit-scrollbar-thumb) {
-    background: #ffa400;
+    background: #BDBDBD;
     border-radius: 0px;
 }
 

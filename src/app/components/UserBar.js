@@ -15,6 +15,7 @@ class UserBar extends React.Component {
             showSigninPopup: false,
             showUserMenu: false,
             loadNotice: false,
+            loadingNotice: false,
             // user: props.user,
             isLogin: props.user !== null
         };
@@ -28,12 +29,17 @@ class UserBar extends React.Component {
         window.showSigninPopup = () => {this.showLogin(true)};
     }
 
+    componentWillUnmount() {
+
+    }
+
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         let state = {
-            ...this.state,
             isLogin: nextProps.user !== null && nextProps.user !== false
         };
+        if(nextProps.notice && this.props.notice && nextProps.notice.data.length > this.props.notice.data.length) {
+            state.loadingNotice = false;
+        }
         this.setState(state);
     }
 
@@ -94,53 +100,58 @@ class UserBar extends React.Component {
         })
     }
     logout(e) {
+
+        this.setState({
+            showSigninPopup: false,
+            showUserMenu: false,
+            loadNotice: false,
+            loadingNotice: false
+        });
         e.preventDefault();
         this.props.logout();
     }
-    // <div className={s.noticeItem}>
-    //     <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
-    //     <span className={s.noticeTime}>2 phút trước</span>
-    // </div>
-    // <div className={s.noticeItem}>
-    //     <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
-    //     <span className={s.noticeTime}>2 phút trước</span>
-    // </div>
-    // <div className={s.noticeItem}>
-    //     <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
-    //     <span className={s.noticeTime}>2 phút trước</span>
-    // </div>
-    // <div className={s.noticeItemUnread}>
-    //     <div className={s.noticeItem}>
-    //         <b>Hoàng Vũ</b> đã trả lời tại <a href="">Bla bla bla</a>
-    //         <span className={s.noticeTime}>2 phút trước</span>
-    //     </div>
-    // </div>
+    onNoticeScroll(e) {
+        const dom = e.target;
+        const notice = this.props.notice;
+        if( this.state.loadNotice
+            && notice.data.length < notice.total
+            && !this.state.loadingNotice
+            && ((dom.offsetHeight + dom.scrollTop) === dom.scrollHeight)) {
+            this.setState({
+                loadingNotice: true
+            });
+            this.props.getNotice(Math.ceil(notice.data.length / notice.limit) + 1);
+            e.preventDefault();
+        }
+    }
     renderNotice() {
         moment.locale('vi');
         const notice = this.props.notice;
         let noticeHtml = [];
         if(!notice) {
-            noticeHtml = [1, 2, 3].map(()=>{
-                return <Skeleton w="100%" h="30px" mb="5px" mt="5px" />
+            noticeHtml = [1, 2, 3].map((item)=>{
+                return <Skeleton key={item} w="100%" h="30px" mb="5px" mt="5px" />
             });
         } else {
-            noticeHtml = notice.data.map((item)=>{
+            noticeHtml = notice.data.map((item, index)=>{
                 let dateString = moment.unix(Math.round(item.create_at / 1000)).format("YYYYMMDD");
                 let create_at = moment(dateString, 'YYYYMMDD').fromNow();
-                return <div className={!item.readed ? s.noticeItemUnread : null}>
+                return <div key={index} className={!item.readed ? s.noticeItemUnread : null}>
                         <div className={s.noticeItem}>
-                            <b>{item.user.fullname}</b> đã {item.action} tại <a href={item.target_url}>{item.target_title}</a>
+                            <b>{item.user.fullname}</b> đã {item.action} tại <a target='_blank' href={item.target_url}>{item.target_title}</a>
                             <span className={s.noticeTime}>{create_at}</span>
                         </div>
                     </div>;
             });
         }
-        return (
-            <div className={s.noticeList} >
+        return (<div className="small-scroll-bar">
+            <div className={s.noticeList} onScroll={this.onNoticeScroll.bind(this)} >
                 <div className={s.noticeListView}>
                     {noticeHtml}
                 </div>
             </div>
+            {(this.state.loadingNotice) && (<div className={s.noticeLoadingText}>Đang tải thêm...</div>)}
+        </div>
         );
     }
     getMenu() {

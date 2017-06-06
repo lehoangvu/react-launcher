@@ -89,7 +89,7 @@ var User = {
         })
     },
     getNotice: (token, page) => {
-        var limit = 5;
+        var limit = 10;
         return new Promise((resolve, reject) => {
             User.getByToken(token, ['_id']).then((user)=>{
                 var query = mongo.getCollection('user_notice').find({

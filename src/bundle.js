@@ -35,10 +35,3 @@ render(
     </WithStylesContex>,
     document.getElementById('root')
 );
-
-// FB.ui({
-//     method: 'share',
-//     href: window.location.href,
-// }, function(response){
-
-// });
