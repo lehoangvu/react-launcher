@@ -106,7 +106,7 @@ app.route('/api/customer/me/notice').get(function (req, res) {
     .then((result) => {
         var nprs = [];
         result.data.map((item) => {
-            console.log(item.oid);
+            // console.log(item.oid);
             var spr = qna._get(item.oid).then((question) => {
                 item.target_title = question.title;
                 item.target_url = '/questions/'+question.id+'/'+question.url;
@@ -127,33 +127,33 @@ app.route('/api/customer/me/notice').get(function (req, res) {
 });
 
 
-// app.route('/api/customer/me/notice/read').post(function (req, res) {
-//     // console.log(req.header);
-//     var token = req.headers['x-customer-token'] || false;
-//     var notice_id = req.body.notice_id || false;
-//     if(!token) {
-//         res.status(400);
-//         res.send({
-//             error: 'Token is require'
-//         });
-//     }
-//     if(!notice_id) {
-//         res.status(400);
-//         res.send({
-//             error: 'Data invalid'
-//         });
-//     }
-//     User.markNoticeReaded(notice_id, token).then((result) => {
-//         res.send({
-//             success: true
-//         });
-//     }).catch((err) => {
-//         res.status(400);
-//         res.send({
-//             error: 'Something went wrong'
-//         });
-//     });
-// });
+app.route('/api/customer/me/notice/read').post(function (req, res) {
+    // console.log(req.header);
+    var token = req.headers['x-customer-token'] || false;
+    var notice_id = req.body.notice_id || false;
+    if(!token) {
+        res.status(400);
+        res.send({
+            error: 'Token is require'
+        });
+    }
+    if(!notice_id) {
+        res.status(400);
+        res.send({
+            error: 'Data invalid'
+        });
+    }
+    User.markNoticeReaded(notice_id, token).then((result) => {
+        res.send({
+            success: true
+        });
+    }).catch((err) => {
+        res.status(400);
+        res.send({
+            error: 'Something went wrong'
+        });
+    });
+});
 
 app.route('/api/status' ).get(function (req, res) {
     var pid = process.pid;

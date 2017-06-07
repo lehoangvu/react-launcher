@@ -135,14 +135,30 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
+    border-bottom: 1px solid #d0d0d0;
     a {
         vertical-align: baseline;
         display: inline;
         margin-left: 0;
     }
 }
+.noticeMarkRead {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    background: rgba(2, 136, 209, 0.29);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #e1ecf4;
+    &:hover {
+        background: #0288D1;
+    }
+}
 .noticeItemUnread {
-    border-left: 5px solid #ffa400;
+    border-left: 2px solid #2196F3;
 }
 .noticeItem {
     padding: 10px 8px;

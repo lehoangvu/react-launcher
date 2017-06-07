@@ -34,6 +34,7 @@ class Header extends React.Component {
                 <Search />
                 <UserBar 
                 getNotice={this.props.getNotice} 
+                markNoticeRead={this.props.markNoticeRead} 
                 logout={this.props.logout} 
                 user={this.props.user} 
                 notice={this.props.notice} 

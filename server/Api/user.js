@@ -95,6 +95,7 @@ var User = {
                         var data = [];
                         items.map((item) => {
                             var _item = {
+                                _id: item._id.toString(),
                                 type: item.type,
                                 create_at: item.create_at,
                                 readed: item.readed,
@@ -145,11 +146,12 @@ var User = {
                         return reject(err);
                     }
                     if(notices.length === 1) {
-                        mongo.updateDocument('user_notice', {$set: {reader: true}}, mongo.toObjectId(notice_id)).then(()=>{
+                        mongo.updateDocument('user_notice', {$set: {readed: true}}, mongo.toObjectId(notice_id)).then(()=>{
                             mongo.countv2('user_notice', {readed: false, uid: user._id}).then((count) => {
                                 mongo.updateDocument('user', {$set: {notice: count}}, user._id);
                             }).catch((err) => {
                                 // TODO: No check err
+                                console.log(err);
                             });
 
                             return resolve(true);

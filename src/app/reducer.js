@@ -13,6 +13,23 @@ const saveToken = (token) => {
 
 export default (state = intinalState, action) => {
     switch(action.type){
+        case 'MARK_NOTICE_READ_SUCCESS':
+            return {
+                ...state,
+                notice: {
+                    ...state.notice,
+                    data: state.notice.data.map((item) => {
+                        if(item._id === action.notice_id) {
+                            item.readed = true;
+                        }
+                        return item;
+                    })
+                }
+            };
+        break;
+        case 'MARK_NOTICE_READ_FAIL':
+
+        break;
         case 'LOGIN_SUCCESS':
             saveToken(action.token);
             return {

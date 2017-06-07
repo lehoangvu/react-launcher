@@ -76,6 +76,26 @@ export const getNotice = (page) => {
         });
     };
 }
+export const markNoticeRead = (id) => {
+    return dispatch => {
+        $.ajax({
+            url: config.API_URL + 'customer/me/notice/read',
+            data: {
+                notice_id: id
+            },
+            type: 'POST'
+        }).done(function(response) {
+            dispatch({
+                type: 'MARK_NOTICE_READ_SUCCESS',
+                notice_id: id
+            });
+        }).fail(function(error) {
+            dispatch({
+                type: 'MARK_NOTICE_READ_FAIL'
+            });
+        });
+    };
+}
 
 export const logout = () => {
     return {

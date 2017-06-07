@@ -33,6 +33,7 @@ class App extends React.Component{
             logout={this.props.actions.logout} 
             loginWithToken={this.props.actions.loginWithToken} 
             getNotice={this.props.actions.getNotice} 
+            markNoticeRead={this.props.actions.markNoticeRead} 
             fetchInfo={this.props.actions.fetchInfo} />
             <div className={s.mainContent}>
         	   {this.props.user !== false && this.props.children}

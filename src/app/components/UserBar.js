@@ -16,6 +16,7 @@ class UserBar extends React.Component {
             showUserMenu: false,
             loadNotice: false,
             loadingNotice: false,
+            resetAllNotice: false,
             // user: props.user,
             isLogin: props.user !== null
         };
@@ -92,7 +93,8 @@ class UserBar extends React.Component {
         if(show && !this.state.loadNotice) {
             this.props.getNotice(1);
             this.setState({
-                loadNotice: true
+                loadNotice: true,
+                resetAllNotice: true
             });
         }
         this.setState({
@@ -124,6 +126,9 @@ class UserBar extends React.Component {
             e.preventDefault();
         }
     }
+    markNoticeRead(id) {
+        this.props.markNoticeRead(id);
+    }
     renderNotice() {
         moment.locale('vi');
         const notice = this.props.notice;
@@ -138,6 +143,7 @@ class UserBar extends React.Component {
                 let create_at = moment(dateString, 'YYYYMMDD').fromNow();
                 return <div key={index} className={!item.readed ? s.noticeItemUnread : null}>
                         <div className={s.noticeItem}>
+                            {(!item.readed) && (<span className={s.noticeMarkRead} onClick={(e) => {this.markNoticeRead(item._id)}} />)}
                             <b>{item.user.fullname}</b> đã {item.action} tại <a target='_blank' href={item.target_url}>{item.target_title}</a>
                             <span className={s.noticeTime}>{create_at}</span>
                         </div>
@@ -171,7 +177,7 @@ class UserBar extends React.Component {
         if (this.state.isLogin) {
             let user = this.props.user;
             return <div className={s.root}>
-                <Link className={s.noticeLink} to="notice" title="Thông báo của bạn"><i className="ion-android-notifications" />{user.notice > 0 ? <span className={s.noticeSpan}>{user.notice}</span> : ''}</Link>
+                <Link className={s.noticeLink} to="notice" title="Thông báo của bạn"><i className="ion-android-notifications" />{user.notice > 0 && !this.state.resetAllNotice ? <span className={s.noticeSpan}>{user.notice}</span> : ''}</Link>
                 <Link to="/me" className={s.userLink}>
                     <img src={user.image} />
                 </Link>
