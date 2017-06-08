@@ -8,6 +8,10 @@ export default class Home extends React.Component {
 		super(props);
 	}
 
+	componentDidMount() {
+		this.props.actions.getHomeSidebarNewest();
+	}
+
     handleTab() {
     	const query = this.props.query;
     	const tab = typeof query.tab !== 'undefined' ? query.tab : 'newest';
@@ -27,7 +31,7 @@ export default class Home extends React.Component {
 		return <div className="root">
             <div className="container">
                 {this.handleTab()}
-                <Sidebar />
+                <Sidebar data={this.props.sidebar} />
             </div>
 		</div>
 	}

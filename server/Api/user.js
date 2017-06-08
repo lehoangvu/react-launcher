@@ -97,6 +97,15 @@ var User = {
             })
         });
 	},
+    addReact: (model) => {
+        return new Promise((resolve, reject) => {
+            mongo.addDocument('user_react_question', model).then((result) => {
+                return resolve(result);
+            }).catch((err) => {
+                return reject(err);
+            })
+        });
+    },
     addNotice: (data) => {
         // TODO: Ensure this not readed
         data.readed = false;

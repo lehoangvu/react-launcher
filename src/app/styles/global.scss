@@ -7,3 +7,10 @@
         }
     }
 }
+
+:global .pull-right {
+    float: right;
+}
+:global .pull-left {
+    float: left;
+}

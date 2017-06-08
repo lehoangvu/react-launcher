@@ -14,6 +14,7 @@ const Routes =
         <IndexRoute component={Home} ></IndexRoute>
         {Question}
         {Account}
+        <Route path="404" component={NotFound} />
         <Route path="*" component={NotFound} />
     </Route>;
 

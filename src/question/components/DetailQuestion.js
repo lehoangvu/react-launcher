@@ -33,13 +33,8 @@ class DetailQuestion extends React.Component {
     }
     
     renderTag() {
-        let tags = this.props.detail.tags && this.props.detail.tags.map((tag, index) => {
-            return <a key={index} href={Helper.removeSigh(tag)} title="">{tag}</a>;
-        })
         return (
-            <Tags>
-                {tags}
-            </Tags> 
+            <Tags data={this.props.detail.tags} />
         )
     }
 

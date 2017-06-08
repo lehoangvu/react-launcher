@@ -1,7 +1,7 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './../styles/search.scss';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 
 class Search extends React.Component {
     constructor(props) {

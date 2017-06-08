@@ -9,12 +9,20 @@
         padding: 5px 8px;
         font-size: 12px;
         display: inline-block;
+        line-height: 16px;
         &:hover {
             color: #33658a;
             background-color: #cee0ed;
             border-color: rgba(0,0,0,0);
         }
     }
+}
+.tagIcon {
+    display: inline-block;
+    height: 16px;
+    vertical-align: bottom;
+    transform: translateZ(0);
+    margin-right: 5px;
 }
 
 .userBox {

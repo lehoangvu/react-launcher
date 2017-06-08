@@ -76,10 +76,13 @@ export const getDetail = (id) => {
 				data: json
 			});
 		}).fail((err)=>{
-			dispatch({
-				type: 'GET_DETAIL_FAIL',
-				error: err
-			});
+
+			dispatch(browserHistory.replace('404'));
+
+			// dispatch({
+			// 	type: 'GET_DETAIL_FAIL',
+			// 	error: err
+			// });
 		})
 	}
 }
