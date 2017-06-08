@@ -1,0 +1,24 @@
+{
+  "name": "react-launcher",
+  "description": "",
+  "scripts": {
+  },
+  "env": {
+    "ENV_STR": {
+      "required": true
+    },
+    "TZ": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
