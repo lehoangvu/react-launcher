@@ -6,7 +6,6 @@
 :global(body::-webkit-scrollbar) {
     width: 10px;
     height: 6px;
-    background: #BDBDBD;
 }
 :global(body *::-webkit-scrollbar) {
     width: 5px;
@@ -19,8 +18,13 @@
     border-radius: 0px;
 }
  
-:global(::-webkit-scrollbar-thumb) {
+:global(body *::-webkit-scrollbar-thumb) {
     background: #2196F3;
+    border-radius: 0px;
+}
+
+:global(::-webkit-scrollbar-thumb) {
+    background: rgb(144, 144, 144);
     border-radius: 0px;
 }
 

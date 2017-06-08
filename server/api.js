@@ -94,7 +94,7 @@ app.route('/api/customer/me' ).post(function (req, res) {
 });
 
 app.route('/api/account/:nickname' ).get(function (req, res) {
-    let nickname = req.params.nickname;
+    var nickname = req.params.nickname;
     User.getByNickname(nickname).then(function(user) {
         User.getActivitySummary(user._id).then(function(activity) {
             user.activity = activity;

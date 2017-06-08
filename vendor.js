@@ -18,7 +18,8 @@ export const Vendor = {
 	"react-helmet": "react-helmet",
 	"striptags": "striptags",
 	"react-ga": "react-ga",
-	"markdown-it": "markdown-it"
+	"markdown-it": "markdown-it",
+	"recharts": "recharts"
 };
 export const VendorArr = [
 	"jquery",
@@ -41,5 +42,6 @@ export const VendorArr = [
 	"striptags",
 	"react-ga",
 	"markdown-it",
+	"recharts",
 	"./src/first.js"
 ];

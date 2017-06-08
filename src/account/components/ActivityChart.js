@@ -1,8 +1,8 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import { BarChart, Bar, Brush, ReferenceLine, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import s from '../styles/chart.scss';
+import { BarChart, Bar, Brush, ReferenceLine, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import s from '../styles/activity-chart.scss';
 
 class ActivityChart extends React.Component {
     constructor(props) {
@@ -16,13 +16,12 @@ class ActivityChart extends React.Component {
     render() {
     	const start_time = this.props.data.start_time;
     	const activity = this.props.data.activity;
+        const currentTime = new Date().getTime();
     	let chartData = [];
-    	let step = 12 * 3600000;
-    	console.log(start_time);
-    	console.log(new Date().getTime());
-    	// return;
+    	let step = (currentTime - start_time) / 100;
     	let maxValue = 0;
-    	for(let i = start_time; i < new Date().getTime() + step * 3; i = i + step) {
+        console.log(start_time - currentTime);
+    	for(let i = start_time; i <= currentTime + step; i = i + step) {
     		let count = 0;
     		for(let j = 0; j < activity.length; j++) {
     			let item = activity[j];
@@ -36,19 +35,24 @@ class ActivityChart extends React.Component {
     			time: new Date(i)
     		};
     		chartData.push(col);
-    	}
+        }
+            console.log(chartData);
         return (
             <div className={s.root}>
-			    	<BarChart
-			    	 	width={600}
-			    	 	height={300}
-			    	 	data={chartData}
-			    	 	margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-				       <XAxis dataKey="time"/>
-				       <YAxis domain={[0, Math.round(maxValue * 1.5)]}/>
-				       <ReferenceLine y={0} stroke='#000'/>
-				       <Bar dataKey="count" fill="#8884d8" />
-			      </BarChart>
+                <h2>Biểu đồ hoạt động</h2>
+		    	<BarChart
+                    width={1170}
+		    	 	height={250}
+		    	 	data={chartData} >
+			       <XAxis dataKey="time" 
+                        stroke='#2196f3'
+                        label={'Thời gian'}/>
+			       <YAxis domain={[0, Math.round(maxValue * 1.5)]}
+                        stroke='#2196f3'
+                        allowDecimals={false}
+                        label={'Hoạt động'}/>
+			       <Bar dataKey="count" fill="#ffd740" />
+                </BarChart>
             </div>
         );
     }
