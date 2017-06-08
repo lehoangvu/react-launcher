@@ -60,17 +60,18 @@ class UserBar extends React.Component {
                 <div className={s.popup}>
                     <div className={s.signinTitle}>Đăng nhập</div>
                     <div className={s.signinNote}>Hiện tại bạn chỉ có thể đăng nhập thông qua tài khoản Google hoặc Facebook.</div>
-                    <GoogleLoginBtn onClick={this.loginTolltipToggle.bind(this)} socialId="60036624360-59ceaveq0votucv9inc7fvn2u70c6cg8.apps.googleusercontent.com"
+                    <GoogleLoginBtn onClick={this.loginTolltipToggle.bind(this)}
+                        socialId={config.GG_APP_ID}
                         scope="profile email openid"
                         responseHandler={this.responseGoogleLogin.bind(this)} >
                     </GoogleLoginBtn>
                     <FacebookLoginBtn onClick={this.loginTolltipToggle.bind(this)}
-                        appId="580525262157720"
+                        appId={config.FB_APP_ID}
                         // autoLoad={true}
                         fields="name,email,picture"
                         callback={this.responseFacebookLogin.bind(this)}
                         cssClass="my-facebook-button-class"
-                        redirectUri="http://localhost:5000"
+                        redirectUri={config.BASE_URL}
                         icon="fa-facebook">
                     </FacebookLoginBtn>
                 </div>

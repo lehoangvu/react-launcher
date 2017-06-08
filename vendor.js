@@ -22,7 +22,6 @@ export const Vendor = {
 	"recharts": "recharts"
 };
 export const VendorArr = [
-	"./src/first.js",
 	"jquery",
 	"react",
 	"react-router",
@@ -42,11 +41,7 @@ export const VendorArr = [
 	"react-helmet",
 	"striptags",
 	"react-ga",
-<<<<<<< HEAD
 	"markdown-it",
 	"recharts",
 	"./src/first.js"
-=======
-	"markdown-it"
->>>>>>> f80e98e42334b36a035af2d3018a08d5975a587c
 ];
