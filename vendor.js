@@ -42,5 +42,6 @@ export const VendorArr = [
 	"striptags",
 	"react-ga",
 	"markdown-it",
-	"recharts"
+	"recharts",
+	"isomorphic-style-loader/lib/withStyles"
 ];

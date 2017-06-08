@@ -35,9 +35,16 @@ const config = {
 	module: {
 		rules: [
 		{
-			exclude: /node_modules/,
-			use:  ['babel-loader'],
-			test:    /\.js?$/
+			// exclude: /node_modules/,
+			use:  [
+				{
+					loader: 'babel-loader',
+					query: {
+			          presets: ['es2015', 'latest']
+			        }
+				}
+			],
+			test:    /\.js?$/,
 		}, {
 			test: /jquery\.js$/,
 			use: ["babel-loader"]
