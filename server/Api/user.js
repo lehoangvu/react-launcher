@@ -18,8 +18,8 @@ var User = {
 			})
 		});
 	},
-	getByToken: (token, fields) => {
-		return new Promise(function(resolve, reject) {
+    getByToken: (token, fields) => {
+        return new Promise(function(resolve, reject) {
             mongo.findOne('user_token', {value: token})
             .then(function(result) {
                 if(!result) {
@@ -35,8 +35,8 @@ var User = {
                     }
                     var userData = {};
                     fields.forEach(function(field) {
-						userData[field] = result[field];
-					});
+                        userData[field] = result[field];
+                    });
                     return resolve(userData);
                 }).catch(function(err) {
                     return reject({
@@ -49,6 +49,52 @@ var User = {
                     error: 'Something went wrong!'
                 });
             });
+        });
+    },
+    getByNickname: (nickname) => {
+        return new Promise(function(resolve, reject) {
+            mongo.findOne('user', {nickname: nickname})
+            .then(function(result) {
+                if(!result) {
+                    return reject({
+                        error: 'User not exist!'
+                    });
+                }
+                let userData = {
+                    _id: result._id,
+                    fullname: result.fullname,
+                    email: result.email,
+                    nickname: result.nickname,
+                    image: result.image,
+                    create_at: result.create_at
+                };
+                return resolve(userData);
+            }).catch(function(err) {
+                return reject({
+                    error: 'Something went wrong!'
+                });
+            });
+        });
+    },
+	getActivitySummary: (_id) => {
+		return new Promise(function(resolve, reject) {
+            // get activity in user_react_question
+            mongo
+            .getCollection('user_react_question')
+            .find({uid: _id})
+            .sort({create_at: 1})
+            .toArray((err, results) => {
+                if(err) {
+                    return reject(err);
+                }
+                var activity = results.map((item) => {
+                    return {
+                        action: item.action,
+                        create_at: item.create_at
+                    }
+                });
+                return resolve(activity);
+            })
         });
 	},
     addNotice: (data) => {

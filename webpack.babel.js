@@ -23,16 +23,16 @@ const config = {
 		// 	jQuery: 'jquery',
 
 		// })
-		// new webpack.optimize.UglifyJsPlugin({
-		// 	minimize: true,
-		// 	sourceMap: true,
-		// 	output: {
-		// 		comments: false
-		// 	},
-		// 	compressor: {
-		// 		warnings: false
-		// 	}
-		// })
+		new webpack.optimize.UglifyJsPlugin({
+			minimize: true,
+			sourceMap: true,
+			output: {
+				comments: false
+			},
+			compressor: {
+				warnings: false
+			}
+		})
 		// new webpack.optimize.CommonsChunkPlugin({
 		// 	name: "vendor",
 		// 	minChunks: Infinity,

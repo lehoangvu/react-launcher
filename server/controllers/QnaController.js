@@ -12,7 +12,7 @@ function checkToken(req) {
 }
 
 module.exports = function (app) {
-    app.route('/api/qna/create').put(function (req, res) {
+    app.route('/api/qna/create').put((req, res) => {
         if (typeof req.headers['x-customer-token'] !== 'undefined') {
             User.getByToken(req.headers['x-customer-token'], ['_id']).then(function (user) {
 
@@ -63,7 +63,7 @@ module.exports = function (app) {
         }
     });
 
-    app.route('/api/qna/questions/:id/answer').put(function (req, res) {
+    app.route('/api/qna/questions/:id/answer').put((req, res) => {
         if (typeof req.headers['x-customer-token'] !== 'undefined') {
             req.checkBody('content', 'Invalid content').notEmpty().len(60, 2000);
             req.getValidationResult().then(function (result) {
@@ -111,7 +111,7 @@ module.exports = function (app) {
         }
     });
 
-    app.route('/api/qna/questions/:id/vote').post(function (req, res) {
+    app.route('/api/qna/questions/:id/vote').post((req, res) => {
         if (checkToken(req)) {
             // check data
             var vote = req.body.vote;
@@ -204,7 +204,7 @@ module.exports = function (app) {
         }
     });
 
-    app.route('/api/qna/search').get(function (req, res) {
+    app.route('/api/qna/search').get((req, res) => {
         var query = {
             q: req.query || '',
             sort: req.query.sort || 'newest',
@@ -217,7 +217,7 @@ module.exports = function (app) {
         });
     });
 
-    app.route('/api/qna/questions/:id').get(function (req, res) {
+    app.route('/api/qna/questions/:id').get((req, res) => {
         let id = req.params.id;
         var token = null;
         if (typeof req.headers['x-customer-token'] !== 'undefined') {
@@ -310,7 +310,8 @@ module.exports = function (app) {
             res.status(400).send(err);
         });
     });
-    app.route('/api/qna/questions/:id').post(function (req, res) {
+
+    app.route('/api/qna/questions/:id').post((req, res) => {
         let id = req.params.id;
         if (!id) {
             res.status(400).send({
@@ -368,4 +369,9 @@ module.exports = function (app) {
             });
         }
     });
+
+    app.route('/api/qna/newest').get((req, res) => {
+        // target: get list newest reacted
+    })
+
 }

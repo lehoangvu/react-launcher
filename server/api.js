@@ -86,7 +86,23 @@ app.route('/api/customer/me' ).post(function (req, res) {
     }
     oauth.fetch(token)
     .then(function(result) {
+        console.log(result);
         res.send(result);
+    }).catch(function(err) {
+        res.status(400).send(err);
+    });
+});
+
+app.route('/api/account/:nickname' ).get(function (req, res) {
+    let nickname = req.params.nickname;
+    User.getByNickname(nickname).then(function(user) {
+        User.getActivitySummary(user._id).then(function(activity) {
+            user.activity = activity;
+            delete user._id;
+            res.send(user);
+        }).catch(function(err) {
+            res.status(400).send(err);
+        });
     }).catch(function(err) {
         res.status(400).send(err);
     });

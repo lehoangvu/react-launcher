@@ -141,14 +141,19 @@ var oauth = {
                         error: 'Token invalid!'
                     });
                 }
-                user.get(result.uid, ['email', 'fullname', 'nickname', 'image', 'source', 'notice']).then((result) => {
+                user.get(result.uid, ['email', 'fullname', 'nickname', 'image', 'source', 'notice']).then((userResult) => {
+                    if(!userResult) {
+                        return reject({
+                            error: 'Token invalid!'
+                        });
+                    }
                     var userData = {
-                        email: result.email,
-                        fullname: result.fullname,
-                        nickname: result.nickname,
-                        image: result.image,
-                        source: result.source,
-                        notice: result.notice
+                        email: userResult.email,
+                        fullname: userResult.fullname,
+                        nickname: userResult.nickname,
+                        image: userResult.image,
+                        source: userResult.source,
+                        notice: userResult.notice
                     };
                     return resolve(userData);
                 }).catch((err) => {

@@ -126,6 +126,7 @@
     "react-addons-css-transition-group": "^15.4.2",
     "react-ga": "^2.2.0",
     "react-helmet": "^3.3.2",
+    "recharts": "^1.0.0-alpha.0",
     "sass-loader": "^4.0.2",
     "striptags": "^3.0.1",
     "style-loader": "^0.13.1",
