@@ -52,13 +52,8 @@ class DetailQuestionItem extends React.Component {
 
     
     renderTag() {
-        let tags = this.props.detail.tags && this.props.detail.tags.map((tag, index) => {
-            return <Link key={index} to={"/tagged/" + Helper.removeSigh(tag)} title="">{tag}</Link>;
-        })
         return (
-            <Tags>
-                {tags}
-            </Tags> 
+            <Tags data={this.props.detail.tags} /> 
         )
     }
 

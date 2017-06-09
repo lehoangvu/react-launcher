@@ -21,6 +21,7 @@ export const Vendor = {
 	"markdown-it": "markdown-it"
 };
 export const VendorArr = [
+	"./src/first.js",
 	"jquery",
 	"react",
 	"react-router",
@@ -40,6 +41,5 @@ export const VendorArr = [
 	"react-helmet",
 	"striptags",
 	"react-ga",
-	"markdown-it",
-	"./src/first.js"
+	"markdown-it"
 ];

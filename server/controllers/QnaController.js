@@ -88,6 +88,12 @@ module.exports = function (app) {
                             // res.send(model);
                             qna.add(model).then(function (snap) {
                                 snap.user = user;
+                                User.addReact({
+                                    uid: user._id,
+                                    question_id: question._id,
+                                    action: 'answer',
+                                    value: 1
+                                });
                                 Updater.emit({action: 'answer', id: question._id.toString()});
                                 res.send(snap);
                             }).catch(function (err) {
@@ -307,7 +313,9 @@ module.exports = function (app) {
                 });
             });
         }).catch(function (err) {
-            res.status(400).send(err);
+            res.status(400).send({
+                error: err
+            });
         });
     });
 
@@ -371,7 +379,75 @@ module.exports = function (app) {
     });
 
     app.route('/api/qna/newest').get((req, res) => {
+        var getQuestion = (_ids) => {
+            return new Promise((resolve, reject) => {
+                var prs = _ids.map((_id) => {
+                    return qna._get(_id);
+                });
+                Promise.all(prs).then((results) => {
+
+                    return resolve(results.map((item) => {
+                        return {
+                            id: item.id,
+                            url: item.url,
+                            content: item.content,
+                            tags: item.tags,
+                            title: item.title
+                        };
+                    }))
+                }).catch((err) => {
+                    return reject(err);
+                })
+            });
+        };
         // target: get list newest reacted
+        mongo
+        .getCollection('user_react_question')
+        .find({action: 'answer'})
+        .sort({create_at: -1})
+        .limit(10)
+        .skip(0)
+        .toArray((err, reactResults) => {
+            if(err) {
+                return reject(err);
+            }
+            var questionIdList = [];
+            reactResults.map((item, index) => {
+                var _id = item.question_id.toString();
+                if(index < 10 && questionIdList.indexOf(_id) === -1) {
+                    questionIdList.push(_id);
+                }
+            });
+            if(questionIdList.length < 10) {
+                mongo
+                .getCollection('qna')
+                .find({id: {$nin: questionIdList}, type: 'question'})
+                .limit(10 - questionIdList.length)
+                .skip(0)
+                .sort({create_at: -1})
+                .toArray((err, questionResult) => {
+                    if(err) {
+                        res.status(400).send({
+                            error: err
+                        });
+                    }
+                    questionResult.map((item) => {
+                        questionIdList.push(item._id);
+                    });
+                    getQuestion(questionIdList).then((questionList) => {
+                        res.send(questionList);
+                    }).catch((err) => {
+                        res.status(400).send(err);
+                    });
+                });
+            } else {
+                getQuestion(questionIdList).then((questionList) => {
+                    res.send(questionList);
+                }).catch((err) => {
+                    res.status(400).send(err);
+                });
+            }
+        })
     })
 
 }

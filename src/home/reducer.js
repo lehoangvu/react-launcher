@@ -1,4 +1,7 @@
 const intinalState = {
+    sidebar: {
+        newest: false
+    },
     list: {
         data: [],
         loading: true,
@@ -24,6 +27,15 @@ const intinalState = {
 
 export default (state = intinalState, action) => {
     switch(action.type){
+        case 'GET_SIDEBAR_NEWEST_SUCCESS':
+            return {
+                ...state,
+                sidebar: {
+                    ...state.sidebar,
+                    newest: action.data
+                }
+            }
+            break;
         case 'GET_LIST_SUCCESS':
             return {
                 ...state,

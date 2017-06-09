@@ -42,3 +42,18 @@ export const setCurentTab = (q = '', query, page = 1) => {
 		});
 	}
 }
+export const getHomeSidebarNewest = () => {
+	return dispatch => {
+		$.ajax({
+			url: config.API_URL + 'qna/newest'
+		}).done((json)=>{
+			dispatch({
+				data: json,
+				type: 'GET_SIDEBAR_NEWEST_SUCCESS'
+			})
+		})
+		.fail((error)=>{
+
+		})
+	}
+}
