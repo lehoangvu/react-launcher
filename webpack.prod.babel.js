@@ -35,13 +35,13 @@ const config = {
 	module: {
 		rules: [
 		{
-			// exclude: /node_modules/,
+			exclude: /node_modules/,
+		 	// exclude: /node_modules\/(?!(striptags)\/).*/,
+		 	// exclude: /node_modules(?!\/my-es6-raw-module)/
+			// include: [/node_modules\/striptags/],
 			use:  [
 				{
-					loader: 'babel-loader',
-					query: {
-			          presets: ['es2015', 'latest']
-			        }
+					loader: 'babel-loader'
 				}
 			],
 			test:    /\.js?$/,

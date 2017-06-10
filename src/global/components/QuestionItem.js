@@ -7,7 +7,7 @@ import Tags from './Tags';
 import Helper from './../helper';
 
 import MarkdownIt from 'markdown-it';
-import striptags from "striptags";
+import striptags from "./../../plugins/striptags";
 
 // import 
 class QuestionItem extends React.Component {

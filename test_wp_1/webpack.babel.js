@@ -9,10 +9,6 @@ let Vendor = [
 	"babel-polyfill",
 	"react-redux",
 	"react-dom",
-	"react-helmet",
-	"react-router",
-	"react-redux",
-	"isomorphic-style-loader/lib/withStyles",
 	"react-addons-css-transition-group",
 	"redux",
 	"redux-thunk",
@@ -20,7 +16,15 @@ let Vendor = [
 	"axios",
 	"react-router-redux",
 	"numeral",
-	"moment"
+	"moment",
+	"react-google-login-component",
+	"react-form",
+	"react-helmet",
+	"striptags",
+	"react-ga",
+	"markdown-it",
+	"recharts",
+	"isomorphic-style-loader/lib/withStyles"
 ] ;
 
 const config = {
