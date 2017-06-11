@@ -3,12 +3,12 @@ import webpack from 'webpack';
 import ModernizrPlugin from 'modernizr-webpack-plugin';
 import Package from './package.json';
 
-import {Vendor, VendorArr} from './vendor.js';
+import Vendor from './vendor.js';
 
 const config = {
 	cache: true,
 	entry:  {
-		vendor: VendorArr,
+		vendor: Vendor,
 		bundle: './src/bundle.js',
 	},
 	output: {
@@ -18,39 +18,18 @@ const config = {
     devtool: 'cheap-module-eval-source-map',
 	plugins: [
 		new webpack.ExtendedAPIPlugin(),
-		// new webpack.ProvidePlugin({
-		// 	$: 'jquery',
-		// 	jQuery: 'jquery',
-
-		// })
-		new webpack.optimize.UglifyJsPlugin({
-			minimize: true,
-			sourceMap: true,
-			output: {
-				comments: false
-			},
-			compressor: {
-				warnings: false
-			}
+		new webpack.optimize.CommonsChunkPlugin({ 
+			name: 'vendor',
+			minChunks: Infinity
 		})
-		// new webpack.optimize.CommonsChunkPlugin({
-		// 	name: "vendor",
-		// 	minChunks: Infinity,
-		// })
 	],
 	node: {
 		fs: "empty"
 	},
 	module: {
 		rules: [
-		// {
-		// 	enforce: "pre",
-		// 	exclude: /node_modules/,
-		// 	loader:  'eslint-loader',
-		// 	test:    /\.js?$/
-		// },
 		{
-			// exclude: /node_modules/,
+			exclude: /node_modules/,
 			use:  ['babel-loader'],
 			test:    /\.js?$/
 		}, {
@@ -87,26 +66,11 @@ const config = {
 		]
 	},
 	resolve: {
-		// root: [
-		// 	path.resolve('./src')
-		// ]
 		modules: [
 			path.join(__dirname, "src"),
 			"node_modules"
 		]
 	}
 };
-
-config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ 
-	name: 'vendor',
-	minChunks: Infinity
-}));
-
-// config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ 
-// 	names: VendorArr,
-// 	minChunks: Infinity
-// }));
-
-
 
 export default config;
