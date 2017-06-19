@@ -1,50 +1,85 @@
+import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
-import ModernizrPlugin from 'modernizr-webpack-plugin';
 import Package from './package.json';
-import Vendor from './vendor.json';
-const config = {
-	cache: true,
-	debug: true,
-    devtool: 'cheap-module-eval-source-map',
-	entry:  {
-		api: './server/api.js'
+
+export default {
+	devtool: 'cheap-module-eval-source-map',
+	target: 'node',
+	entry: {
+		'server-render-build': ['./server/server-render']
 	},
 	output: {
 		filename: '[name].js',
-		path:     path.join(__dirname, 'dist-server')
+		path:     path.join(__dirname, 'server')
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-            __CLIENT__:     false,
-            __SERVER__:     true,
-            __PRODUCTION__: false,
-            __DEV__:        true,
+			__CLIENT__:     false,
+			__SERVER__:     true,
+			__PRODUCTION__: false,
+			__DEV__:        true,
             __VERSION__: JSON.stringify(Package.version),
-            __APPNAME__: JSON.stringify(Package.name)
+            __APPNAME__: JSON.stringify(Package.name),
+           	__API_URL__: JSON.stringify('http://localhost:5100'),
+           	__API_KEY__: JSON.stringify('test'),
+           	__COOKIE_KEY__: JSON.stringify('abcd1234')
 		}),
 		new webpack.ExtendedAPIPlugin()
 	],
 	module: {
-		postLoaders: [{
+		rules: [
+		// {
+		// 	enforce: "pre",
+		// 	exclude: /node_modules/,
+		// 	loader:  'eslint-loader',
+		// 	test:    /\.js?$/
+		// },
+		{
 			exclude: /node_modules/,
-			loader:  'babel-loader',
+			use:  ['babel-loader'],
 			test:    /\.js?$/
-		}],
-		loaders: [{
-			test: /jquery\.js$/,
-			loader: "babel-loader"
 		}, {
-	        test: /\.json$/,
-	        loader: 'json-loader'
-	      }
+			test: /jquery\.js$/,
+			use: ["babel-loader"],
+			enforce: 'post'
+		}, {
+			test: /jquery\.js$/,
+			use: 'expose-loader?jQuery!expose?$'
+		}, {
+			test: /\.scss$/,
+			use: [
+				{loader: 'isomorphic-style-loader'},
+				{loader: 'css-loader?modules&camelCase&-url&localIdentName=[name]_[local]_[hash:base64:3]'},
+				{loader: 'postcss-loader'},
+				{loader: 'sass-loader'}
+			]
+		},{
+			test: /\.css$/,
+			use: [
+				{loader: 'isomorphic-style'},
+				{loader: 'css?modules&camelCase&-url&localIdentName=[name]_[local]_[hash:base64:3]'},
+				{
+					loader: 'postcss',
+					options: {
+						plugins: (loader) => [
+						require('postcss-import')({ root: loader.resourcePath }),
+						require('postcss-custom-properties')(),
+						require('postcss-calc')(),
+						require('postcss-nesting')(),
+						require('postcss-flexbugs-fixes')(),
+						require('autoprefixer')()
+						]
+					}
+				}
+			]
+		}
 		]
 	},
 	resolve: {
-		root: [
-			path.resolve('./server')
+		modules: [
+			path.join(__dirname, "src"),
+			"node_modules"
 		]
 	}
 };
-
-export default config;

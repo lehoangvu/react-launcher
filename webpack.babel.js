@@ -55,8 +55,12 @@ const config = {
 			test:    /\.js?$/
 		}, {
 			test: /jquery\.js$/,
-			use: ["babel-loader"]
-		},{
+			use: ["babel-loader"],
+			enforce: 'post'
+		}, {
+			test: /jquery\.js$/,
+			use: 'expose-loader?jQuery!expose?$'
+		}, {
 			test: /\.scss$/,
 			use: [
 				{loader: 'isomorphic-style-loader'},
