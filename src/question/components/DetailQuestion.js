@@ -7,7 +7,7 @@ import s from '../styles/detail.scss';
 import { Skeleton, Tags, UserBox, VoteButton } from './../../global';
 import MarkdownIt from 'markdown-it';
 import Helmet from "react-helmet";
-import striptags from "striptags";
+import striptags from "./../../plugins/striptags";
 
 import AddAnswer from './AddAnswer';
 import DetailQUestionItem from './DetailQUestionItem';

@@ -126,6 +126,7 @@ var mongoDB = {
 				}
 				var originResults = countQuery.sort(sorts).skip(skip).limit(limit);
 				originResults.toArray((err, items) => {
+					console.log(skip);
 					if(err) {
 						// console.log(2);
 						return reject(err);

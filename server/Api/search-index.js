@@ -10,7 +10,7 @@ function getInstance(ops) {
 		if(typeof global.indexInstance !== 'undefined') {
 			return resolve(global.indexInstance);
 		}
-	    const indexFunc = function(err, newIndex) {
+	    var indexFunc = function(err, newIndex) {
 	        if (!err) {
 	        	global.indexInstance = newIndex;
 	            return resolve(newIndex);

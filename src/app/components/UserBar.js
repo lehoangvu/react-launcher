@@ -60,17 +60,18 @@ class UserBar extends React.Component {
                 <div className={s.popup}>
                     <div className={s.signinTitle}>Đăng nhập</div>
                     <div className={s.signinNote}>Hiện tại bạn chỉ có thể đăng nhập thông qua tài khoản Google hoặc Facebook.</div>
-                    <GoogleLoginBtn onClick={this.loginTolltipToggle.bind(this)} socialId="60036624360-59ceaveq0votucv9inc7fvn2u70c6cg8.apps.googleusercontent.com"
+                    <GoogleLoginBtn onClick={this.loginTolltipToggle.bind(this)}
+                        socialId={config.GG_APP_ID}
                         scope="profile email openid"
                         responseHandler={this.responseGoogleLogin.bind(this)} >
                     </GoogleLoginBtn>
                     <FacebookLoginBtn onClick={this.loginTolltipToggle.bind(this)}
-                        appId="580525262157720"
+                        appId={config.FB_APP_ID}
                         // autoLoad={true}
                         fields="name,email,picture"
                         callback={this.responseFacebookLogin.bind(this)}
                         cssClass="my-facebook-button-class"
-                        redirectUri="http://localhost:5000"
+                        redirectUri={config.BASE_URL}
                         icon="fa-facebook">
                     </FacebookLoginBtn>
                 </div>
@@ -177,8 +178,8 @@ class UserBar extends React.Component {
         if (this.state.isLogin) {
             let user = this.props.user;
             return <div className={s.root}>
-                <Link className={s.noticeLink} to="notice" title="Thông báo của bạn"><i className="ion-android-notifications" />{user.notice > 0 && !this.state.resetAllNotice ? <span className={s.noticeSpan}>{user.notice}</span> : ''}</Link>
-                <Link to="/me" className={s.userLink}>
+                <a className={s.noticeLink} href="javascript:" title="Thông báo của bạn"><i className="ion-android-notifications" />{user.notice > 0 && !this.state.resetAllNotice ? <span className={s.noticeSpan}>{user.notice}</span> : ''}</a>
+                <Link to={`/user/${user.nickname}`} className={s.userLink}>
                     <img src={user.image} />
                 </Link>
                 <div className={s.userMenu}>

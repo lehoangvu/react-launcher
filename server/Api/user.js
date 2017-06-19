@@ -60,7 +60,7 @@ var User = {
                         error: 'User not exist!'
                     });
                 }
-                let userData = {
+                var userData = {
                     _id: result._id,
                     fullname: result.fullname,
                     email: result.email,

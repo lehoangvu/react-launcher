@@ -1,27 +1,4 @@
-export const Vendor = {
-	"jquery": "jquery",
-	"react": "react",
-	"react-router": "react-router",
-	"babel-polyfill": "babel-polyfill",
-	"react-redux": "react-redux",
-	"react-dom": "react-dom",
-	"react-addons-css-transition-group": "react-addons-css-transition-group",
-	"redux": "redux",
-	"redux-thunk": "redux-thunk",
-	"redux-logger": "redux-logger",
-	"axios": "axios",
-	"react-router-redux": "react-router-redux",
-	"numeral": "numeral",
-	"moment": "moment",
-	"react-google-login-component": "react-google-login-component",
-	"react-form": "react-form",
-	"react-helmet": "react-helmet",
-	"striptags": "striptags",
-	"react-ga": "react-ga",
-	"markdown-it": "markdown-it"
-};
-export const VendorArr = [
-	"./src/first.js",
+const VendorArr = [
 	"jquery",
 	"react",
 	"react-router",
@@ -34,12 +11,15 @@ export const VendorArr = [
 	"redux-logger",
 	"axios",
 	"react-router-redux",
-	"numeral",
+	// "numeral",
 	"moment",
 	"react-google-login-component",
 	"react-form",
 	"react-helmet",
-	"striptags",
+	// "striptags",
 	"react-ga",
-	"markdown-it"
+	"markdown-it",
+	"recharts",
+	"isomorphic-style-loader/lib/withStyles"
 ];
+export default  VendorArr;

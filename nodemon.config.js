@@ -1,4 +1,4 @@
 {
   "verbose": true,
-  "ignore": ["/src", "/dist"]
+  "ignore": ["/src", "/dist", "npm-debug.log.*", "npm-debug.log"]
 }

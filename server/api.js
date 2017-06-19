@@ -94,7 +94,7 @@ app.route('/api/customer/me' ).post(function (req, res) {
 });
 
 app.route('/api/account/:nickname' ).get(function (req, res) {
-    let nickname = req.params.nickname;
+    var nickname = req.params.nickname;
     User.getByNickname(nickname).then(function(user) {
         User.getActivitySummary(user._id).then(function(activity) {
             user.activity = activity;
@@ -181,15 +181,8 @@ app.route('/api/status' ).get(function (req, res) {
 mongo.connect().then(function() {
     console.log('Connect Mongo Success and listerning to connection to API!');
     require('./controllers/QnaController')(app);
-    
-    // user.addNotice({
-    //     uid: mongo.toObjectId('591dcf82bf91441b481baa8e1'),
-    //     type: 'answer'
-    // })
-
-    // user.getNotice('9f4fe3b97d03d5b9101fc30744df2401eebc1fb9616e06201d9ebefb513ec15135c1ec75b8b2860426498c7cd6c1ae93', 1)
-    // .then((res)=>{console.log(res)});
-
+    require('./controllers/StaticController')(app);
+    require('./controllers/SurveyController')(app);
     app.listen(process.env.PORT || 5100); //the port you want to use
 }).catch(function(err) {
     console.log(err);

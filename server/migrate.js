@@ -62,7 +62,7 @@ let questionTotal = 0;
 let questionUpdated = 0;
 let questionUpdateFailed = 0;
 let questionUpdateIgnored = 0;
-const migrateQuestion = (skip) => {
+var migrateQuestion = (skip) => {
     mongo.search('qna', '', {}, questionSkip, questionSkip + questionLimit).then((results) => {
         questionTotal = results.total;
         let nextSkip = false;
