@@ -14,9 +14,20 @@ import DetailQUestionItem from './DetailQUestionItem';
 class DetailQuestion extends React.Component {
     constructor(props) {
         super(props);
+        // props.actions.getDetail(props.params.id);
+    }
+
+    serverTrigger() {
+        console.log('serverTrigger');
+    }
+
+    componentWillMount() {
+        console.log('ok');
+        this.props.actions.getDetail(this.props.params.id);
     }
 
     componentDidMount() {
+        console.log('call');
         this.props.actions.getDetail(this.props.params.id);
     }
 
@@ -52,6 +63,7 @@ class DetailQuestion extends React.Component {
 
     render() {
         const detail = this.props.detail;
+        console.log('title': detail.title);
         if(!detail) {
             return (
                 <div className="container">

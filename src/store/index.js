@@ -29,8 +29,8 @@ const promiseMiddleware = () => {
 };
 
 const preloadedState = {};
-
-const middleWare = [thunk, promiseMiddleware, createLogger()];
+// createLogger()
+const middleWare = [thunk, promiseMiddleware];
 
 const store = createStore(reducer, preloadedState, applyMiddleware(...middleWare));
 

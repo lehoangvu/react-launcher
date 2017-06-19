@@ -36,7 +36,7 @@ class App extends React.Component{
             markNoticeRead={this.props.actions.markNoticeRead} 
             fetchInfo={this.props.actions.fetchInfo} />
             <div className={s.mainContent}>
-        	   {this.props.user !== false && this.props.children}
+               {this.props.children}
             </div>
 		</div>;
 	}

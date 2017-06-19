@@ -7,7 +7,8 @@ export default {
 	devtool: 'cheap-module-eval-source-map',
 	target: 'node',
 	entry: {
-		'server-render-build': ['./server/server-render']
+		// 'server-render-build': ['./server/server-render']
+		'server-render-origin-builded': ['./server/server-render-origin']
 	},
 	output: {
 		filename: '[name].js',

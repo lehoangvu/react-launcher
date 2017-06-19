@@ -14,11 +14,12 @@ import Routes from './../src/routes';
 
 PrettyError.start();
 
+
 const app = express()
-.use(cookieParser(__COOKIE_KEY__))
+// .use(cookieParser(__COOKIE_KEY__))
 .use(compress())
 .use(cors())
-.use(favicon('./public/favicon.ico'))
+// .use(favicon('./public/favicon.ico'))
 .use(bodyParser.json())
 .use(bodyParser.urlencoded({ extended: true }))
 .use('/public', express.static('public'))
@@ -64,11 +65,11 @@ const app = express()
 	});
 });
 
-app.listen(3000, (error) => {
+app.listen(5000, (error) => {
 	if (error) {
 		console.error(error);
 	} else {
-		console.info('Web Server started at 3000');
+		console.info('Web Server started at 5000');
 	}
 });
 

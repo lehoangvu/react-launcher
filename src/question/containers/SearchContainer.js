@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SearchQuestion from '../components/SearchQuestion';
 import { getTabList, setCurentTab } from './../action';
-console.log(1);
 const mapStateToProps = (state, ownProps) => {
     return {
         ...state.question.search,
