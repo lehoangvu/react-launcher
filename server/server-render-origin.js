@@ -71,10 +71,10 @@ function handleRender(req, res) {
 			const preNeed = getPreNeed(store, renderProps, null);
 			if (preNeed) {
 				preNeed.then(() => {
-					res.send(renderHtml(store, renderProps));
-					// renderHtml(store, renderProps)
-					// .then(() => {
-					// });
+					renderHtml(store, renderProps)
+					.then((html) => {
+						res.send(html);
+					});
 				});
 			} else {
 				res.send(renderHtml(store, renderProps));
