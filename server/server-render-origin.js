@@ -14,9 +14,6 @@ import config from './../src/config';
 import helper from './../src/global/helper';
 import _$ from './Helper/fetch';
 
-import apicache from 'apicache';
-let cache = apicache.middleware;
-
 global["config"] = config;
 global["Helper"] = helper;
 global["$"] = {
@@ -26,7 +23,6 @@ global["$"] = {
 }
 const app = Express()
 
-app.use(cache('3 minutes'));
 app.use((req,res,next) => { 
    req.url = req.url.replace(/[/]+/g, '/'); 
    next(); 
