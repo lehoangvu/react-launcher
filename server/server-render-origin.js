@@ -13,11 +13,16 @@ import Html from './../src/global/html';
 import config from './../src/config';
 import helper from './../src/global/helper';
 import _$ from './Helper/fetch';
+
+import apicache from 'apicache';
+var cache = apicache.middleware;
+app.use(cache('3 minutes'));
+
 global["config"] = config;
 global["Helper"] = helper;
 global["$"] = {
 	ajax: (opt = {}) => {
-		return false;
+		return false; 
 	}
 }
 const app = Express()
@@ -27,9 +32,6 @@ app.use((req,res,next) => {
    next(); 
 });
 
-app.use('/public', Express.static('./public'))
-app.use('/dist', Express.static('./dist'))
-
 app.use(compression({filter: (req, res) => {
   if (req.headers['x-no-compression']) {
     // don't compress responses with this request header
@@ -38,6 +40,10 @@ app.use(compression({filter: (req, res) => {
   // fallback to standard filter function
   return compression.filter(req, res);
 }}));
+
+app.use('/public', Express.static('./public'))
+app.use('/dist', Express.static('./dist'))
+
 
 // This is fired every time the server side receives a request
 app.use(handleRender)
