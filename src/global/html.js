@@ -17,8 +17,6 @@ function Html({ content, state, styles }) {
 				{head.link.toComponent()}
 				{head.script.toComponent()}
 				<style dangerouslySetInnerHTML={{ __html: styles }} />
-			    <link rel="stylesheet" href="/public/styles/ionicons.min.css" />
-			    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=vietnamese" rel="stylesheet" />
 			</head>
 			<body>
 				<div id="root" dangerouslySetInnerHTML={{ __html: content }} />
@@ -26,6 +24,8 @@ function Html({ content, state, styles }) {
 				<script src="/dist/vendor.js" />
 				<script src="/dist/bundle.js" />
 			</body>
+		    <link rel="stylesheet" href="/public/styles/ionicons.min.css" />
+		    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=vietnamese" rel="stylesheet" />
 		</html>
 	);
 }
