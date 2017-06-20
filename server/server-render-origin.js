@@ -70,12 +70,10 @@ function handleRender(req, res) {
 		} else if (renderProps) {
 			const preNeed = getPreNeed(store, renderProps, null);
 			if (preNeed) {
-				preNeed.then(() => {
-					renderHtml(store, renderProps)
-					.then((html) => {
-						res.send(html);
-					});
-				});
+				preNeed
+				.then(() => renderHtml(store, renderProps))
+				.then(html => res.status(200).send(html))
+				.catch(err => res.status(500).send(err.message));
 			} else {
 				res.send(renderHtml(store, renderProps));
 			}
