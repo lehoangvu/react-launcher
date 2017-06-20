@@ -11,6 +11,10 @@ function checkToken(req) {
     return typeof req.headers['x-customer-token'] !== 'undefined';
 }
 
+function appCache () {
+    return process.env.APP_ENV === 'prod' ? cache('5 minutes') : () => {};
+}
+
 module.exports = function (app) {
     app.route('/api/qna/create').put((req, res) => {
         if (typeof req.headers['x-customer-token'] !== 'undefined') {
@@ -223,7 +227,7 @@ module.exports = function (app) {
         });
     });
 
-    app.route('/api/qna/questions/:id').get((req, res) => {
+    app.route('/api/qna/questions/:id').get(appCache, (req, res) => {
         let id = req.params.id;
         var token = null;
         if (typeof req.headers['x-customer-token'] !== 'undefined') {
