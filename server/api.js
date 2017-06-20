@@ -182,7 +182,7 @@ mongo.connect().then(function() {
     console.log('Connect Mongo Success and listerning to connection to API!');
     require('./controllers/QnaController')(app);
     require('./controllers/StaticController')(app);
-    require('./controllers/SurveyController')(app);
+    // require('./controllers/SurveyController')(app);
     app.listen(process.env.PORT || 5100); //the port you want to use
 }).catch(function(err) {
     console.log(err);
