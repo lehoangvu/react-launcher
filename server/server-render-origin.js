@@ -1,5 +1,6 @@
 import path from 'path'
 import Express from 'express'
+import compression from 'compression'
 import React from 'react'
 import { Provider } from 'react-redux'
 import counterApp from './../src/store/reducer'
@@ -14,28 +15,46 @@ import helper from './../src/global/helper';
 import _$ from './Helper/fetch';
 global["config"] = config;
 global["Helper"] = helper;
-global["$"] = _$;
-
-// $.ajax({
-// 	url: "http://localhost:5100/api/qna/search"
-// }).done((data) => {
-// 	console.log(data);
-// });
-
-
-// global["localStorage"] = new NodeLocalstorage.LocalStorage('./scratch');
- 
-// localStorage.setItem('myFirstKey', 'myFirstValue');
-// console.log(localStorage.getItem('myFirstKey'));
-
+global["$"] = {
+	ajax: (opt = {}) => {
+		return false;
+	}
+}
 const app = Express()
-const port = 5000
+
+app.use((req,res,next) => { 
+   req.url = req.url.replace(/[/]+/g, '/'); 
+   next(); 
+});
 
 app.use('/public', Express.static('./public'))
 app.use('/dist', Express.static('./dist'))
 
+app.use(compression({filter: (req, res) => {
+  if (req.headers['x-no-compression']) {
+    // don't compress responses with this request header
+    return false
+  }
+  // fallback to standard filter function
+  return compression.filter(req, res);
+}}));
+
 // This is fired every time the server side receives a request
 app.use(handleRender)
+
+function getPreNeed(store, renderProps, token) {
+	let preNeed = null;
+	let promise = null;
+	renderProps.components.forEach(component => {
+		if (component) {
+			preNeed = component.preNeed;
+		}
+	});
+	if (preNeed) {
+		promise = store.dispatch(preNeed(token, renderProps));
+	}
+	return promise;
+}
 
 // We are going to fill these out in the sections to follow
 function handleRender(req, res) {
@@ -49,31 +68,17 @@ function handleRender(req, res) {
 		} else if (redirectionLocation) {
 			res.redirect(302, redirectionLocation.pathname + redirectionLocation.search);
 		} else if (renderProps) {
-			// Create a new Redux store instance
-			// Render the component to a string
-			// console.log(renderProps.components[0].ComposedComponent);return;
-			// renderProps.components.map((component) => {
-			// 	if(typeof component !== 'undefined')
-			// 		console.log(component.ComposedComponent.serverTrigger);
-			// });
-
-
-			// const needs = renderProps.components.reduce((prev, current) => {
-			// 	if(current) console.log(current);
-			// 	// const result = current ? (current.serverTrigger || []).concat(prev) : prev;
-			// 	// return result;
-			// }, []);
-			// console.log(needs);
-
-
-			// return;
-			
-		  	let html = renderHtml(store, renderProps);	
-			// Grab the initial state from our Redux store
-			const preloadedState = store.getState()
-
-			// Send the rendered page back to the client
-			res.send(html);
+			const preNeed = getPreNeed(store, renderProps, null);
+			if (preNeed) {
+				preNeed.then(() => {
+					res.send(renderHtml(store, renderProps));
+					// renderHtml(store, renderProps)
+					// .then(() => {
+					// });
+				});
+			} else {
+				res.send(renderHtml(store, renderProps));
+			}
 		} else {
 			res.status(400).send('Not Found');
 		}
@@ -104,11 +109,5 @@ function renderHtml(store, renderProps) {
 }
 
 
-app.listen(port, (error) => {
-	if (error) {
-		console.error(error);
-	} else {
-		console.info('Web Server started at 5000');
-	}
-});
-
+app.listen(process.env.PORT || 5000); //the port you want to use
+console.log('SERVER ready !');

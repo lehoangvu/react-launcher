@@ -76,8 +76,6 @@ export const getDetail = (id) => {
 				data: json
 			});
 		}).fail((err)=>{
-			console.log('er');
-
 			dispatch(browserHistory.replace('404'));
 
 			// dispatch({

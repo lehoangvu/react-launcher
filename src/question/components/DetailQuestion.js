@@ -11,24 +11,20 @@ import striptags from "./../../plugins/striptags";
 
 import AddAnswer from './AddAnswer';
 import DetailQUestionItem from './DetailQUestionItem';
+
+import { getDefail } from './../server-action';
+
 class DetailQuestion extends React.Component {
+    static preNeed = getDefail;
     constructor(props) {
         super(props);
-        // props.actions.getDetail(props.params.id);
-    }
-
-    serverTrigger() {
-        console.log('serverTrigger');
-    }
-
-    componentWillMount() {
-        console.log('ok');
-        this.props.actions.getDetail(this.props.params.id);
     }
 
     componentDidMount() {
-        console.log('call');
-        this.props.actions.getDetail(this.props.params.id);
+        if(!this.props.detail) {
+            console.log(1);
+            this.props.actions.getDetail(this.props.params.id);
+        }
     }
 
     getCreateText() {
@@ -63,7 +59,7 @@ class DetailQuestion extends React.Component {
 
     render() {
         const detail = this.props.detail;
-        console.log('title': detail.title);
+        console.log('title', detail.title);
         if(!detail) {
             return (
                 <div className="container">

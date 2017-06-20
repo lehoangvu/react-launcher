@@ -15,12 +15,18 @@ const promiseMiddleware = () => {
             const FAILURE = `${type}_FAILURE`;
             next({ ...rest, type: REQUEST });
 
-            return promise.then(res => {
-                next({ ...rest, res, type: SUCCESS });
+            return promise.then(response => {
+                let forwardData = { ...rest, type: action.type};
+                if(typeof action.data_field_name !== 'undefined') {
+                    forwardData[action.data_field_name] = response.data;
+                } else {
+                    forwardData['data'] = response.data;
+                }
+                next(forwardData);
                 return true;
             }).catch(error => {
-                next({ ...rest, error, type: FAILURE });
-                console.log(error);
+                let failType = action.type.replace('SUCCESS', 'FAIL');
+                next({ ...rest, error, type: failType });
                 return false;
             });
         }

@@ -1,5 +1,4 @@
-
-const intinalState = {
+const intinalState =  typeof __INITIAL_STATE__ !== 'undefined' ? __INITIAL_STATE__.question : {
     add: {
     	form: {
     		data: {
@@ -137,13 +136,13 @@ export default (state = intinalState, action) => {
 			return state;
     	case 'UPDATE_FAIL': 
 			return state;
-    	case 'GET_DETAIL_SUCCESS': 
-			return {
-				...state,
-				detail: action.data
-			};
-    		break;
-    	case 'GET_DETAIL_FAIL': 
+    	case 'GET_DETAIL_SUCCESS':
+            return {
+                ...state,
+                detail: action.data
+            };
+            break;
+        case 'GET_DETAIL_FAIL': 
 			return state;
 
     		break;
