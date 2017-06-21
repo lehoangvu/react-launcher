@@ -2,14 +2,16 @@ import React from 'react';
 
 import { Tabs } from './../../global';
 import Sidebar from './Sidebar';
-
+import {getTabList, getHomeSidebarNewest} from './../server-action';
 export default class Home extends React.Component {
+	static preNeed = [getTabList, getHomeSidebarNewest];
 	constructor(props) {
 		super(props);
 	}
 
 	componentDidMount() {
-		this.props.actions.getHomeSidebarNewest();
+		if(!this.props.sidebar.newest)
+			this.props.actions.getHomeSidebarNewest();
 	}
 
     handleTab() {

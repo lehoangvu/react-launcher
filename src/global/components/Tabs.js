@@ -12,7 +12,9 @@ class Tabs extends React.Component {
     }
 
     componentDidMount() {
-        this.props.setCurentTab(this.props.q || '', this.props.tab, this.props.page);
+        if(this.props.list.loading) {
+            this.props.setCurentTab(this.props.q || '', this.props.tab, this.props.page);
+        }
     }
 
     componentWillReceiveProps(nextProps) {

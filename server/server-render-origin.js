@@ -44,18 +44,24 @@ app.use('/dist', Express.static('./dist'))
 // This is fired every time the server side receives a request
 app.use(handleRender)
 
-function getPreNeed(store, renderProps, token) {
-	let preNeed = null;
-	let promise = null;
+function getPreNeeds(store, renderProps, token) {
+	let promises = [];
 	renderProps.components.forEach(component => {
+		let preNeeds = null;
 		if (component) {
-			preNeed = component.preNeed;
+			preNeeds = component.preNeed;
+		}
+		if (preNeeds) {
+			if(Array.isArray(preNeeds)) {
+				preNeeds.map((preNeed) => {
+					promises.push(store.dispatch(preNeed(token, renderProps)));
+				})
+			} else {
+				promises.push(store.dispatch(preNeeds(token, renderProps)));
+			}
 		}
 	});
-	if (preNeed) {
-		promise = store.dispatch(preNeed(token, renderProps));
-	}
-	return promise;
+	return promises;
 }
 
 // We are going to fill these out in the sections to follow
@@ -70,9 +76,9 @@ function handleRender(req, res) {
 		} else if (redirectionLocation) {
 			res.redirect(302, redirectionLocation.pathname + redirectionLocation.search);
 		} else if (renderProps) {
-			const preNeed = getPreNeed(store, renderProps, null);
-			if (preNeed) {
-				preNeed
+			const preNeeds = getPreNeeds(store, renderProps, null);
+			if (preNeeds.length > 0) {
+				Promise.all(preNeeds)
 				.then(() => renderHtml(store, renderProps))
 				.then(html => res.status(200).send(html))
 				.catch(err => res.status(500).send(err.message));

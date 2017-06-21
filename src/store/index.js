@@ -34,7 +34,7 @@ const promiseMiddleware = () => {
     };
 };
 
-const preloadedState = {};
+const preloadedState = typeof window !== 'undefined' ? window.__INITIAL_STATE__ || {} : {};
 // createLogger()
 const middleWare = [thunk, promiseMiddleware];
 

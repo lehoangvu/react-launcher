@@ -3,8 +3,10 @@ import { Link } from 'react-router';
 import { Skeleton } from './../../global';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './../styles/sidebar.scss';
+import {getHomeSidebarNewest} from './../server-action';
 
 class Sidebar extends React.Component {
+    static preNeed = getHomeSidebarNewest;
     constructor(props) {
         super(props);
     }

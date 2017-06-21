@@ -1,4 +1,4 @@
-const intinalState =  typeof __INITIAL_STATE__ !== 'undefined' ? __INITIAL_STATE__.question : {
+const intinalState = {
     add: {
     	form: {
     		data: {

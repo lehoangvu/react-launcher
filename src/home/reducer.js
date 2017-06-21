@@ -41,7 +41,8 @@ export default (state = intinalState, action) => {
                 ...state,
                 list: {
                     ...state.list,
-                    ...action.data
+                    ...action.data,
+                    loading: action.data.loading || false
                 }
             }
             break;
