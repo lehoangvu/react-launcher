@@ -1,4 +1,20 @@
+import axios from 'axios';
+function fetch(url, method = 'get', token = null, data = {}) {
+	let headers = {};
+	if(token) headers['x-customer-token'] = token;
+	const options = {
+		url,
+		method: method,
+		baseURL: config.API_URL,
+		data: {
+			...data
+		},
+		headers
+	};
+	return axios(options);
+}
 export default {
+	fetch,
 	removeSigh: (str) => {
 	    str= str.toLowerCase();
 	    str= str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a");

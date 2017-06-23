@@ -37,17 +37,11 @@ export function fetchOnClient(options) {
 	});
 }
 
-export function fetchTokens() {
+export function fetchInfoUser(token) {
 	return axios({
-		url: '/tokens',
-		method: 'post',
-		baseURL: __API_URL__,
+		url: config.API_URL + '/customer/me',
 		data: {
-			apikey: __API_KEY__,
-			grant_type: 'guest'
-		},
-		headers: {
-			'x-platform': __APPNAME__
+			token
 		}
 	});
 }

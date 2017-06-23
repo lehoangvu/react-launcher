@@ -35,9 +35,11 @@
     width: 28px;
     height: 28px;
     text-align: center;
-    line-height: 28px;
     i {
         font-size: 20px;
+        &:before {
+            line-height: 28px;
+        }
     }
     &:hover {
         background: #0095ff;

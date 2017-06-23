@@ -17,6 +17,11 @@ const config = {
 	},
     devtool: false,
 	plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        }),
 		new webpack.ExtendedAPIPlugin(),
 		new webpack.optimize.UglifyJsPlugin({
 			minimize: true,

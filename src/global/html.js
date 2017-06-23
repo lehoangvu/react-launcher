@@ -23,9 +23,9 @@ function Html({ content, state, styles }) {
 				<script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${JSON.stringify(state)};` }} />
 				<script src="/dist/vendor.js" />
 				<script src="/dist/bundle.js" />
+			    <link rel="stylesheet" href="/public/styles/ionicons.min.css" />
+			    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=vietnamese" rel="stylesheet" />
 			</body>
-		    <link rel="stylesheet" href="/public/styles/ionicons.min.css" />
-		    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=vietnamese" rel="stylesheet" />
 		</html>
 	);
 }

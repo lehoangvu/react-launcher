@@ -4,7 +4,8 @@ import compression from 'compression'
 import React from 'react'
 import { Provider } from 'react-redux'
 import counterApp from './../src/store/reducer'
-import store from './../src/store'
+import initStore from './../src/store'
+import cookieParser from 'cookie-parser'
 import Routes from './../src/routes'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import WithStylesContext from './../src/global/WithStylesContext'
@@ -12,7 +13,7 @@ import { Router, Route, IndexRoute, browserHistory, hashHistory, match, RouterCo
 import Html from './../src/global/html';
 import config from './../src/config';
 import helper from './../src/global/helper';
-import _$ from './Helper/fetch';
+import { fetchInfoUser, setTokensCookie } from './../src/global/libraries/fetchApi';
 
 global["config"] = config;
 global["Helper"] = helper;
@@ -21,8 +22,11 @@ global["$"] = {
 		return false; 
 	}
 }
+
+
 const app = Express()
 
+app.use(cookieParser(__COOKIE_KEY__));
 app.use((req,res,next) => { 
    req.url = req.url.replace(/[/]+/g, '/'); 
    next(); 
@@ -44,23 +48,33 @@ app.use('/dist', Express.static('./dist'))
 // This is fired every time the server side receives a request
 app.use(handleRender)
 
+
+
 function getPreNeeds(store, renderProps, token) {
-	let promises = [];
-	renderProps.components.forEach(component => {
-		let preNeeds = null;
-		if (component) {
-			preNeeds = component.preNeed;
-		}
-		if (preNeeds) {
-			if(Array.isArray(preNeeds)) {
-				preNeeds.map((preNeed) => {
-					promises.push(store.dispatch(preNeed(token, renderProps)));
-				})
-			} else {
-				promises.push(store.dispatch(preNeeds(token, renderProps)));
-			}
-		}
-	});
+	// let promises = [];
+
+	const needs = renderProps.components.reduce((prev, current) => {
+		const result = current ? (current.preNeeds || []).concat(prev) : prev;
+		return result;
+	}, []);
+	const promises = needs.map(need => store.dispatch(need(token, renderProps)));
+
+	// renderProps.components.forEach(component => {
+	// 	let preNeeds = null;
+	// 	if (component) {
+	// 		preNeeds = component.preNeed;
+	// 	}
+	// 	if (preNeeds) {
+	// 		if(Array.isArray(preNeeds)) {
+	// 			preNeeds.map((preNeed) => {
+	// 				promises.push(store.dispatch(preNeed(token, renderProps)));
+	// 			})
+	// 		} else {
+	// 			promises.push(store.dispatch(preNeeds(token, renderProps)));
+	// 		}
+	// 	}
+	// });
+	console.log(promises.length);
 	return promises;
 }
 
@@ -76,7 +90,16 @@ function handleRender(req, res) {
 		} else if (redirectionLocation) {
 			res.redirect(302, redirectionLocation.pathname + redirectionLocation.search);
 		} else if (renderProps) {
-			const preNeeds = getPreNeeds(store, renderProps, null);
+			const store = initStore();
+
+			const customerTokenStr = req.cookies['customer_token'];
+
+			let customerToken = null;
+			if(customerTokenStr) {
+				customerToken = JSON.parse(customerTokenStr).value;
+			}
+
+			const preNeeds = getPreNeeds(store, renderProps, customerToken);
 			if (preNeeds.length > 0) {
 				Promise.all(preNeeds)
 				.then(() => renderHtml(store, renderProps))

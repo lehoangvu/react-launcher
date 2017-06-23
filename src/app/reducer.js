@@ -1,14 +1,19 @@
+import Cookies from 'js-cookie';
+
 const intinalState = {
     user: false,
     notice: false
 }
 const saveToken = (token) => {
-    $.ajaxSetup({
-        headers: { 'x-customer-token': token.value }
-    });
-    if(localStorage) {
-        localStorage.setItem('customer_token', JSON.stringify(token));
+    if(typeof process.env.CLIENT !== 'undefined') {
+        $.ajaxSetup({
+            headers: { 'x-customer-token': token.value }
+        });
+        Cookies.set('customer_token', JSON.stringify(token));
     }
+    // if(localStorage) {
+    //     localStorage.setItem('customer_token', JSON.stringify(token));
+    // }
 }
 
 export default (state = intinalState, action) => {

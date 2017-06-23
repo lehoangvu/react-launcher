@@ -12,7 +12,7 @@ function checkToken(req) {
 }
 
 function appCache () {
-    return process.env.APP_ENV === 'prod' ? cache('5 minutes') : () => {};
+    return process.env.APP_ENV === 'prod' ? cache('5 minutes') : (req, res, next) => {next()};
 }
 
 module.exports = function (app) {

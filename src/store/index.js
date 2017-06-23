@@ -22,6 +22,7 @@ const promiseMiddleware = () => {
                 } else {
                     forwardData['data'] = response.data;
                 }
+                console.log('__', action.type);
                 next(forwardData);
                 return true;
             }).catch(error => {
@@ -34,10 +35,17 @@ const promiseMiddleware = () => {
     };
 };
 
-const preloadedState = typeof window !== 'undefined' ? window.__INITIAL_STATE__ || {} : {};
-// createLogger()
 const middleWare = [thunk, promiseMiddleware];
 
-const store = createStore(reducer, preloadedState, applyMiddleware(...middleWare));
+if(typeof process.env.LOG_ENABLE !== 'undefined') {
+    middleWare.push(createLogger());
+}
 
-export default store;
+
+const initStore = (preload = {}) => {
+    console.log(preload);
+    const store = createStore(reducer, preload, applyMiddleware(...middleWare));
+    return store;
+};
+
+export default initStore;

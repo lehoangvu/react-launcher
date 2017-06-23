@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import WithStylesContex from './global/WithStylesContext';
-import store from './store';
+import initStore from './store';
 import Routes from './routes';
 import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router';
 import jQuery from 'jquery';
@@ -11,6 +11,7 @@ import helper from './global/helper';
 import { syncHistoryWithStore } from 'react-router-redux';
 import ReactGA from 'react-ga';
 import Raven from 'raven';
+
 
 Raven.config('https://ad18788eef8f4f2c923b8ecd5edfe050:db040653c6fb441c9e59484f9cb5b489@sentry.io/173012').install();
 
@@ -23,6 +24,8 @@ let logPageView = () => {
 window.config = config;
 window.Helper = helper;
 window.$ = jQuery;
+
+const store = initStore(window.__INITIAL_STATE__ || {});
 
 const history = syncHistoryWithStore(browserHistory, store);
 

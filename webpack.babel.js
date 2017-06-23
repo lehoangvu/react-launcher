@@ -16,6 +16,13 @@ const config = {
 		path:     path.join(__dirname, 'dist')
 	},
 	plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('development'),
+                'LOG_ENABLE': JSON.stringify('true'),
+                'CLIENT': JSON.stringify('1')
+            }
+        }),
 		new webpack.ExtendedAPIPlugin(),
 		new webpack.optimize.CommonsChunkPlugin({ 
 			name: 'vendor',

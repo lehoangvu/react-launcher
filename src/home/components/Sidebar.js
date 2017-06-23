@@ -6,7 +6,7 @@ import s from './../styles/sidebar.scss';
 import {getHomeSidebarNewest} from './../server-action';
 
 class Sidebar extends React.Component {
-    static preNeed = getHomeSidebarNewest;
+    static preNeeds = [getHomeSidebarNewest];
     constructor(props) {
         super(props);
     }
@@ -22,7 +22,7 @@ class Sidebar extends React.Component {
                     return <Skeleton key={item} w="100%" h="16px" mb="5px" mt="5px" />
             });
         } else {
-            html = newestData.map((item)=>{
+            html = newestData.map((item, index)=>{
                 let iconImg = false;
                 let icon = Helper.getTagIcon(item.title, 1)
                             .concat(Helper.getTagIcon(item.tags.join(' '), 1)
@@ -31,10 +31,7 @@ class Sidebar extends React.Component {
                     iconImg = <img className={s.tagIcon} src={icon[0].fileurl} alt={icon[0].name} />
                 }
 
-                return <Link className={s.newestItem} to={`/questions/${item.id}/${item.url}`}>{iconImg}<span>{item.title}</span></Link>;
-                // if(!iconImg)
-                // else
-                //     return <Link className={s.newestItem} to={`/question/${item.id}/${item.url}`}>{iconImg}<span>{item.title}</span></Link>;
+                return <Link key={index} className={s.newestItem} to={`/questions/${item.id}/${item.url}`}>{iconImg}<span>{item.title}</span></Link>;
 
             });
         }

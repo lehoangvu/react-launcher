@@ -15,14 +15,14 @@ import DetailQUestionItem from './DetailQUestionItem';
 import { getDefail } from './../server-action';
 
 class DetailQuestion extends React.Component {
-    static preNeed = getDefail;
+    static preNeeds = [getDefail];
     constructor(props) {
         super(props);
+        console.log('QDP constructor');
     }
 
     componentDidMount() {
-        if(!this.props.detail) {
-            console.log(1);
+        if(!this.props.detail || this.props.params.id !== this.props.detail.id) {
             this.props.actions.getDetail(this.props.params.id);
         }
     }
@@ -36,6 +36,7 @@ class DetailQuestion extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('QDP change props');
         // this.props.actions.getDetail(this.props.params.id);
     }
     

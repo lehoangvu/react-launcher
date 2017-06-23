@@ -4,7 +4,11 @@ import Helmet from "react-helmet";
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './../styles/app.scss';
 
+import { fetchInfo } from './../server-action';
+
 class App extends React.Component{
+    static preNeeds = [fetchInfo];
+
 	constructor(props) {
 		super(props);
 	}

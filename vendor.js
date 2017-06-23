@@ -20,6 +20,7 @@ const VendorArr = [
 	"react-ga",
 	"markdown-it",
 	"recharts",
-	"isomorphic-style-loader/lib/withStyles"
+	"isomorphic-style-loader/lib/withStyles",
+	"js-cookie"
 ];
 export default  VendorArr;

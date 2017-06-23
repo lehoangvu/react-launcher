@@ -5,10 +5,15 @@ import FacebookLoginBtn from './FacebookLoginBtn';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './../styles/user-bar.scss';
 import moment from 'moment';
+import Cookies from 'js-cookie';
 
 import { Skeleton, UserBox } from './../../global';
+import { fetchInfo } from './../server-action';
 
 class UserBar extends React.Component {
+    
+    static preNeeds = [fetchInfo];
+
     constructor(props) {
         super(props);
         this.state = {
@@ -23,9 +28,15 @@ class UserBar extends React.Component {
     }
 
     componentDidMount() {
-        if (localStorage) {
-            var tokenData = localStorage.getItem('customer_token');
+        // if (localStorage) {
+        //     var tokenData = localStorage.getItem('customer_token');
+        // }
+
+        var tokenData = Cookies.get('customer_token');
+        if(tokenData) {
             this.props.fetchInfo(JSON.parse(tokenData));
+        } else {
+            this.props.fetchInfo(JSON.parse('{}'));
         }
         window.showSigninPopup = () => {this.showLogin(true)};
     }
