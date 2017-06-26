@@ -16,16 +16,13 @@ export default {
 		new webpack.DefinePlugin({
 			__CLIENT__:     false,
 			__SERVER__:     true,
-			__PRODUCTION__: false,
-			__DEV__:        true,
+			__PRODUCTION__: true,
+			__DEV__:        false,
             __VERSION__: JSON.stringify(Package.version),
             __APPNAME__: JSON.stringify(Package.name),
            	__API_URL__: JSON.stringify('https://hoi-dap-api.herokuapp.com/api'),
            	__API_KEY__: JSON.stringify('test'),
-           	__COOKIE_KEY__: JSON.stringify('abcd1234'),
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
+           	__COOKIE_KEY__: JSON.stringify('abcd1234')
 		}),
 		new webpack.ExtendedAPIPlugin(),
 		new webpack.optimize.UglifyJsPlugin({
