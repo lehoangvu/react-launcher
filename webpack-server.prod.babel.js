@@ -1,30 +1,31 @@
+import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
-import ModernizrPlugin from 'modernizr-webpack-plugin';
 import Package from './package.json';
 
-import Vendor from './vendor.js';
-
-const config = {
-	cache: true,
-	entry:  {
-		vendor: Vendor,
-		bundle: './src/bundle.js',
+export default {
+	target: 'node',
+	entry: {
+		'server-render-origin-builded': ['./server/server-render-origin']
 	},
 	output: {
 		filename: '[name].js',
-		path:     path.join(__dirname, 'dist')
+		path:     path.join(__dirname, 'server')
 	},
-    devtool: false,
 	plugins: [
-        new webpack.DefinePlugin({
+		new webpack.DefinePlugin({
+			__CLIENT__:     false,
+			__SERVER__:     true,
+			__PRODUCTION__: false,
+			__DEV__:        true,
+            __VERSION__: JSON.stringify(Package.version),
+            __APPNAME__: JSON.stringify(Package.name),
+           	__API_URL__: JSON.stringify('https://hoi-dap-api.herokuapp.com/api'),
+           	__API_KEY__: JSON.stringify('test'),
+           	__COOKIE_KEY__: JSON.stringify('abcd1234'),
             'process.env': {
                 'NODE_ENV': JSON.stringify('production')
             }
-        }),
-		new webpack.optimize.CommonsChunkPlugin({ 
-			name: 'vendor',
-			minChunks: Infinity
 		}),
 		new webpack.ExtendedAPIPlugin(),
 		new webpack.optimize.UglifyJsPlugin({
@@ -38,11 +39,14 @@ const config = {
 			}
 		})
 	],
-	node: {
-		fs: "empty"
-	},
 	module: {
 		rules: [
+		// {
+		// 	enforce: "pre",
+		// 	exclude: /node_modules/,
+		// 	loader:  'eslint-loader',
+		// 	test:    /\.js?$/
+		// },
 		{
 			exclude: /node_modules/,
 			use:  ['babel-loader'],
@@ -91,5 +95,3 @@ const config = {
 		]
 	}
 };
-
-export default config;

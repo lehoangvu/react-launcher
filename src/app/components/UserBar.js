@@ -33,7 +33,7 @@ class UserBar extends React.Component {
         // }
 
         var tokenData = Cookies.get('customer_token');
-        if(tokenData) {
+        if(tokenData && !this.props.user) {
             this.props.fetchInfo(JSON.parse(tokenData));
         } else {
             this.props.fetchInfo(JSON.parse('{}'));

@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "dev": "webpack -d --color --watch --progress --config webpack.babel.js",
-    "build": "webpack -p --color --progress --config webpack.babel.js",
+    "build": "webpack -p --color --progress --config webpack.prod.babel.js",
+    "build:server": "webpack -p --color --progress --config webpack-server.prod.babel.js",
     "dev:server": "webpack -d --watch --color --progress --config webpack-server.babel.js",
     "test": "mocha server/tests/index.js --recursive --watch",
     "cover": "istanbul cover _mocha server/tests/index.js --recursive",
