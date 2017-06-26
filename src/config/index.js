@@ -6,8 +6,8 @@ export default  process.env.NODE_ENV === 'development' ? {
 	SEO_DEFAULT_DESCRIPTION: 'Nơi giải đáp thắc mắc dành cho các lập trình viên chuyên nghiệp và đam mê',
 	SEO_DEFAULT_TITLE: 'QnA',
 } : {
-	API_URL : 'http://localhost:5100/api/',
-	BASE_URL : 'http://localhost:5000/',
+	API_URL : 'https://hoi-dap-api.herokuapp.com/api/',
+	BASE_URL : 'https://hoi-dap.herokuapp.com/',
 	FB_APP_ID: '580525262157720',
 	GG_APP_ID: '60036624360-df9nsn10arksnda4bms1qic3n2bm5q91.apps.googleusercontent.com',
 	SEO_DEFAULT_DESCRIPTION: 'Nơi giải đáp thắc mắc dành cho các lập trình viên chuyên nghiệp và đam mê',
