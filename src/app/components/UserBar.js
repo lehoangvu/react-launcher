@@ -8,11 +8,11 @@ import moment from 'moment';
 import Cookies from 'js-cookie';
 
 import { Skeleton, UserBox } from './../../global';
-import { fetchInfo } from './../server-action';
+// import { fetchInfo } from './../server-action';
 
 class UserBar extends React.Component {
     
-    static preNeeds = [fetchInfo];
+    // static preNeeds = [fetchInfo];
 
     constructor(props) {
         super(props);

@@ -1,8 +1,8 @@
 
 export const fetchInfo = (token, renderProps) => {
-    console.log('__FET');
     return {
         type: 'FETCH_SUCCESS',
+        data_field_name: 'user',
         promise: Helper.fetch('customer/me', 'post', null, {token: token})
     }
 }

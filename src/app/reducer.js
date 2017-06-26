@@ -44,6 +44,7 @@ export default (state = intinalState, action) => {
             };
             break;
         case 'FETCH_SUCCESS':
+            console.log(action.user);
             if(action.user !== null){
                 saveToken(action.token);
             }

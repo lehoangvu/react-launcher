@@ -43,6 +43,7 @@ app.use(compression({filter: (req, res) => {
 
 app.use('/public', Express.static('./public'))
 app.use('/dist', Express.static('./dist'))
+app.use('/favicon.ico', Express.static('./favicon.ico'))
 
 
 // This is fired every time the server side receives a request
@@ -58,23 +59,25 @@ function getPreNeeds(store, renderProps, token) {
 		return result;
 	}, []);
 	const promises = needs.map(need => store.dispatch(need(token, renderProps)));
-
-	// renderProps.components.forEach(component => {
-	// 	let preNeeds = null;
-	// 	if (component) {
-	// 		preNeeds = component.preNeed;
-	// 	}
-	// 	if (preNeeds) {
-	// 		if(Array.isArray(preNeeds)) {
-	// 			preNeeds.map((preNeed) => {
-	// 				promises.push(store.dispatch(preNeed(token, renderProps)));
-	// 			})
-	// 		} else {
-	// 			promises.push(store.dispatch(preNeeds(token, renderProps)));
-	// 		}
-	// 	}
-	// });
-	console.log(promises.length);
+	return promises;
+}
+function getNeeds(store, renderProps, token) {
+	let promises = [];
+	renderProps.components.forEach(component => {
+		let need = null;
+		if (component) {
+			need = component.preNeed;
+		}
+		if (need) {
+			if(Array.isArray(need)) {
+				need.map((preNeed) => {
+					promises.push(store.dispatch(preNeed(token, renderProps)));
+				});
+			} else {
+				promises.push(store.dispatch(need(token, renderProps)));
+			}
+		}
+	});
 	return promises;
 }
 
@@ -84,6 +87,7 @@ function handleRender(req, res) {
 		location: req.url,
 		routes: Routes
 	}, (error, redirectionLocation, renderProps) => {
+		console.log('match:', req.url);
 		if (error) {
 			console.error('Router error:', error);
 			res.status(500).send(error.message);
@@ -100,8 +104,10 @@ function handleRender(req, res) {
 			}
 
 			const preNeeds = getPreNeeds(store, renderProps, customerToken);
+			const needs = getNeeds(store, renderProps, customerToken);
 			if (preNeeds.length > 0) {
 				Promise.all(preNeeds)
+				.then(() => Promise.all(needs))
 				.then(() => renderHtml(store, renderProps))
 				.then(html => res.status(200).send(html))
 				.catch(err => res.status(500).send(err.message));

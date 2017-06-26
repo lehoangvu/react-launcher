@@ -22,7 +22,6 @@ const promiseMiddleware = () => {
                 } else {
                     forwardData['data'] = response.data;
                 }
-                console.log('__', action.type);
                 next(forwardData);
                 return true;
             }).catch(error => {
