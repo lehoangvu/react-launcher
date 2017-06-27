@@ -11,7 +11,7 @@ var loadApp = (app_name) => {
         break;
         case 'server':
             // require('./server');
-            require('./server-render-origin-builded');
+            require('./dist/server');
         break;
         default:
         return;

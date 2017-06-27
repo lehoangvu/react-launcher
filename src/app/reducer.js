@@ -77,9 +77,7 @@ export default (state = intinalState, action) => {
             $.ajaxSetup({
                 headers: {}
             });
-            if(localStorage) {
-                localStorage.removeItem('customer_token');
-            }
+            Cookies.remove('customer_token');
             return {
                 ...state,
                 fetched: true,

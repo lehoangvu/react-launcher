@@ -8,11 +8,11 @@ export default {
 	target: 'node',
 	entry: {
 		// 'server-render-build': ['./server/server-render']
-		'server-render-origin-builded': ['./server/server-render-origin']
+		'server': ['./server/server-render-origin']
 	},
 	output: {
 		filename: '[name].js',
-		path:     path.join(__dirname, 'server')
+		path:     path.join(__dirname, 'server/dist')
 	},
 	plugins: [
 		new webpack.DefinePlugin({
