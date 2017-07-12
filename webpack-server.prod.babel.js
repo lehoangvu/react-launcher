@@ -6,7 +6,7 @@ import Package from './package.json';
 export default {
 	target: 'node',
 	entry: {
-		'server-render-origin-builded': ['./server/server-render-origin']
+		'server': ['./server/server-render-origin']
 	},
 	output: {
 		filename: '[name].js',
