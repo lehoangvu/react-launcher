@@ -44,6 +44,7 @@ app.use(compression({filter: (req, res) => {
 app.use('/public', Express.static('./public'))
 app.use('/dist', Express.static('./dist'))
 app.use('/favicon.ico', Express.static('./favicon.ico'))
+app.use('/loaderio-a9e0809dcfd872451be241b95e98bfac.txt', Express.static('./loaderio-a9e0809dcfd872451be241b95e98bfac.txt'))
 
 
 // This is fired every time the server side receives a request
