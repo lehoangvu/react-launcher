@@ -10,7 +10,7 @@ export default {
 	},
 	output: {
 		filename: '[name].js',
-		path:     path.join(__dirname, 'server')
+		path:     path.join(__dirname, 'server/dist')
 	},
 	plugins: [
 		new webpack.DefinePlugin({
