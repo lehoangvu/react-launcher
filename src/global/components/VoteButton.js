@@ -52,7 +52,6 @@ class VoteButton extends React.Component {
         }
     }
     render() {
-        console.log('render');
         return (
             <div className={s.voteBtn} >
                 <span>{parseInt(this.props.vote) - parseInt(this.props.down_vote)}</span>

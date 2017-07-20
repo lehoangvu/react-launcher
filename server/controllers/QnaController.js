@@ -383,6 +383,7 @@ module.exports = function (app) {
     });
 
     app.route('/api/qna/newest').get((req, res) => {
+        console.log('get sidebar');
         var getQuestion = (_ids) => {
             return new Promise((resolve, reject) => {
                 var prs = _ids.map((_id) => {

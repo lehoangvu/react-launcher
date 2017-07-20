@@ -42,7 +42,6 @@ if(typeof process.env.LOG_ENABLE !== 'undefined') {
 
 
 const initStore = (preload = {}) => {
-    console.log(preload);
     const store = createStore(reducer, preload, applyMiddleware(...middleWare));
     return store;
 };

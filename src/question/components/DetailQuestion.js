@@ -18,7 +18,6 @@ class DetailQuestion extends React.Component {
     static preNeeds = [getDefail];
     constructor(props) {
         super(props);
-        console.log('QDP constructor');
     }
 
     componentDidMount() {
@@ -36,7 +35,6 @@ class DetailQuestion extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('QDP change props');
         // this.props.actions.getDetail(this.props.params.id);
     }
     
@@ -60,7 +58,6 @@ class DetailQuestion extends React.Component {
 
     render() {
         const detail = this.props.detail;
-        console.log('title', detail.title);
         if(!detail) {
             return (
                 <div className="container">

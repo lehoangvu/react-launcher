@@ -20,6 +20,7 @@ var mongoDB = {
 	_: mongoIns,
 	connect: () => {
 		var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
+		// var connectionString = 'mongodb://qna:XQlHmQUP&*kpBA6RNa@ds157712.mlab.com:57712/qna_production';
 		return new Promise(function(resolve, reject) {
 			// Connect to the db
 			MongoClient.connect(connectionString, {
@@ -148,6 +149,10 @@ var mongoDB = {
 		var collection = database.collection(collectionName);
 		collection.createIndex(description);
 	},
+	ensureIndex: (collectionName, description) => {
+		var collection = database.collection(collectionName);
+		collection.ensureIndex(description);
+	},
 	updateDocument: (collectionName, data, _id) => {
 		var collection = database.collection(collectionName);
 		return new Promise((resolve, reject) => {
@@ -179,6 +184,11 @@ var mongoDB = {
 				return resolve(false);
 			});
 		})
+	},
+	createCollection: (collectionName, indexData = null) => {
+		database.createCollection(collectionName);
+		if(indexData)
+			mongoDB.ensureIndex(collectionName, indexData);
 	}
 	// findAndModify: (collectionName, query, updateQuery) => {
 	// 	var collection = database.collection(collectionName);

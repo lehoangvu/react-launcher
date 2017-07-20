@@ -31,7 +31,6 @@ class AddQuestion extends React.Component {
     }
 
     validContent(value) {
-    	console.log(value);
     	if(!value || value.length === 0) {
     		return 'Hãy nhập nội dung';
     	}
@@ -49,7 +48,6 @@ class AddQuestion extends React.Component {
     }
 
 	handleValidateFail() {
-		console.log('fail');
 	}
 
 	renderMarkDown() {

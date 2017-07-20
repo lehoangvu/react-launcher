@@ -11,7 +11,6 @@ var User = require('./Api/user');
 var qna = require('./Api/qna');
 var expressValidator = require('express-validator');
 var apicache = require('apicache');
-
 // var oauthFB = require('./Api/oauthFB');
 // oauthFB.getInfo("EAAIPZCBIIt5gBANOls1lokoIMvLNuRv7i5pHAuvdaitJ5CjtMtXO5CdLLakd2Nf2dnrVf1ZAL2WdK3tPVkuAXXbZAbZA9PQMWGyvgZBRp50Yjmhu5JWWyLxKE3EnX1JUFrkloCCUBdhpzORkZBI6LwNfXiZBDNxj5WqD9ryCNCm8XkGFJCz3JKdzvuR1vhcqRMZD");
 
@@ -19,6 +18,7 @@ var cache = apicache.middleware;
 
 // app.use(cache('5 minutes'));
 
+app.use(require('express-status-monitor')());
 
 app.use(compression({filter: (req, res) => {
   if (req.headers['x-no-compression']) {

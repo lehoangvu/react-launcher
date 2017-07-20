@@ -27,7 +27,6 @@ function promiseMiddleware() {
 			return true;
 		}).catch(error => {
 			next({ ...rest, error, type: FAILURE });
-			console.log(error);
 			return false;
 		});
 	};

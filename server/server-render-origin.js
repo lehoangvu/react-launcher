@@ -23,9 +23,9 @@ global["$"] = {
 	}
 }
 
-
 const app = Express()
 
+eval("app.use(require('express-status-monitor')())");
 app.use(cookieParser(__COOKIE_KEY__));
 app.use((req,res,next) => { 
    req.url = req.url.replace(/[/]+/g, '/'); 
@@ -123,7 +123,6 @@ function handleRender(req, res) {
 }
 
 function renderHtml(store, renderProps) {
-	/* eslint no-underscore-dangle: ["error", { "allow": ["_getCss"] }] */
 	const css = new Set();
 	const content = renderToStaticMarkup(
 		<Provider store={store}>
@@ -144,6 +143,6 @@ function renderHtml(store, renderProps) {
 	return template;
 }
 
-
 app.listen(process.env.PORT || 5000); //the port you want to use
+
 console.log('SERVER ready !');
