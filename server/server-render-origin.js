@@ -14,6 +14,7 @@ import Html from './../src/global/html';
 import config from './../src/config';
 import helper from './../src/global/helper';
 import { fetchInfoUser, setTokensCookie } from './../src/global/libraries/fetchApi';
+import serveStatic from 'serve-static';
 
 global["config"] = config;
 global["Helper"] = helper;
@@ -32,6 +33,12 @@ app.use((req,res,next) => {
    next(); 
 });
 
+
+// app.use('/public', Express.static('./public'))
+// app.use('/dist', Express.static('./dist'))
+// app.use('/favicon.ico', Express.static('./favicon.ico'))
+// app.use('/loaderio-a9e0809dcfd872451be241b95e98bfac.txt', Express.static('./loaderio-a9e0809dcfd872451be241b95e98bfac.txt'))
+
 // app.use(compression({filter: (req, res) => {
 //   if (req.headers['x-no-compression']) {
 //     // don't compress responses with this request header
@@ -41,11 +48,13 @@ app.use((req,res,next) => {
 //   return compression.filter(req, res);
 // }}));
 
-app.use('/public', Express.static('./public'))
-app.use('/dist', Express.static('./dist'))
-app.use('/favicon.ico', Express.static('./favicon.ico'))
-app.use('/loaderio-a9e0809dcfd872451be241b95e98bfac.txt', Express.static('./loaderio-a9e0809dcfd872451be241b95e98bfac.txt'))
+app.use('/public', serveStatic('./public', {}))
+app.use('/dist', serveStatic('./dist'))
+app.use('/favicon.ico', serveStatic('./favicon.ico'))
+app.use('/loaderio-a9e0809dcfd872451be241b95e98bfac.txt', serveStatic('./loaderio-a9e0809dcfd872451be241b95e98bfac.txt'))
 
+
+// app.use(serveStatic())
 
 // This is fired every time the server side receives a request
 app.use(handleRender)
