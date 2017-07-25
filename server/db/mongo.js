@@ -19,18 +19,15 @@ var mongoDB = {
     },
 	_: mongoIns,
 	connect: () => {
-		var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
-		// var connectionString = 'mongodb://qna:XQlHmQUP&*kpBA6RNa@ds157712.mlab.com:57712/qna_production';
+		// var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
+		// var connectionString = 'mongodb://dev:1234qwerasdfzxcv@ds127101.mlab.com:27101/qna_development';
+		var connectionString = process.env.MONGO_CONN;
 		return new Promise(function(resolve, reject) {
 			// Connect to the db
 			MongoClient.connect(connectionString, {
 				connectTimeoutMS: 480000,
 			}, (err, di) => {
 			  if(err) {
-				Raven.captureException({
-					error: "Cannot connect mongo",
-					text: JSON.stringify(err)
-				});
 			  	return reject({
 			  		error: err
 			  	});
@@ -48,10 +45,6 @@ var mongoDB = {
 		return new Promise((resolve, reject) => {
 			collection.insert(doc, {w: 1}, (err, result) => {
 				if(err) {
-					Raven.captureException({
-						error: "Cannot add to mongo",
-						text: JSON.stringify(err)
-					});
 					return reject(err);
 				}
 				return resolve(result);
@@ -69,10 +62,6 @@ var mongoDB = {
 		return new Promise((resolve, reject) => {
 			query.count((err, count) => {
 				if(err) {
-					Raven.captureException({
-						error: "Cannot count mongo",
-						text: JSON.stringify(err)
-					});
 					return reject(err);
 				}
 				return resolve(count);
@@ -84,10 +73,6 @@ var mongoDB = {
 		return new Promise((resolve, reject) => {
 			collection.find(query).count((err, count) => {
 				if(err) {
-					Raven.captureException({
-						error: "Cannot count v2 mongo",
-						text: JSON.stringify(err)
-					});
 					return reject(err);
 				}
 				return resolve(count);
@@ -158,10 +143,6 @@ var mongoDB = {
 		return new Promise((resolve, reject) => {
 			collection.update({_id: mongoDB.toObjectId(_id)}, data, (err, result)=>{
 				if(err) {
-					Raven.captureException({
-						error: "Cannot update mongo",
-						text: JSON.stringify(err)
-					});
 					return reject(err);
 				}
 				return resolve(result);
@@ -173,10 +154,6 @@ var mongoDB = {
 		return new Promise((resolve, reject) => {
 			var result = collection.findOne(query, (err, result) => {
 				if(err) {
-					Raven.captureException({
-						error: "Cannot find mongo",
-						text: JSON.stringify(err)
-					});
 					return reject(err);
 				}
 				if(result)
