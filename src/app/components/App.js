@@ -7,7 +7,7 @@ import s from './../styles/app.scss';
 import { fetchInfo } from './../server-action';
 
 class App extends React.Component{
-    static preNeeds = [fetchInfo];
+    // static preNeeds = [fetchInfo];
 
 	constructor(props) {
 		super(props);
