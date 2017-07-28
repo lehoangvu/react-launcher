@@ -12,6 +12,7 @@ var qna = require('./Api/qna');
 var expressValidator = require('express-validator');
 var apicache = require('apicache');
 var appCache = require('./Helper/cache');
+var moment = require('moment');
 // var oauthFB = require('./Api/oauthFB');
 // oauthFB.getInfo("EAAIPZCBIIt5gBANOls1lokoIMvLNuRv7i5pHAuvdaitJ5CjtMtXO5CdLLakd2Nf2dnrVf1ZAL2WdK3tPVkuAXXbZAbZA9PQMWGyvgZBRp50Yjmhu5JWWyLxKE3EnX1JUFrkloCCUBdhpzORkZBI6LwNfXiZBDNxj5WqD9ryCNCm8XkGFJCz3JKdzvuR1vhcqRMZD");
 
@@ -174,7 +175,7 @@ app.route('/api/customer/me/notice/read').post(function (req, res) {
 
 app.route('/api/github-trend' ).get(appCache(), function (req, res) {
     request({
-        url: 'https://api.github.com/search/repositories?sort=stars&order=desc&q=created:>2017-07-25&page=2&per_page=20',
+        url: 'https://api.github.com/search/repositories?sort=stars&order=desc&q=created:>'+moment().add(-2, 'day').endOf('day').format("YYYY-MM-DD")+'&page=1',
         headers: {
             'User-Agent': 'Qna Api'
         }
