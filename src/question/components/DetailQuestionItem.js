@@ -40,6 +40,7 @@ class DetailQuestionItem extends React.Component {
             editing: false,
             disable_form: false,
             loading_form: false,
+            editable: nextProps.user && nextProps.user.nickname === nextProps.detail.user.nickname,
             detail: nextProps.detail
         })
     }
