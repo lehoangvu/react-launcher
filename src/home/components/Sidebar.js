@@ -84,6 +84,11 @@ class Sidebar extends React.Component {
                         <h4>{item.full_name}</h4>
                     </a>
                     <span>{item.description}</span>
+                    <div className={s.repoAttribute}>
+                        <span className={s.repoLang}>{item.language}</span>
+                        <span className={s.repoStar}><i className="ion-android-star-outline"/>{Number(item.star).toLocaleString('en')}</span>
+                        <span className={s.repoFork}><i className="ion-fork-repo"/>{Number(item.fork).toLocaleString('en')}</span>
+                    </div>
                     <div className={s.repoContributors}>
                         {contributors}
                     </div>

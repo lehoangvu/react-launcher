@@ -53,5 +53,31 @@
 		width: 25px;
 		margin: 0 2px 2px 0;
 		float: right;
+		&:nth-child(n + 10) {
+			display: none;
+		}
 	}
+}
+.repoAttribute {
+	margin-top: 6px;
+	span {
+		display: inline-block;
+	    font-size: 12px;
+	    font-weight: 500;
+	    margin-right: 10px;
+	    i {
+    	    font-size: 17px;
+		    margin-right: 2px;
+		    vertical-align: middle;
+	    }
+	}
+}
+.repoLang {
+
+}
+.repoStar {
+
+}
+.repoFork {
+
 }

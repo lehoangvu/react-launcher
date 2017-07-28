@@ -191,7 +191,10 @@ app.route('/api/github-trend' ).get(appCache(), function (req, res) {
                         url: item.html_url,
                         description: item.description,
                         contributors_url: item.contributors_url,
-                        contributors: []
+                        contributors: [],
+                        star: item.stargazers_count,
+                        fork: item.forks_count,
+                        language: item.language
                     };
                     data.push(tmp);
                     promises.push(new Promise((resolve, reject) => {
