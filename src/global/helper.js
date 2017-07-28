@@ -153,7 +153,7 @@ export default {
 			}, {
 				name: 'laravel',
 				alias: 'laravel',
-				filename: 'laravel.svg];',
+				filename: 'laravel.svg',
 				rank: 1
 			}
 		];
