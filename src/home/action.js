@@ -57,3 +57,19 @@ export const getHomeSidebarNewest = () => {
 		})
 	}
 }
+export const getGithubTrend = () => {
+	return dispatch => {
+		$.ajax({
+			url: config.API_URL + 'github-trend',
+			dataType: 'JSON',
+		}).done((json)=>{
+			dispatch({
+				data: json,
+				type: 'GET_GITHUB_TREND_SUCCESS'
+			})
+		})
+		.fail((error)=>{
+
+		})
+	}
+}

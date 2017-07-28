@@ -1,0 +1,5 @@
+var apicache = require('apicache');
+var cache = () => {
+    return process.env.APP_ENV === 'prod' ? apicache.middleware('5 minutes') : (req, res, next) => {next()};
+}
+module.exports = cache;

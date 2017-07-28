@@ -1,6 +1,7 @@
 const intinalState = {
     sidebar: {
-        newest: false
+        newest: false,
+        githubTrend: false
     },
     list: {
         data: [],
@@ -33,6 +34,15 @@ export default (state = intinalState, action) => {
                 sidebar: {
                     ...state.sidebar,
                     newest: action.data
+                }
+            }
+            break;
+        case 'GET_GITHUB_TREND_SUCCESS':
+            return {
+                ...state,
+                sidebar: {
+                    ...state.sidebar,
+                    githubTrend: action.data
                 }
             }
             break;

@@ -4,16 +4,12 @@ var qna = require('../Api/qna');
 var mongo = require('../db/mongo');
 var Updater = require('../Helper/Updater');
 var User = require('../Api/user');
-var apicache = require('apicache');
-var cache = apicache.middleware;
+var appCache = require('../Helper/cache');
 
 function checkToken(req) {
     return typeof req.headers['x-customer-token'] !== 'undefined';
 }
 
-function appCache () {
-    return process.env.APP_ENV === 'prod' ? cache('5 minutes') : (req, res, next) => {next()};
-}
 
 module.exports = function (app) {
     app.route('/api/qna/create').put((req, res) => {

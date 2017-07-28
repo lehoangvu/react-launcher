@@ -11,6 +11,7 @@ var User = require('./Api/user');
 var qna = require('./Api/qna');
 var expressValidator = require('express-validator');
 var apicache = require('apicache');
+var appCache = require('./Helper/cache');
 // var oauthFB = require('./Api/oauthFB');
 // oauthFB.getInfo("EAAIPZCBIIt5gBANOls1lokoIMvLNuRv7i5pHAuvdaitJ5CjtMtXO5CdLLakd2Nf2dnrVf1ZAL2WdK3tPVkuAXXbZAbZA9PQMWGyvgZBRp50Yjmhu5JWWyLxKE3EnX1JUFrkloCCUBdhpzORkZBI6LwNfXiZBDNxj5WqD9ryCNCm8XkGFJCz3JKdzvuR1vhcqRMZD");
 
@@ -169,6 +170,58 @@ app.route('/api/customer/me/notice/read').post(function (req, res) {
             error: 'Something went wrong'
         });
     });
+});
+
+app.route('/api/github-trend' ).get(appCache(), function (req, res) {
+    request({
+        url: 'https://api.github.com/search/repositories?sort=stars&order=desc&q=created:>2017-07-25&page=2&per_page=20',
+        headers: {
+            'User-Agent': 'Qna Api'
+        }
+    }, (error, response, body) => {
+        if (!error && response.statusCode == 200) {
+            var data = [];
+            var promises = [];
+            var items = JSON.parse(body);
+            if(items.items .length > 0) {
+                items.items.map((item) => {
+                    var tmp = {
+                        full_name: item.full_name,
+                        url: item.html_url,
+                        description: item.description,
+                        contributors_url: item.contributors_url,
+                        contributors: []
+                    };
+                    data.push(tmp);
+                    promises.push(new Promise((resolve, reject) => {
+                        request({
+                            url: item.contributors_url,
+                            headers: {
+                                'User-Agent': 'Qna Api',
+                                Authorization: 'token ' + process.env.GITHUB_TOKEN
+                            }
+                        }, (error, response, body) => {
+                            if (!error && response.statusCode == 200) {
+                                return resolve(JSON.parse(body));
+                            }
+                            return resolve([]);
+                        });
+                    }));
+                });
+            }
+            Promise.all(promises).then((resuls) => {
+                resuls.map((users, index) => {
+                    data[index]['contributors'] = users;
+                });
+                res.send(data);
+            });
+        }else {
+            res.status(400);
+            res.send({
+                error: 'Something went wrong'
+            });
+        }
+    })
 });
 
 app.route('/api/status' ).get(function (req, res) {

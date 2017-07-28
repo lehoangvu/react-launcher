@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getTabList, setCurentTab, getHomeSidebarNewest } from './action';
+import { getTabList, setCurentTab, getHomeSidebarNewest, getGithubTrend } from './action';
 import _Home from './components/Home';
 
 const mapStateToProps = (state, ownProps) => {
@@ -15,7 +15,8 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
 		getTabList,
 		setCurentTab,
-		getHomeSidebarNewest
+		getHomeSidebarNewest,
+		getGithubTrend
     }, dispatch)
 });
 

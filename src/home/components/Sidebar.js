@@ -42,6 +42,60 @@ class Sidebar extends React.Component {
             </div>;
     }
 
+    getGithubTrend() {
+        let html = [];
+        const githubTrendData = this.props.data.githubTrend;
+        if(!githubTrendData) {
+            for(let i = 0; i < 20; i++) {
+                if(i % 3 === 0)
+                    html.push(<Skeleton wrap={true} key={i} mb="20px">
+                            <Skeleton h="16px" mb="5px"/>
+                            <Skeleton w="40%" h="8px" mt="8px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                        </Skeleton>);
+                if(i % 3 === 1)
+                    html.push(<Skeleton wrap={true} key={i} mb="20px">
+                            <Skeleton h="16px" mb="5px"/>
+                            <Skeleton w="60%" h="8px" mt="8px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                        </Skeleton>);
+                if(i % 3 === 2)
+                    html.push(<Skeleton wrap={true} key={i} mb="20px">
+                            <Skeleton h="16px" mb="5px"/>
+                            <Skeleton w="30%" h="8px" mt="8px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                            <Skeleton w="25px" h="25px" ml="2px"/>
+                        </Skeleton>);
+            }
+        } else {
+            html = githubTrendData.map((item, index)=>{
+                let contributors = item.contributors.map((man) => {
+                    return <img src={man.avatar_url} />
+                })
+                return <div className={s.repoItem}>
+                    <a href={item.url} target="_blank">
+                        <h4>{item.full_name}</h4>
+                    </a>
+                    <span>{item.description}</span>
+                    <div className={s.repoContributors}>
+                        {contributors}
+                    </div>
+                </div>;
+            });
+        }
+
+        return <div className={s.githubTrendList}>
+                {html}
+            </div>;
+    }
+
     render() {
         const data = this.props.data;
 
@@ -51,6 +105,10 @@ class Sidebar extends React.Component {
                 <Link className="btn pull-right" to="/questions/add">Hỏi ngay!</Link>
             </div>
             {this.getNewest()}
+            <div className={s.rootDiscussFeed}>
+                <h3>Github Trend</h3>
+            </div>
+            {this.getGithubTrend()}
 
         </div>
     }
