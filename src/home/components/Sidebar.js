@@ -28,7 +28,7 @@ class Sidebar extends React.Component {
                 let icon = Helper.getTagIcon(item.title, 1)
                             .concat(Helper.getTagIcon(item.tags.join(' '), 1)
                             .concat(Helper.getTagIcon(item.content, 1)));
-                if(icon.length === 1) {
+                if(icon.length > 0) {
                     iconImg = <img className={s.tagIcon} src={icon[0].fileurl} alt={icon[0].name} />
                 }
 

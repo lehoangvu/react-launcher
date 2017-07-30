@@ -73,3 +73,12 @@ export const getGithubTrend = () => {
 		})
 	}
 }
+
+export const refreshState = () => {
+	return dispatch => {
+		console.log('REFRESH_HOME');
+		dispatch({
+			type: 'REFRESH_HOME'
+		});
+	}
+}

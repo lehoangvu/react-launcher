@@ -77,6 +77,16 @@ export default (state = intinalState, action) => {
             }
             return state;
             break;
+        case 'REFRESH_HOME':
+            console.log({
+                ...state,
+                ...intinalState
+            });
+            return {
+                ...state,
+                ...intinalState
+            }
+            break;
 
         default:
             return state;
