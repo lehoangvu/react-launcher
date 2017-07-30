@@ -173,7 +173,7 @@ app.route('/api/customer/me/notice/read').post(function (req, res) {
     });
 });
 
-app.route('/api/github-trend' ).get(appCache(), function (req, res) {
+app.route('/api/github-trend' ).get(appCache(true), function (req, res) {
     request({
         url: 'https://api.github.com/search/repositories?sort=stars&order=desc&q=created:>'+moment().add(-2, 'day').endOf('day').format("YYYY-MM-DD")+'&page=1',
         headers: {
@@ -202,7 +202,7 @@ app.route('/api/github-trend' ).get(appCache(), function (req, res) {
                             url: item.contributors_url,
                             headers: {
                                 'User-Agent': 'Qna Api',
-                                Authorization: 'token ' + process.env.GITHUB_TOKEN
+                                'Authorization': 'token ' + process.env.GITHUB_TOKEN
                             }
                         }, (error, response, body) => {
                             if (!error && response.statusCode == 200) {
