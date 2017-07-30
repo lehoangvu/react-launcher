@@ -19,7 +19,7 @@ var moment = require('moment');
 var cache = apicache.middleware;
 
 // app.use(cache('5 minutes'));
-
+app.use('/loaderio-5ad06a3bef689e1b4acfe0fa0afd4727.txt', express.static('./loaderio-5ad06a3bef689e1b4acfe0fa0afd4727.txt'));
 app.use(require('express-status-monitor')());
 
 app.use(compression({filter: (req, res) => {
