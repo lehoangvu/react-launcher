@@ -223,7 +223,7 @@ module.exports = function (app) {
         });
     });
 
-    app.route('/api/qna/questions/:id').get(appCache(), (req, res) => {
+    app.route('/api/qna/questions/:id').get((req, res) => {
         let id = req.params.id;
         var token = null;
         if (typeof req.headers['x-customer-token'] !== 'undefined') {
