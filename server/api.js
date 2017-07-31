@@ -175,7 +175,7 @@ app.route('/api/customer/me/notice/read').post(function (req, res) {
 
 app.route('/api/github-trend' ).get(appCache(true), function (req, res) {
     request({
-        url: 'https://api.github.com/search/repositories?sort=stars&order=desc&q=created:>'+moment().add(-2, 'day').endOf('day').format("YYYY-MM-DD")+'&page=1',
+        url: 'https://api.github.com/search/repositories?sort=stars&order=desc&q=created:>'+moment().add(-30, 'day').endOf('day').format("YYYY-MM-DD")+'&page=1',
         headers: {
             'User-Agent': 'Qna Api'
         }
