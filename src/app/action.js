@@ -34,6 +34,7 @@ export const fetchInfo = (token) => {
                 data: {
                     token: token.value
                 },
+                async: false,
                 type: 'POST'
             }).done(function(response) {
                 dispatch({

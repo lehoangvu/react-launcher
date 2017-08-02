@@ -19,7 +19,7 @@ var moment = require('moment');
 var cache = apicache.middleware;
 
 // app.use(cache('5 minutes'));
-
+app.use('/loaderio-5ad06a3bef689e1b4acfe0fa0afd4727.txt', express.static('./loaderio-5ad06a3bef689e1b4acfe0fa0afd4727.txt'));
 app.use(require('express-status-monitor')());
 
 app.use(compression({filter: (req, res) => {
@@ -173,9 +173,9 @@ app.route('/api/customer/me/notice/read').post(function (req, res) {
     });
 });
 
-app.route('/api/github-trend' ).get(appCache(), function (req, res) {
+app.route('/api/github-trend' ).get(appCache(true), function (req, res) {
     request({
-        url: 'https://api.github.com/search/repositories?sort=stars&order=desc&q=created:>'+moment().add(-2, 'day').endOf('day').format("YYYY-MM-DD")+'&page=1',
+        url: 'https://api.github.com/search/repositories?sort=stars&order=desc&q=created:>'+moment().add(-30, 'day').endOf('day').format("YYYY-MM-DD")+'&page=1',
         headers: {
             'User-Agent': 'Qna Api'
         }
@@ -202,7 +202,7 @@ app.route('/api/github-trend' ).get(appCache(), function (req, res) {
                             url: item.contributors_url,
                             headers: {
                                 'User-Agent': 'Qna Api',
-                                Authorization: 'token ' + process.env.GITHUB_TOKEN
+                                'Authorization': 'token ' + process.env.GITHUB_TOKEN
                             }
                         }, (error, response, body) => {
                             if (!error && response.statusCode == 200) {
