@@ -17,7 +17,8 @@
     "start:cron": "ENV_STR=env_file:.env.dev,app_type:cron nodemon server --config nodemon.config.js",
     "w-start:server": "set ENV_STR=env_file:.env.dev,app_type:server && nodemon server --config nodemon.config.js",
     "w-start:api": "set ENV_STR=env_file:.env.dev,app_type:api &&  nodemon server --config nodemon.config.js",
-    "w-start:cron": "set ENV_STR=env_file:.env.dev,app_type:cron && nodemon server --config nodemon.config.js"
+    "w-start:cron": "set ENV_STR=env_file:.env.dev,app_type:cron && nodemon server --config nodemon.config.js",
+    "w-start:socket": "set ENV_STR=env_file:.env.dev,app_type:socket && nodemon server --config nodemon.config.js"
   },
   "repository": {
     "type": "git",
@@ -80,6 +81,7 @@
     "search-index": "^0.11.0",
     "serve-static": "^1.12.3",
     "shortid": "^2.2.8",
+    "socket.io": "^2.0.3",
     "source-map-support": "^0.4.3",
     "spdy": "^3.4.3",
     "term-cluster": "0.0.1",

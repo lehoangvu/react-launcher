@@ -1,0 +1,70 @@
+.root {
+	table {
+		width: 100%;
+        text-align: center;
+	}
+}
+.nodeRow {
+	display: block;
+	width: 100%;
+}
+.node {
+    font-family: 'Caveat', cursive;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    display: inline-block;
+    line-height: 47px;
+    text-align: center;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    font-size: 28px;
+}
+.nodeCover {
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    color: #f00;
+    opacity: 0.5;
+    background: #ccc;
+}
+
+.starBtn {
+    background: #86867d;
+    border-radius: 12px;
+    border: 2px solid;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Bungee Shade', cursive;
+    font-size: 20px;
+    color: #fff;
+    margin: 10px 0;
+}
+
+.boardDrawer {
+    position: relative;
+    overflow: hidden;
+    display: table;
+    margin: auto;
+    margin-bottom: 300px;
+}
+.stampWiner {
+    background: #ff0;
+    border-radius: 12px;
+    border: 2px solid;
+    position: absolute;
+    top: 34%;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    opacity: 0.5;
+    text-align: center;
+    font-family: 'Bungee Shade', cursive;
+    transform: rotate(-32deg);
+    vertical-align: middle;
+    font-size: 20px;
+    color: #f00;
+}

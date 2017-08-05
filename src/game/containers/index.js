@@ -1,0 +1,1 @@
+export { default as TimSoContainer } from './TimSoContainer';
