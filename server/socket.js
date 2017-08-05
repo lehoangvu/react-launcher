@@ -40,7 +40,10 @@ var reg = (data, client) => {
         ROOMS[data.roomId] = [data.userId];
     }
     client.emit('regSuccess');
-    io.emit('fetchRoomInfoSuccess', getRoomInfo(data.roomId));
+    let roomData = getRoomInfo(data.roomId);
+    ROOMS[data.roomId].map((userId)=>{
+        CLIENTS[userId].client.emit('fetchRoomInfoSuccess', roomData);
+    });
 }
 var getScore = (alias, roomId) => {
     let score = 0;
@@ -179,14 +182,19 @@ io.on('connection', function(client) {
         CLIENTS[data.userId].agree = true;
         if (checkTwiceAgree(data.roomId)) {
             BOARDS[data.roomId] = generateBoard();
-            io.emit('playSignalSuccess', getRoomInfo(data.roomId));
+            ROOMS[data.roomId].map((userId)=>{
+                CLIENTS[userId].client.emit('playSignalSuccess', getRoomInfo(data.roomId));
+            });
         }
     });
 
 
     client.on('tick', function(data) {
         tick(data.node, data.userId, data.roomId);
-        io.emit('tickSuccess', getRoomInfo(data.roomId));
+        let roomData = getRoomInfo(data.roomId);
+        ROOMS[data.roomId].map((userId)=>{
+            CLIENTS[userId].client.emit('tickSuccess', roomData);
+        });
         if(MAX + 1 === LASTIDS[data.roomId]) {
             // LASTIDS = 0;
             ROOMS[data.roomId].map((userId)=>{
