@@ -209,7 +209,7 @@ io.on('connection', function(client) {
     });
 });
 
-http.listen(5300, function() {
+http.listen(process.env.PORT || 5000, function() {
+    console.log('SOCKET ready !');
 
 });
-console.log('SOCKET ready !');
