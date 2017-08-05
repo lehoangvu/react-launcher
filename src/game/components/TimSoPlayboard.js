@@ -119,7 +119,11 @@ class TimSoPlayboard extends React.Component {
         return  <table>
                 <tr>
                     <td>
-                        <h1>Room: <i><a target="_blank" href={`${window.location.host}/g/tim-so/${roomId}`}>{roomId}</a></i></h1>
+                        <h1>Room: <span styles={{
+                            fontWeight: 'normal',
+                            border: '1px solid',
+                            padding: '0 10px'
+                        }}>{`${window.location.host}/g/tim-so/${roomId}`}</span></h1>
                         <br/>
                         <h2>{userName}! Chiến nào!</h2>
                     </td>

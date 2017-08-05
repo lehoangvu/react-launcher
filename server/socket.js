@@ -6,9 +6,7 @@ var shortid = require('shortid');
 var rd = (min, max) => {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+app.use(require('express-status-monitor')())
 
 var CLIENTS = {};
 var ROOMS = {};
@@ -209,7 +207,7 @@ io.on('connection', function(client) {
     });
 });
 
-http.listen(process.env.PORT || 5000, function() {
+http.listen(process.env.PORT || 5300, function() {
     console.log('SOCKET ready !');
 
 });
