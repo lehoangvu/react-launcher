@@ -34,7 +34,7 @@ class App extends React.Component{
     }
 
     renderHeader() {
-        if((new RegExp('g/tim-so')).test(window.location.href)) {
+        if(!(new RegExp('g/tim-so')).test(window.location.href)) {
             return <Header 
                 user={this.props.user} 
                 notice={this.props.notice} 
