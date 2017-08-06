@@ -57,14 +57,25 @@ class TimSoPlayboard extends React.Component {
     }
 
     getUserSummary() {        
+        let totalScore = 0;
         let users = this.state.roomInfo.clients.map((client)=>{
+            let score = this.state.roomInfo.score[client.userId];
+            totalScore += score; 
             return <td>
                     <h3>{client.userName}</h3>
                     <br/>
-                    Điểm <b styles={{fontSize: '30px'}}>{this.state.roomInfo.score[client.userId]}</b>
+                    Điểm <b styles={{fontSize: '30px'}}>{score}</b>
                 </td>;
         });
         return <table>
+            <tr>
+                <td colSpan={this.state.roomInfo.clients.length}>
+                    <div className={s.currentNumber}>
+                        Hãy tìm: 
+                        <b>{totalScore + 1}</b>
+                    </div>
+                </td>
+            </tr>
             <tr>
                 {users}
             </tr>
@@ -115,15 +126,15 @@ class TimSoPlayboard extends React.Component {
     }
 
 	render() {
-        const {userName, roomId, gameStatus, roomInfo} = this.state;
+        const {userName, roomId, gameStatus, roomInfo, userId} = this.state;
         return  <table>
                 <tr>
                     <td>
-                        <h1>Room: <span styles={{
+                        <h1>Room: <textarea style={{
                             fontWeight: 'normal',
                             border: '1px solid',
                             padding: '0 10px'
-                        }}>{`${window.location.host}/g/tim-so/${roomId}`}</span></h1>
+                        }}>{`${config.BASE_URL}/g/tim-so/${roomId}`}</textarea></h1>
                         <br/>
                         <h2>{userName}! Chiến nào!</h2>
                     </td>
@@ -140,7 +151,7 @@ class TimSoPlayboard extends React.Component {
                 </tr>
                 <tr>
                     <td>
-                        <Board roomInfo={roomInfo} gameStatus={gameStatus} tick={this.tick.bind(this)} board={this.state.roomInfo.board} />
+                        <Board userId={userId} roomInfo={roomInfo} gameStatus={gameStatus} tick={this.tick.bind(this)} board={this.state.roomInfo.board} />
                     </td>
                 </tr>
             </table>;

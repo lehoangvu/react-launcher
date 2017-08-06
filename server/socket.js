@@ -26,12 +26,15 @@ var checkTwiceAgree = (roomId) => {
     });
     return agree;
 }
-
+var getAlias = (index) => {
+    let abc = 'XONMABCDEFGHIJ';
+    return abc[index];
+}
 var reg = (data, client) => {
     CLIENTS[data.userId] = {
         userName: data.userName,
         client: client,
-        alias: ROOMS[data.roomId].length === 0 ? 'x' : 'o',
+        alias: getAlias(ROOMS[data.roomId].length),
         agree: false
     };
     if (typeof ROOMS[data.roomId] !== 'undefined') {
@@ -208,6 +211,12 @@ io.on('connection', function(client) {
         ROOMS[data.roomId].map((userId)=>{
             CLIENTS[userId].client.emit('playAgainSuccess', getRoomInfo(data.roomId));
         });
+    });
+
+    client.on('checkRoom', (data) => {
+        if(typeof ROOMS[data.roomId] === 'undefined') {
+            client.emit('checkRoomFail');
+        }
     });
 
     client.on('disconnect', function() {

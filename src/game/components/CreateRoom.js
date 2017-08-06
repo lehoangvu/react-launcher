@@ -15,15 +15,20 @@ class CreateRoom extends React.Component {
 
     componentDidMount() {        
         const {socket, roomId} = this.props;
+        socket.on('createUserIdSuccess', ({userId, roomId}) => {
+            this.setState({userId});
+        });
+        socket.on('createRoomSuccess', ({userId, roomId}) => {
+            this.setState({userId, roomId});
+        });
+        socket.on('checkRoomFail', () => {
+            alert('Phòng này không tồn tại. Tạo lại phòng mới đê!');
+            window.location = `${config.BASE_URL}/g/tim-so`;
+        });
         if(roomId === '') {
-            socket.on('createRoomSuccess', ({userId, roomId}) => {
-                this.setState({userId, roomId});
-            });
             socket.emit('createRoom');
         } else {
-            socket.on('createUserIdSuccess', ({userId, roomId}) => {
-                this.setState({userId});
-            });
+            socket.emit('checkRoom', {roomId});
             socket.emit('createUserId');
         }
     }
@@ -52,13 +57,16 @@ class CreateRoom extends React.Component {
 	render() {
         const {roomId} = this.state;
         if(roomId === '')
-		  return <div className="{s.createRoot}">
-		      Đang tạo phòng...	
-		  </div>
+		  return <div className="container">
+                Đang tạo phòng...	
+            </div>;
         else 
-            return <div className="{s.createRoot}">
-                <input value={this.state.userName} onChange={this.inputChange.bind(this)} />
-              Xong, click để vào phòng >>> <button onClick={this.joinRoom.bind(this)}>{roomId}</button>
+            return <div className="container text-center">
+                <input className={s.nameInp} placeholder="Nhập tên của bạn..." value={this.state.userName} onChange={this.inputChange.bind(this)} />
+                <br/>
+                <button className={s.starBtn} onClick={this.joinRoom.bind(this)}>
+                    Vào phòng
+                </button>
           </div>
 	}
 }

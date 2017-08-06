@@ -14,18 +14,36 @@ class Board extends React.Component {
     getRows() {
         const { board } = this.props;
         return board.map((row)=>{
-            return <span className={s.nodeRow}>
-                {this.getCols(row)}
-            </span>;
+            return this.getCols(row)
         })        
     }
 
+    getColor(index) {
+        return ['#F44336',
+                '#FFC107',
+                '#9C27B0',
+                '#607D8B',
+                '#2196F3',
+                '#E91E63',
+                '#009688',
+                '#795548'][index];
+    }
+
     getCols(row) {
-        const {tick} = this.props;
+        const { tick, roomInfo, userId } = this.props;
+        let user = {};
+        let aliases = [];
+        roomInfo.clients.map((client, _index) => {
+            aliases.push(client.alias);
+            if(client.userId === userId) {
+                user = client;
+            }
+        });
         return row.map((node)=>{
             let cover = '';
-            if(node.value === 'x'|| node.value === 'o') 
-                cover = <i className={s.nodeCover}>
+            let clientIndex = aliases.indexOf(node.value);
+            if(clientIndex !== -1) 
+                cover = <i className={s.nodeCover} style={{background: this.getColor(clientIndex)}}>
                             <i className="ion-ios-close-empty" />
                         </i>;
             return <span onClick={() => {tick(node);}} className={s.node}>{node.number}

@@ -12,13 +12,7 @@ class TimSoView extends React.Component {
         const _socket = io.connect(config.SOCKET_URL);
         this.socket = _socket;
     }
-    componentDidMount() {        
-        // _socket.on('stc', (data) => {
-        //     console.log('RECIVE:' + data);
-        // });
-        // _socket.on('regSuccess', (data) => {
-        //     console.log('USERID:' + data.id);
-        // });
+    componentDidMount() {
     }
     render() {
         const { userId, userName } = this.props;
