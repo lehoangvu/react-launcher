@@ -10,8 +10,10 @@ var loadApp = (app_name) => {
             require('./cron');
         break;
         case 'server':
-            // require('./server');
             require('./server');
+        break;
+        case 'socket':
+            require('./socket');
         break;
         default:
         return;

@@ -1,8 +1,8 @@
 console.log('SERVER starting ...');
 var compression = require('compression');
 var express = require('express');
-var app = express();
 var request = require("request");
+var app = express();
 
 app.use(compression({filter: (req, res) => {
   if (req.headers['x-no-compression']) {

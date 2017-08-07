@@ -6,6 +6,7 @@ import Home from './../home';
 import { refreshState } from './../home/action';
 import Question from './../question';
 import Account from './../account';
+import Game from './../game';
 
 const basePath = typeof _basePath !== 'undefined' ? _basePath : '/';
 
@@ -15,6 +16,7 @@ const Routes =
         <IndexRoute component={Home} onEnter={() => {refreshState()}} ></IndexRoute>
         {Question}
         {Account}
+        {Game}
         <Route path="404" component={NotFound} />
         <Route path="*" component={NotFound} />
     </Route>;
