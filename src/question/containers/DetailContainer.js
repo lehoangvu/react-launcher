@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import DetailQuestion from '../components/DetailQuestion';
 import { getDetail, answer, vote, update } from '../action';
+import { getHomeSidebarNewest, getGithubTrend } from './../../home/action';
 const mapStateToProps = (state, ownProps) => {
     return {
         detail: state.question.detail,
-        user: state.app.user
+        user: state.app.user,
+        sidebar: state.home.sidebar
     };
 };
 
@@ -16,7 +18,9 @@ const mapDispatchToProps = (dispatch) => ({
     	getDetail,
     	answer,
     	vote, 
-        update
+        update,
+        getHomeSidebarNewest,
+        getGithubTrend
     }, dispatch)
 });
 

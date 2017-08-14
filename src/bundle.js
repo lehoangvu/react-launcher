@@ -10,10 +10,10 @@ import config from './config';
 import helper from './global/helper';
 import { syncHistoryWithStore } from 'react-router-redux';
 import ReactGA from 'react-ga';
-import Raven from 'raven';
+// import Raven from 'raven';
 
 
-Raven.config('https://ad18788eef8f4f2c923b8ecd5edfe050:db040653c6fb441c9e59484f9cb5b489@sentry.io/173012').install();
+// Raven.config('https://ad18788eef8f4f2c923b8ecd5edfe050:db040653c6fb441c9e59484f9cb5b489@sentry.io/173012').install();
 
 ReactGA.initialize('UA-71598875-1');
 let logPageView = () => {

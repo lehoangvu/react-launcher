@@ -11,19 +11,23 @@ import striptags from "./../../plugins/striptags";
 
 import AddAnswer from './AddAnswer';
 import DetailQUestionItem from './DetailQUestionItem';
-
-import { getDefail } from './../server-action';
+import Sidebar from './../../home/components/Sidebar';
+// import { getDefail } from './../server-action';
 
 class DetailQuestion extends React.Component {
-    static preNeeds = [getDefail];
+    // static preNeeds = [getDefail];
     constructor(props) {
         super(props);
     }
 
     componentDidMount() {
-        if(!this.props.detail || this.props.params.id !== this.props.detail.id) {
+        // if(!this.props.detail || this.props.params.id !== this.props.detail.id) {
             this.props.actions.getDetail(this.props.params.id);
-        }
+        // }
+
+        this.props.actions.getHomeSidebarNewest();
+
+        this.props.actions.getGithubTrend();
     }
 
     getCreateText() {
@@ -79,6 +83,7 @@ class DetailQuestion extends React.Component {
                             <Skeleton fl='right' w='100px' h='40px'/>
                         </Skeleton>
                     </div>
+                    <Sidebar data={this.props.sidebar} />
                 </div>
             );
         }
@@ -104,8 +109,8 @@ class DetailQuestion extends React.Component {
                         })}
                         <AddAnswer key={last_ans_id} onAnswer={(content) => this.props.actions.answer(detail.id, content)} />
 				    </div>
-            		<div className={s.sidebar}>
-		    		</div>
+
+                    <Sidebar data={this.props.sidebar} />
 
 		    	</div>
 		    </div>

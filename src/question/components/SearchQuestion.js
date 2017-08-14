@@ -1,5 +1,6 @@
 import React from 'react';
 import Helmet from "react-helmet";
+import Sidebar from './../../home/components/Sidebar';
 import { Tabs } from './../../global';
 
 class SearchQuestion extends React.Component {
@@ -40,11 +41,17 @@ class SearchQuestion extends React.Component {
             ]} />
     }
 
+    componentDidMount() {
+        this.props.actions.getHomeSidebarNewest();
+        this.props.actions.getGithubTrend();
+    }   
+
 	render() {
 		return <div className="root">
 			{this.helmetRender()}
             <div className="container">
                 {this.handleTab()}
+                <Sidebar data={this.props.sidebar} />
             </div>
 		</div>
 	}

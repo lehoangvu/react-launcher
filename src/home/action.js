@@ -43,7 +43,12 @@ export const setCurentTab = (q = '', query, page = 1) => {
 	}
 }
 export const getHomeSidebarNewest = () => {
+
 	return dispatch => {
+		dispatch({
+			data: false,
+			type: 'GET_SIDEBAR_NEWEST_SUCCESS'
+		});
 		$.ajax({
 			url: config.API_URL + 'qna/newest'
 		}).done((json)=>{
@@ -59,6 +64,10 @@ export const getHomeSidebarNewest = () => {
 }
 export const getGithubTrend = () => {
 	return dispatch => {
+		dispatch({
+			data: false,
+			type: 'GET_GITHUB_TREND_SUCCESS'
+		})
 		$.ajax({
 			url: config.API_URL + 'github-trend',
 			dataType: 'JSON',

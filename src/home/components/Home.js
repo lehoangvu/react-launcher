@@ -12,9 +12,9 @@ export default class Home extends React.Component {
 	}
 
 	componentDidMount() {
-		if(!this.props.sidebar.newest)
+		// if(!this.props.sidebar.newest)
 			this.props.actions.getHomeSidebarNewest();
-		if(!this.props.sidebar.githubTrend)
+		// if(!this.props.sidebar.githubTrend)
 			this.props.actions.getGithubTrend();
 	}
 
