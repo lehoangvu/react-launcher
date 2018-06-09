@@ -4,6 +4,7 @@
   "description": "React, Redux, React Router, Universal, PostCSS",
   "main": "server/index.js",
   "scripts": {
+    "preinstall": "npm install -g pm2 && pm2 install pm2-logrotate",
     "dev": "webpack -d --color --watch --progress --config webpack.babel.js",
     "build": "webpack -p --color --progress --config webpack.prod.babel.js",
     "build:server": "webpack -p --color --progress --config webpack-server.prod.babel.js",
